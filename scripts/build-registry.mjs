@@ -24,6 +24,10 @@ const meta = {
     title: "Agent Task List",
     description: "The agent's plan, made visible: pending, active, done, and failed.",
   },
+  "interrupt-bar": {
+    title: "Interrupt Bar",
+    description: "The steering wheel and the brake for a running agent. Stop keeps partial work; steering redirects without restarting.",
+  },
 };
 
 await mkdir(OUT_DIR, { recursive: true });

@@ -1,0 +1,53 @@
+import Link from "next/link";
+import { ToolCallCardDemo } from "@/app/components/tool-call-card/demo";
+import { AgentTaskListDemo } from "@/app/components/agent-task-list/demo";
+
+export const metadata = {
+  title: "Legible Thinking — Agent Pit Stop",
+  description:
+    "Agents don't lose trust by being wrong. They lose it by being wrong invisibly.",
+};
+
+<Link href="/" className="text-[13px] text-smoke hover:text-chalk">← Agent Pit Stop</Link>
+
+# Legible Thinking
+
+Agents don't lose trust by being wrong. They lose it by being wrong **invisibly**. A human colleague who makes a mistake in a shared doc gets corrected in seconds. An agent that makes the same mistake inside an opaque "working..." spinner delivers it as a finished result, and the user finds out after the damage is priced in.
+
+Legible thinking is the discipline of making an agent's work checkable while it happens, at a cost the user is actually willing to pay. Both halves matter. Showing nothing makes errors expensive. Showing everything makes attention expensive, and users respond to a wall of reasoning the same way they respond to terms of service: they stop reading and click accept.
+
+## The failure is narration
+
+Most agent UIs get this wrong in the same way: they narrate instead of showing. A transcript that says "Let me search for flights... Now I'll compare prices... Interesting, I found..." feels transparent while communicating almost nothing checkable. Narration is prose about work. Legibility is the work itself, structured so a glance can verify it.
+
+The test: could the user catch a wrong assumption **before** the agent acts on it? If the answer requires reading paragraphs, the thinking isn't legible, it's merely visible.
+
+## Three altitudes, one glance
+
+Structure every unit of agent work at three depths, and let the user choose their altitude:
+
+1. **Intent** — one line, always visible: what the agent is doing and why, in the user's vocabulary, not the API's
+2. **State** — live and unambiguous: queued, running, done, failed, communicated by icon and label together, never color alone
+3. **Evidence** — one tap away: the exact arguments in, the exact result out
+
+The tool call card is this structure as a component. The name and intent stay pinned; the JSON is there when doubt strikes; a failure keeps the arguments on screen because the arguments are usually where the wrong assumption lives.
+
+<div className="mt-6"><ToolCallCardDemo /></div>
+
+## The plan is the interface
+
+A spinner says "trust me." A plan says "check me." Showing the agent's intended steps before execution is the single cheapest legibility win available, because it moves verification to the moment when correcting course costs nothing. The user who sees "Hold the best option" as step 3 can object at step 0, not after their card is charged.
+
+The same structure doubles as the recovery surface. When a step fails, it stays in the list with its error attached. The user doesn't reconstruct what happened from a transcript; the plan already shows what completed, what broke, and what never started.
+
+<div className="mt-6"><AgentTaskListDemo /></div>
+
+## What legibility is not
+
+Dumping raw chain-of-thought is not legible thinking; it shifts the verification cost onto the user instead of paying it in design. Progress bars faked over indeterminate work are worse than honest pulses. And a "show reasoning" toggle that reveals a novel is an apology, not an affordance.
+
+The rule that survives every case I've shipped: **show intent before action, state during, evidence on demand, and make the depth the user's choice.** Everything else in this system builds on it.
+
+<hr />
+
+<p className="text-[13px] text-ash">Applied in: <a href="/components/tool-call-card">Tool Call Card</a>, <a href="/components/agent-task-list">Agent Task List</a>. Next principle: Interruptibility.</p>
