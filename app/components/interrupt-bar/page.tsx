@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ComponentDoc } from "@/components/docs/doc-page";
 import { InterruptBarDemo } from "./demo";
 
 export const metadata = {
@@ -6,40 +6,36 @@ export const metadata = {
   description: "The steering wheel and the brake for a running agent.",
 };
 
-export default function InterruptBarPage() {
+export default function Page() {
   return (
-    <main className="space-y-10">
-      <div>
-        <Link href="/" className="text-[13px] text-smoke hover:text-chalk">
-          ← Agent Pit Stop
-        </Link>
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight">Interrupt Bar</h1>
-        <p className="mt-2 max-w-prose text-[15px] leading-relaxed text-smoke">
-          Stop and steer, visible for the entire run. Stop is never destructive: partial
-          work is kept and the receipt says exactly what survived. Steering redirects the
-          agent mid-run and gets an immediate acknowledgment, because a correction that
-          might have been ignored is worse than no correction at all.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="interrupt-bar"
+      intro="Stop and steer, visible for the entire run. Stop is never destructive: partial work is kept and the receipt says exactly what survived. Steering redirects the agent mid-run and gets an immediate acknowledgment, because a correction that might have been ignored is worse than no correction at all."
+      chatPrompt="Book my New York trip, budget $400."
+      preview={<InterruptBarDemo />}
+      sections={[
+        {
+          heading: "When to use",
+          body: "Any agent run longer than a few seconds. Pin it to the run, not the transcript, so it stays reachable while the user scrolls. The stop affordance earns delegation: users hand more work to agents they can visibly take back.",
+        },
+        {
+          heading: "Behavior",
+          body: "Shows the current activity and elapsed time. Stop transitions to a receipt stating what was preserved. The steer input stays live during the whole run; each steer renders an acknowledgment line so the user knows which version of the plan is executing.",
+        },
+        {
+          heading: "Usage",
+          code: `import { InterruptBar } from "@/components/interrupt-bar";
 
-      <InterruptBarDemo />
-
-      <div>
-        <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Install</h2>
-        <pre className="mt-2 overflow-x-auto rounded-xl border border-line bg-asphalt p-4 font-mono text-[13px] text-smoke">
-          {"npx shadcn@latest add https://agent-pitstop.vercel.app/r/interrupt-bar.json"}
-        </pre>
-        <p className="mt-2 text-[13px] text-ash">
-          Or copy the source from{" "}
-          <a
-            className="text-pit hover:underline"
-            href="https://github.com/acaspx/agent-pitstop/blob/main/registry/interrupt-bar/interrupt-bar.tsx"
-          >
-            registry/interrupt-bar
-          </a>
-          . MIT licensed.
-        </p>
-      </div>
-    </main>
+<InterruptBar
+  activity="Comparing 14 flights against your $400 cap…"
+  elapsed={12}
+  keptOnStop="14 search results saved to the thread"
+  onStop={stopRun}
+  onSteer={(msg) => agent.redirect(msg)}
+  acknowledgment={lastAck}
+/>`,
+        },
+      ]}
+    />
   );
 }

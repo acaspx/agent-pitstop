@@ -17,7 +17,7 @@ const components = [
 
 export default function Home() {
   return (
-    <main className="space-y-14">
+    <main className="mx-auto max-w-3xl space-y-14 px-6 py-16">
       <header className="space-y-4">
         <div className="font-mono text-[13px] text-pit">AGENT PIT STOP</div>
         <h1 className="max-w-xl text-3xl font-semibold leading-tight tracking-tight">
@@ -53,7 +53,12 @@ export default function Home() {
       </section>
 
       <section>
-        <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Components</h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Components</h2>
+          <Link href="/components" className="text-[13px] text-smoke hover:text-pit">
+            Browse all →
+          </Link>
+        </div>
         <ul className="mt-3 divide-y divide-line border-y border-line">
           {components.map((c) => (
             <li key={c.title} className="flex items-center justify-between py-3">

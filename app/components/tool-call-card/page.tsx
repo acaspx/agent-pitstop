@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ComponentDoc } from "@/components/docs/doc-page";
 import { ToolCallCardDemo } from "./demo";
 
 export const metadata = {
@@ -6,40 +6,47 @@ export const metadata = {
   description: "Show an agent's tool use with legible, progressive disclosure.",
 };
 
-export default function ToolCallCardPage() {
+const cliVariant = (
+  <pre className="font-mono text-[12px] leading-relaxed text-smoke">
+    {`$ agent run "book my nyc trip"
+
+▸ search_flights   Searching SFO → JFK, Aug 12    running 3s
+  args: { from: "SFO", to: "JFK", nonstop: true }
+
+  press [e] expand · [s] stop`}
+  </pre>
+);
+
+export default function Page() {
   return (
-    <main className="space-y-10">
-      <div>
-        <Link href="/" className="text-[13px] text-smoke hover:text-chalk">
-          ← Agent Pit Stop
-        </Link>
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight">Tool Call Card</h1>
-        <p className="mt-2 max-w-prose text-[15px] leading-relaxed text-smoke">
-          The atomic unit of agent legibility. The name and intent stay visible at all
-          times; arguments and results are one tap away. State is never communicated by
-          color alone, and failures keep the arguments on screen so a human can diagnose
-          without re-running.
-        </p>
-      </div>
+    <ComponentDoc
+      slug="tool-call-card"
+      intro="The atomic unit of agent legibility. The tool name and a one-line human intent stay visible at all times; arguments and results are one tap away. State is never communicated by color alone, and failures keep the arguments on screen so a human can diagnose without re-running."
+      chatPrompt="Find me a nonstop flight to New York on Aug 12."
+      preview={<ToolCallCardDemo />}
+      variants={{ cli: cliVariant }}
+      sections={[
+        {
+          heading: "When to use",
+          body: "Any time an agent calls a tool the user might want to verify: API requests, file operations, searches, code execution. Use one card per call, in execution order. If your agent makes dozens of rapid calls, group them under a collapsed parent rather than stacking cards.",
+        },
+        {
+          heading: "Behavior",
+          body: "Four states: queued, running (with elapsed time), done, failed. The card expands to show arguments and result. On failure the arguments stay attached to the error, because the wrong assumption usually lives in the inputs, not the stack trace.",
+        },
+        {
+          heading: "Usage",
+          code: `import { ToolCallCard } from "@/components/tool-call-card";
 
-      <ToolCallCardDemo />
-
-      <div>
-        <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Install</h2>
-        <pre className="mt-2 overflow-x-auto rounded-xl border border-line bg-asphalt p-4 font-mono text-[13px] text-smoke">
-          {"npx shadcn@latest add https://agent-pitstop.vercel.app/r/tool-call-card.json"}
-        </pre>
-        <p className="mt-2 text-[13px] text-ash">
-          Or copy the source from{" "}
-          <a
-            className="text-pit hover:underline"
-            href="https://github.com/acaspx/agent-pitstop/blob/main/registry/tool-call-card/tool-call-card.tsx"
-          >
-            registry/tool-call-card
-          </a>
-          . MIT licensed.
-        </p>
-      </div>
-    </main>
+<ToolCallCard
+  name="search_flights"
+  intent="Searching SFO → JFK, Aug 12"
+  state="running"
+  elapsed={3}
+  args={JSON.stringify(params, null, 2)}
+/>`,
+        },
+      ]}
+    />
   );
 }
