@@ -1,17 +1,18 @@
 import Link from "next/link";
 
 const principles = [
-  { title: "Legible thinking", status: "Writing" },
-  { title: "Interruptibility", status: "Writing" },
-  { title: "Delegation contracts", status: "Planned" },
-  { title: "Calibrated trust", status: "Planned" },
-  { title: "Graceful failure", status: "Planned" },
+  { title: "Legible thinking", href: "/principles/legible-thinking", status: "Live" },
+  { title: "Interruptibility", href: "/principles/interruptibility", status: "Live" },
+  { title: "Delegation contracts", href: null, status: "Planned" },
+  { title: "Calibrated trust", href: null, status: "Planned" },
+  { title: "Graceful failure", href: null, status: "Planned" },
 ];
 
 const components = [
   { title: "Tool Call Card", href: "/components/tool-call-card", status: "Live" },
   { title: "Approval Gate", href: "/components/approval-gate", status: "Live" },
   { title: "Agent Task List", href: "/components/agent-task-list", status: "Live" },
+  { title: "Interrupt Bar", href: "/components/interrupt-bar", status: "Live" },
 ];
 
 export default function Home() {
@@ -36,8 +37,16 @@ export default function Home() {
         <ul className="mt-3 divide-y divide-line border-y border-line">
           {principles.map((p) => (
             <li key={p.title} className="flex items-center justify-between py-3">
-              <span className="text-[15px]">{p.title}</span>
-              <span className="text-[12px] text-ash">{p.status}</span>
+              {p.href ? (
+                <Link href={p.href} className="text-[15px] text-chalk hover:text-pit">
+                  {p.title}
+                </Link>
+              ) : (
+                <span className="text-[15px] text-smoke">{p.title}</span>
+              )}
+              <span className={`text-[12px] ${p.status === "Live" ? "text-signal" : "text-ash"}`}>
+                {p.status}
+              </span>
             </li>
           ))}
         </ul>

@@ -1,0 +1,49 @@
+import Link from "next/link";
+import { InterruptBarDemo } from "@/app/components/interrupt-bar/demo";
+import { ApprovalGateDemo } from "@/app/components/approval-gate/demo";
+
+export const metadata = {
+  title: "Interruptibility — Agent Pit Stop",
+  description:
+    "Autonomy you can't interrupt isn't delegation. It's a hostage situation with good intentions.",
+};
+
+<Link href="/" className="text-[13px] text-smoke hover:text-chalk">← Agent Pit Stop</Link>
+
+# Interruptibility
+
+Autonomy you can't interrupt isn't delegation. It's a hostage situation with good intentions. The moment a user hands work to an agent, they start paying an anxiety tax that compounds every second the interface offers no way back in. Watch someone use an agent product for the first time: the question they ask isn't "will it succeed?" but "what do I do if it goes sideways?" If the interface has no visible answer, they keep the task themselves.
+
+So interruptibility isn't a safety feature bolted on for the failure case. It's the price of delegation itself. **Users delegate more to agents they can stop**, the same way drivers go faster in cars with better brakes.
+
+## A brake you're afraid to use is not a brake
+
+Most agent UIs technically have a stop button. Almost none have one users trust, because stopping usually means losing everything: the run dies, the partial work evaporates, and retrying starts from zero. A stop that costs ten minutes of progress will not be pressed at second nine, which is exactly when it's needed.
+
+The fix is a contract, stated in the interface: stopping keeps what's done. The receipt says exactly what survived. Once stopping is cheap, users stop early and often, which means errors get caught early and cheap too.
+
+## Steering beats stopping
+
+The binary of "let it run" versus "kill it" is a design failure. The most common mid-run situation isn't catastrophe, it's drift: the agent is 80% right and needs a nudge, not an execution. Cancel-and-restart throws away the 80% to fix the 20%.
+
+A steering input, live during the whole run, resolves the drift case without touching the brake. One requirement is non-negotiable: the agent must acknowledge the correction immediately and visibly. A steer that vanishes into silence is worse than none, because the user now doesn't know which version of the plan is running.
+
+<div className="mt-6"><InterruptBarDemo /></div>
+
+## Put the brakes before the cliff
+
+Interrupting a running agent is recovery. Better interfaces move the interruption earlier, to the moments before irreversible actions, where "interrupting" costs nothing at all. That's what an approval gate is: a scheduled interrupt, placed exactly where the human's judgment has the highest value per second of attention.
+
+The rule for placement: interrupt before anything that can't be undone, never before things that can. An agent that asks permission to read a file trains users to click through permission to send an email.
+
+<div className="mt-6"><ApprovalGateDemo /></div>
+
+## The interrupt budget
+
+Every interrupt spends user attention, and attention is the budget agentic products actually compete on. Spend it where reversibility is low and confidence is low. Save it everywhere else. An agent that interrupts constantly hasn't made itself safe; it has made itself a form with extra steps, and the user will either automate the clicking or leave.
+
+The rules that survive shipping: **stop is always visible and never destructive, steering is cheaper than stopping, scheduled interrupts go before irreversible actions only, and every interrupt is acknowledged the moment it lands.**
+
+<hr />
+
+<p className="text-[13px] text-ash">Applied in: <a href="/components/interrupt-bar">Interrupt Bar</a>, <a href="/components/approval-gate">Approval Gate</a>. Previous principle: <a href="/principles/legible-thinking">Legible Thinking</a>.</p>
