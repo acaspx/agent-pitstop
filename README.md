@@ -1,0 +1,38 @@
+# Agent Pit Stop
+
+**A design system for the moments where agents and humans sync.**
+
+Agents run laps on their own. The interface moments that matter are the pit stops: approval, inspection, handoff, recovery. Agent Pit Stop is an open set of UX principles and React components for designing those moments.
+
+Most agentic design writing covers architecture (orchestration, tool use, memory) for ML engineers. Agent Pit Stop covers the interface layer: what the human actually sees, approves, interrupts, and trusts.
+
+## What's inside
+
+- **Principles** — essays on agent UX with live demos: legible thinking, interruptibility, delegation contracts, calibrated trust, graceful failure
+- **Components** — production-quality React components, installable via the shadcn registry or copy-paste: tool call card, approval gate, agent task list, and more
+- **Resources** — teardowns of production agent UIs, a Figma library, and a glossary
+
+## Install a component
+
+```bash
+npx shadcn@latest add https://agent-pitstop.vercel.app/r/tool-call-card.json
+```
+
+Or copy source directly from [`/registry`](./registry). Components depend only on React 19, Tailwind 4, and [Motion](https://motion.dev).
+
+## Run the site
+
+```bash
+npm install
+npm run dev
+```
+
+## Status
+
+Early. v0.1 ships with 2 principles and 3 components. One new chapter or component lands weekly. Watch the repo or follow [@acaspx](https://github.com/acaspx).
+
+## License
+
+Code is [MIT](./LICENSE). Essays and imagery are CC BY-NC 4.0.
+
+Built by [Anton Castro](https://studio-acaspx.framer.website), a designer who has shipped agentic products since 2021 (Rocket, Augmedix, Custoria).
