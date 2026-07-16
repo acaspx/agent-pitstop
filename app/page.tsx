@@ -52,7 +52,7 @@ export default function Home() {
       <Reveal delay={0.06}>
         <div className="mt-14 grid gap-12 md:grid-cols-2">
           <div>
-            <PitFlag size={72} />
+            <PitFlag size={72} className="text-chalk" />
             <div className="mt-6 font-mono text-[13px] tracking-[0.3em] text-pit">
               AGENT PIT STOP
             </div>

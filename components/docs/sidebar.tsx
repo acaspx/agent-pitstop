@@ -45,7 +45,7 @@ export function Sidebar() {
           href="/"
           className="flex items-center gap-2 px-2.5 font-mono text-[12px] tracking-[0.2em] text-pit"
         >
-          <PitFlag size={20} />
+          <PitFlag size={20} className="shrink-0 text-chalk" />
           AGENT PIT STOP
         </Link>
 
