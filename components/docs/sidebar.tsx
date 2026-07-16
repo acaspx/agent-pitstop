@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import { componentCategories, componentsIn, principles } from "@/lib/nav";
+import { PitFlag } from "./pit-flag";
 
 function NavLink({ href, label, muted }: { href: string | null; label: string; muted?: boolean }) {
   const pathname = usePathname();
@@ -19,15 +21,18 @@ function NavLink({ href, label, muted }: { href: string | null; label: string; m
   return (
     <Link
       href={href}
-      className={`block rounded-md px-2.5 py-1.5 text-[13px] transition-colors ${
-        active
-          ? "bg-barrier text-chalk"
-          : muted
-            ? "text-ash hover:text-smoke"
-            : "text-smoke hover:text-chalk"
+      className={`relative block rounded-md px-2.5 py-1.5 text-[13px] transition-colors ${
+        active ? "text-chalk" : muted ? "text-ash hover:text-smoke" : "text-smoke hover:text-chalk"
       }`}
     >
-      {label}
+      {active && (
+        <motion.span
+          layoutId="nav-active"
+          className="absolute inset-0 rounded-md bg-barrier"
+          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+        />
+      )}
+      <span className="relative">{label}</span>
     </Link>
   );
 }
@@ -36,7 +41,11 @@ export function Sidebar() {
   return (
     <nav aria-label="Documentation" className="w-52 shrink-0 max-lg:hidden">
       <div className="sticky top-12 space-y-7">
-        <Link href="/" className="block px-2.5 font-mono text-[12px] tracking-[0.2em] text-pit">
+        <Link
+          href="/"
+          className="flex items-center gap-2 px-2.5 font-mono text-[12px] tracking-[0.2em] text-pit"
+        >
+          <PitFlag size={20} />
           AGENT PIT STOP
         </Link>
 
