@@ -35,7 +35,7 @@ export function ComponentDoc({ slug, intro, sections, preview, variants, chatPro
             <div className="text-[11px] font-medium uppercase tracking-wide text-ash">
               Components · {entry.category}
             </div>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight">{entry.title}</h1>
+            <h1 className="mt-2 font-mono text-2xl font-semibold tracking-tight">{entry.title}</h1>
             <p className="mt-3 text-[15px] leading-relaxed text-smoke">{intro}</p>
           </div>
 

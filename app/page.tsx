@@ -20,7 +20,7 @@ export default function Home() {
     <main className="mx-auto max-w-3xl space-y-14 px-6 py-16">
       <header className="space-y-4">
         <div className="font-mono text-[13px] text-pit">AGENT PIT STOP</div>
-        <h1 className="max-w-xl text-3xl font-semibold leading-tight tracking-tight">
+        <h1 className="max-w-xl font-mono text-3xl font-semibold leading-tight tracking-tight">
           A design system for the moments where agents and humans sync.
         </h1>
         <p className="max-w-prose text-[15px] leading-relaxed text-smoke">

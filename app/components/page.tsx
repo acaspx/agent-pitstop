@@ -38,7 +38,7 @@ const minis: Record<string, React.ReactNode> = {
 export default function ComponentsOverview() {
   return (
     <main>
-      <h1 className="text-2xl font-semibold tracking-tight">Components</h1>
+      <h1 className="font-mono text-2xl font-semibold tracking-tight">Components</h1>
       <p className="mt-2 max-w-prose text-[15px] leading-relaxed text-smoke">
         Every component, live. Each installs with one shadcn command or copies as a single
         file. Built with React 19, Tailwind 4, and Motion.
