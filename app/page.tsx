@@ -17,89 +17,126 @@ const components = [
   { title: "Interrupt Bar", href: "/components/interrupt-bar", status: "Live" },
 ];
 
+function Row({ title, href, status }: { title: string; href: string | null; status: string }) {
+  return (
+    <li className="flex items-center justify-between py-3">
+      {href ? (
+        <Link href={href} className="text-[15px] text-chalk hover:text-pit">
+          {title}
+        </Link>
+      ) : (
+        <span className="text-[15px] text-smoke">{title}</span>
+      )}
+      <span className={`text-[12px] ${status === "Live" ? "text-signal" : "text-ash"}`}>{status}</span>
+    </li>
+  );
+}
+
 export default function Home() {
   return (
-    <main className="mx-auto max-w-3xl space-y-14 px-6 py-16">
+    <main className="mx-auto max-w-5xl px-6 py-14">
+      {/* top rule with marker + chip, like a start line */}
       <Reveal>
-      <header className="space-y-4">
-        <div className="flex items-center gap-2.5 font-mono text-[13px] text-pit">
-          <PitFlag size={26} />
-          AGENT PIT STOP
+        <div className="relative flex items-center justify-between border-b border-line pb-3">
+          <span className="h-2.5 w-2.5 rounded-full bg-pit" aria-hidden />
+          <a
+            href="https://github.com/acaspx/agent-pitstop"
+            className="bg-pit px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide text-track transition-opacity hover:opacity-85"
+          >
+            STAR ON GITHUB
+          </a>
         </div>
-        <h1 className="max-w-xl text-3xl font-semibold leading-tight tracking-tight">
-          A design system for the moments where agents and humans sync.
-        </h1>
-        <p className="max-w-prose text-[15px] leading-relaxed text-smoke">
-          Agents run laps on their own. The interface moments that matter are the pit
-          stops: approval, inspection, handoff, recovery. Agent Pit Stop is an open set of
-          principles and React components for designing those moments, written by a
-          designer who has shipped agentic products since 2021. Free, MIT, and built to
-          be copied.
-        </p>
-      </header>
       </Reveal>
 
-      <Reveal delay={0.08}>
-      <section>
-        <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Principles</h2>
-        <ul className="mt-3 divide-y divide-line border-y border-line">
-          {principles.map((p) => (
-            <li key={p.title} className="flex items-center justify-between py-3">
-              {p.href ? (
-                <Link href={p.href} className="text-[15px] text-chalk hover:text-pit">
-                  {p.title}
-                </Link>
-              ) : (
-                <span className="text-[15px] text-smoke">{p.title}</span>
-              )}
-              <span className={`text-[12px] ${p.status === "Live" ? "text-signal" : "text-ash"}`}>
-                {p.status}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-      </Reveal>
-
-      <Reveal delay={0.14}>
-      <section>
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Components</h2>
-          <Link href="/components" className="text-[13px] text-smoke hover:text-pit">
-            Browse all →
-          </Link>
+      {/* two rails: flag + wordmark / nav */}
+      <Reveal delay={0.06}>
+        <div className="mt-14 grid gap-12 md:grid-cols-2">
+          <div>
+            <PitFlag size={72} />
+            <div className="mt-6 font-mono text-[13px] tracking-[0.3em] text-pit">
+              AGENT PIT STOP
+            </div>
+          </div>
+          <nav className="flex flex-col gap-1.5 text-xl font-medium tracking-tight md:pt-1">
+            <a href="#principles" className="w-fit text-chalk transition-colors hover:text-pit">
+              Principles
+            </a>
+            <Link href="/components" className="w-fit text-chalk transition-colors hover:text-pit">
+              Components
+            </Link>
+            <a
+              href="https://github.com/acaspx/agent-pitstop"
+              className="w-fit text-chalk transition-colors hover:text-pit"
+            >
+              GitHub
+            </a>
+          </nav>
         </div>
-        <ul className="mt-3 divide-y divide-line border-y border-line">
-          {components.map((c) => (
-            <li key={c.title} className="flex items-center justify-between py-3">
-              {c.href ? (
-                <Link href={c.href} className="text-[15px] text-chalk hover:text-pit">
-                  {c.title}
-                </Link>
-              ) : (
-                <span className="text-[15px] text-smoke">{c.title}</span>
-              )}
-              <span className={`text-[12px] ${c.status === "Live" ? "text-signal" : "text-ash"}`}>
-                {c.status}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
       </Reveal>
 
-      <Reveal delay={0.2}>
-      <footer className="text-[13px] text-ash">
-        By{" "}
-        <a href="https://github.com/acaspx" className="text-smoke hover:text-chalk">
-          Anton Castro
-        </a>
-        . Source on{" "}
-        <a href="https://github.com/acaspx/agent-pitstop" className="text-smoke hover:text-chalk">
-          GitHub
-        </a>
-        .
-      </footer>
+      {/* two-column statement */}
+      <Reveal delay={0.12}>
+        <div className="mt-24 grid gap-10 md:grid-cols-2">
+          <h1 className="text-[26px] font-semibold leading-snug tracking-tight text-chalk md:text-[30px]">
+            A design system for the moments where agents and humans sync.
+          </h1>
+          <p className="text-[15px] leading-relaxed text-smoke md:pt-1.5">
+            Agents run laps on their own. The interface moments that matter are the pit
+            stops: approval, inspection, handoff, recovery. Agent Pit Stop is an open set
+            of principles and React components for designing those moments, written by a
+            designer who has shipped agentic products since 2021. Free, MIT, and built to
+            be copied.
+          </p>
+        </div>
+      </Reveal>
+
+      {/* two-rail sections */}
+      <Reveal delay={0.16}>
+        <section id="principles" className="mt-24 grid gap-4 border-t border-line pt-8 md:grid-cols-2 md:gap-12">
+          <h2 className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-ash">
+            Principles
+          </h2>
+          <ul className="divide-y divide-line">
+            {principles.map((p) => (
+              <Row key={p.title} {...p} />
+            ))}
+          </ul>
+        </section>
+      </Reveal>
+
+      <Reveal delay={0.1}>
+        <section className="mt-16 grid gap-4 border-t border-line pt-8 md:grid-cols-2 md:gap-12">
+          <div className="flex items-start justify-between md:flex-col md:gap-3">
+            <h2 className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-ash">
+              Components
+            </h2>
+            <Link href="/components" className="text-[13px] text-smoke hover:text-pit">
+              Browse all →
+            </Link>
+          </div>
+          <ul className="divide-y divide-line">
+            {components.map((c) => (
+              <Row key={c.title} {...c} />
+            ))}
+          </ul>
+        </section>
+      </Reveal>
+
+      <Reveal delay={0.1}>
+        <footer className="mt-24 grid gap-4 border-t border-line pt-6 text-[13px] text-ash md:grid-cols-2 md:gap-12">
+          <span className="font-mono text-[11px] tracking-[0.2em]">EVERY LAP NEEDS A PIT</span>
+          <span>
+            By{" "}
+            <a href="https://github.com/acaspx" className="text-smoke hover:text-chalk">
+              Anton Castro
+            </a>
+            . Source on{" "}
+            <a href="https://github.com/acaspx/agent-pitstop" className="text-smoke hover:text-chalk">
+              GitHub
+            </a>
+            . MIT.
+          </span>
+        </footer>
       </Reveal>
     </main>
   );
