@@ -52,7 +52,7 @@ export default function ComponentsOverview() {
               <Link
                 key={c.slug}
                 href={`/components/${c.slug}`}
-                className="group rounded-2xl border border-line bg-[#0e0e10] p-5 transition-colors hover:border-ash"
+                className="group rounded-2xl border border-line bg-[#0e0e10] p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-ash hover:shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
               >
                 <div className="pointer-events-none">{minis[c.slug]}</div>
                 <div className="mt-4 text-[15px] font-medium text-chalk group-hover:text-pit">

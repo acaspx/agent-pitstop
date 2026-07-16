@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { PitFlag } from "@/components/docs/pit-flag";
+import { Reveal } from "@/components/docs/reveal";
 
 const principles = [
   { title: "Legible thinking", href: "/principles/legible-thinking", status: "Live" },
@@ -18,8 +20,12 @@ const components = [
 export default function Home() {
   return (
     <main className="mx-auto max-w-3xl space-y-14 px-6 py-16">
+      <Reveal>
       <header className="space-y-4">
-        <div className="font-mono text-[13px] text-pit">AGENT PIT STOP</div>
+        <div className="flex items-center gap-2.5 font-mono text-[13px] text-pit">
+          <PitFlag size={26} />
+          AGENT PIT STOP
+        </div>
         <h1 className="max-w-xl text-3xl font-semibold leading-tight tracking-tight">
           A design system for the moments where agents and humans sync.
         </h1>
@@ -31,7 +37,9 @@ export default function Home() {
           be copied.
         </p>
       </header>
+      </Reveal>
 
+      <Reveal delay={0.08}>
       <section>
         <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Principles</h2>
         <ul className="mt-3 divide-y divide-line border-y border-line">
@@ -51,7 +59,9 @@ export default function Home() {
           ))}
         </ul>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.14}>
       <section>
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Components</h2>
@@ -76,7 +86,9 @@ export default function Home() {
           ))}
         </ul>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.2}>
       <footer className="text-[13px] text-ash">
         By{" "}
         <a href="https://github.com/acaspx" className="text-smoke hover:text-chalk">
@@ -88,6 +100,7 @@ export default function Home() {
         </a>
         .
       </footer>
+      </Reveal>
     </main>
   );
 }
