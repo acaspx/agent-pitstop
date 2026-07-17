@@ -17,6 +17,65 @@ const components = [
   { title: "Interrupt Bar", href: "/components/interrupt-bar", status: "Live" },
 ];
 
+/* two-tone icons in the site accent */
+function SparkIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
+      <path
+        d="M11 2l2.1 6.9L20 11l-6.9 2.1L11 20l-2.1-6.9L2 11l6.9-2.1L11 2Z"
+        fill="var(--color-pit)"
+        fillOpacity="0.3"
+        stroke="var(--color-pit)"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function BracketsIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
+      <rect x="7.5" y="7.5" width="7" height="7" rx="1.5" fill="var(--color-pit)" fillOpacity="0.3" stroke="var(--color-pit)" strokeWidth="1.2" />
+      <path d="M8 2.5H4.5A2 2 0 0 0 2.5 4.5V8M14 2.5h3.5a2 2 0 0 1 2 2V8M8 19.5H4.5a2 2 0 0 1-2-2V14M14 19.5h3.5a2 2 0 0 0 2-2V14" stroke="var(--color-pit)" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function DocIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden>
+      <rect x="3.5" y="2.5" width="15" height="17" rx="2" stroke="var(--color-pit)" strokeWidth="1.4" />
+      <path d="M7 7h8" stroke="var(--color-pit)" strokeWidth="2.4" strokeLinecap="round" opacity="0.35" />
+      <path d="M7 11h8M7 15h5" stroke="var(--color-pit)" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+const heroCards = [
+  {
+    title: "Principles",
+    description: "The why. Essays on agent UX with live demos.",
+    href: "#principles",
+    external: false,
+    icon: <SparkIcon />,
+  },
+  {
+    title: "Components",
+    description: "The how. Production React, installable via shadcn.",
+    href: "/components",
+    external: false,
+    icon: <BracketsIcon />,
+  },
+  {
+    title: "Documentation",
+    description: "The source. README, registry, and license.",
+    href: "https://github.com/acaspx/agent-pitstop",
+    external: true,
+    icon: <DocIcon />,
+  },
+];
+
 function Row({ title, href, status }: { title: string; href: string | null; status: string }) {
   return (
     <li className="flex items-center justify-between py-3">
@@ -37,7 +96,7 @@ export default function Home() {
     <main className="mx-auto max-w-5xl px-6 py-14">
       {/* top rule with marker + chip, like a start line */}
       <Reveal>
-        <div className="relative flex items-center justify-between border-b border-line pb-3">
+        <div className="relative flex items-center justify-between pb-3">
           <span className="h-2.5 w-2.5 rounded-full bg-pit" aria-hidden />
           <a
             href="https://github.com/acaspx/agent-pitstop"
@@ -48,51 +107,71 @@ export default function Home() {
         </div>
       </Reveal>
 
-      {/* two rails: flag + wordmark / nav */}
-      <Reveal delay={0.06}>
-        <div className="mt-14 grid gap-12 md:grid-cols-2">
-          <div>
-            <PitFlag size={72} className="text-chalk" />
-            <div className="mt-6 font-mono text-[13px] tracking-[0.3em] text-pit">
-              AGENT PIT STOP
-            </div>
-          </div>
-          <nav className="flex flex-col gap-1.5 text-xl font-medium tracking-tight md:pt-1">
-            <a href="#principles" className="w-fit text-chalk transition-colors hover:text-pit">
-              Principles
-            </a>
-            <Link href="/components" className="w-fit text-chalk transition-colors hover:text-pit">
-              Components
-            </Link>
-            <a
-              href="https://github.com/acaspx/agent-pitstop"
-              className="w-fit text-chalk transition-colors hover:text-pit"
-            >
-              GitHub
-            </a>
-          </nav>
-        </div>
+      {/* wordmark */}
+      <Reveal delay={0.04}>
+        <div className="mt-8 font-mono text-[13px] tracking-[0.3em] text-pit">AGENT PIT STOP</div>
       </Reveal>
 
-      {/* two-column statement */}
-      <Reveal delay={0.12}>
-        <div className="mt-24 grid gap-10 md:grid-cols-2">
-          <h1 className="text-[26px] font-semibold leading-snug tracking-tight text-chalk md:text-[30px]">
-            A design system for the moments where agents and humans sync.
-          </h1>
-          <p className="text-[15px] leading-relaxed text-smoke md:pt-1.5">
-            Agents run laps on their own. The interface moments that matter are the pit
-            stops: approval, inspection, handoff, recovery. Agent Pit Stop is an open set
-            of principles and React components for designing those moments, written by a
-            designer who has shipped agentic products since 2021. Free, MIT, and built to
-            be copied.
-          </p>
+      {/* hero card grid */}
+      <Reveal delay={0.1}>
+        <div className="mt-6 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
+          {/* large card: headline / flag / paragraph */}
+          <div className="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-2xl border border-line bg-[#0e0e10] p-7 md:min-h-[540px] md:p-9">
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <PitFlag size={200} className="text-chalk" />
+            </div>
+            <h1 className="relative max-w-md text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
+              A design system for the moments where agents and humans sync.
+            </h1>
+            <p className="relative max-w-md text-[14.5px] leading-relaxed text-smoke">
+              Agents run laps on their own. The interface moments that matter are the pit
+              stops: approval, inspection, handoff, recovery. Agent Pit Stop is an open
+              set of principles and React components for designing those moments, written
+              by a designer who has shipped agentic products since 2021. Free and built
+              to be distributed, and repurposed.
+            </p>
+          </div>
+
+          {/* three link cards */}
+          <div className="grid gap-3">
+            {heroCards.map((card) =>
+              card.external ? (
+                <a
+                  key={card.title}
+                  href={card.href}
+                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-[#0e0e10] p-6 transition-colors hover:border-ash md:min-h-[172px]"
+                >
+                  {card.icon}
+                  <div>
+                    <div className="text-[15px] font-medium text-chalk group-hover:text-pit">
+                      {card.title}
+                    </div>
+                    <p className="mt-1 text-[13px] leading-relaxed text-smoke">{card.description}</p>
+                  </div>
+                </a>
+              ) : (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-[#0e0e10] p-6 transition-colors hover:border-ash md:min-h-[172px]"
+                >
+                  {card.icon}
+                  <div>
+                    <div className="text-[15px] font-medium text-chalk group-hover:text-pit">
+                      {card.title}
+                    </div>
+                    <p className="mt-1 text-[13px] leading-relaxed text-smoke">{card.description}</p>
+                  </div>
+                </Link>
+              ),
+            )}
+          </div>
         </div>
       </Reveal>
 
       {/* two-rail sections */}
       <Reveal delay={0.16}>
-        <section id="principles" className="mt-24 grid gap-4 border-t border-line pt-8 md:grid-cols-2 md:gap-12">
+        <section id="principles" className="mt-24 grid gap-4 md:grid-cols-2 md:gap-12">
           <h2 className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-ash">
             Principles
           </h2>
@@ -105,7 +184,7 @@ export default function Home() {
       </Reveal>
 
       <Reveal delay={0.1}>
-        <section className="mt-16 grid gap-4 border-t border-line pt-8 md:grid-cols-2 md:gap-12">
+        <section className="mt-16 grid gap-4 md:grid-cols-2 md:gap-12">
           <div className="flex items-start justify-between md:flex-col md:gap-3">
             <h2 className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-ash">
               Components
@@ -123,9 +202,12 @@ export default function Home() {
       </Reveal>
 
       <Reveal delay={0.1}>
-        <footer className="mt-24 grid gap-4 border-t border-line pt-6 text-[13px] text-ash md:grid-cols-2 md:gap-12">
-          <span className="font-mono text-[11px] tracking-[0.2em]">EVERY LAP NEEDS A PIT</span>
-          <span>
+        <footer className="mt-24 grid gap-4 border-t border-dotted border-line pt-6 text-[13px] text-ash md:grid-cols-2 md:gap-12">
+          <span className="flex items-center gap-2.5 font-mono text-[11px] tracking-[0.2em]">
+            <PitFlag size={18} animated={false} className="shrink-0 text-chalk" />
+            &ldquo;I WANNA GO FAST.&rdquo; — RICKY BOBBY
+          </span>
+          <span className="md:text-right">
             By{" "}
             <a href="https://github.com/acaspx" className="text-smoke hover:text-chalk">
               Anton Castro
