@@ -5,9 +5,9 @@ import { Reveal } from "@/components/docs/reveal";
 const principles = [
   { title: "Legible thinking", href: "/principles/legible-thinking", status: "Live" },
   { title: "Interruptibility", href: "/principles/interruptibility", status: "Live" },
-  { title: "Delegation contracts", href: null, status: "Planned" },
-  { title: "Calibrated trust", href: null, status: "Planned" },
-  { title: "Graceful failure", href: null, status: "Planned" },
+  { title: "Delegation contracts", href: "/principles/delegation-contracts", status: "Live" },
+  { title: "Calibrated trust", href: "/principles/calibrated-trust", status: "Live" },
+  { title: "Graceful failure", href: "/principles/graceful-failure", status: "Live" },
 ];
 
 const components = [
@@ -15,6 +15,7 @@ const components = [
   { title: "Approval Gate", href: "/components/approval-gate", status: "Live" },
   { title: "Agent Task List", href: "/components/agent-task-list", status: "Live" },
   { title: "Interrupt Bar", href: "/components/interrupt-bar", status: "Live" },
+  { title: "Confidence Meter", href: "/components/confidence-meter", status: "Live" },
 ];
 
 /* two-tone icons in the site accent */
@@ -97,7 +98,10 @@ export default function Home() {
       {/* top rule with marker + chip, like a start line */}
       <Reveal>
         <div className="relative flex items-center justify-between pb-3">
-          <span className="h-2.5 w-2.5 rounded-full bg-pit" aria-hidden />
+          <div className="flex items-center gap-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-pit" aria-hidden />
+            <span className="font-mono text-[13px] tracking-[0.3em] text-pit">AGENT PIT STOP</span>
+          </div>
           <a
             href="https://github.com/acaspx/agent-pitstop"
             className="bg-pit px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide text-track transition-opacity hover:opacity-85"
@@ -107,14 +111,9 @@ export default function Home() {
         </div>
       </Reveal>
 
-      {/* wordmark */}
-      <Reveal delay={0.04}>
-        <div className="mt-8 font-mono text-[13px] tracking-[0.3em] text-pit">AGENT PIT STOP</div>
-      </Reveal>
-
       {/* hero card grid */}
       <Reveal delay={0.1}>
-        <div className="mt-6 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
+        <div className="mt-10 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
           {/* large card: headline / flag / paragraph */}
           <div className="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-2xl border border-line bg-[#0e0e10] p-7 md:min-h-[540px] md:p-9">
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

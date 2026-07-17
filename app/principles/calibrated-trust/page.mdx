@@ -1,0 +1,41 @@
+import Link from "next/link";
+import { ConfidenceMeterDemo } from "@/app/components/confidence-meter/demo";
+import { ToolCallCardDemo } from "@/app/components/tool-call-card/demo";
+
+export const metadata = {
+  title: "Calibrated Trust — Agent Pit Stop",
+  description:
+    "The goal isn't more trust. It's trust that tracks reality: skepticism where the agent is weak, delegation where it's proven.",
+};
+
+<Link href="/" className="text-[13px] text-smoke hover:text-chalk">← Agent Pit Stop</Link>
+
+# Calibrated Trust
+
+The goal of agent UX isn't more trust. It's **accurate** trust: skepticism exactly where the agent is weak, easy delegation exactly where it's proven. Both failure directions are expensive. Under-trust means the user re-checks everything and the agent saves nobody any time. Over-trust means the one wrong invoice sails into the accounting system with a confident face on it. The interface is the instrument that keeps human trust and machine accuracy in tune.
+
+## Confidence theater
+
+The fastest way to break calibration is false precision. "87.3% confident" reads as measurement; it is usually decoration, and users can't do anything useful with the decimal anyway. Worse, uniform confident tone — the same fluent prose for a certain answer and a guess — trains users to stop discriminating at all. That's how automation bias is manufactured.
+
+Honest uncertainty is coarse: three bands a person can act on. High means proceed. Medium means proceed with a glance. Low means the output is a draft of an answer, not an answer. And the claim never travels without its basis, because "high confidence" means nothing detached from what it's grounded in.
+
+<div className="mt-6"><ConfidenceMeterDemo /></div>
+
+## Verification must be cheaper than redoing
+
+A confidence display without a verification affordance is a shrug. If the interface says "medium confidence" and offers nothing else, the user's only options are blind acceptance or doing the task themselves, which is exactly the choice agents were supposed to eliminate. The affordance that fixes this is one tap from doubt to evidence: the source, the diff, the original document beside the extraction.
+
+This is the same evidence layer that makes thinking legible; trust is where it pays out. Slide the demo above below the threshold and watch the meter stop being a status and become a request.
+
+<div className="mt-6"><ToolCallCardDemo /></div>
+
+## Trust is earned per task, not per product
+
+Users don't trust "the agent." They trust the agent *at flight search* and distrust it *at expense coding*, and they're right to: model competence is jagged. Interfaces should let trust be granular — thresholds and verification pressure tuned per task type — rather than forcing one global setting. And when a human does verify, say so: "verified by you" on a claim outranks any score the model can produce, and displaying it teaches users that their attention updates the system.
+
+The rules that survive shipping: **bands, not decimals; no claim without its basis; verification one tap away and cheaper than redoing; thresholds per task, not per product; and human verification always outranks model confidence.**
+
+<hr />
+
+<p className="text-[13px] text-ash">Applied in: <a href="/components/confidence-meter">Confidence Meter</a>, <a href="/components/tool-call-card">Tool Call Card</a>. Related: <a href="/principles/legible-thinking">Legible Thinking</a>.</p>

@@ -1,0 +1,41 @@
+import Link from "next/link";
+import { AgentTaskListDemo } from "@/app/components/agent-task-list/demo";
+import { InterruptBarDemo } from "@/app/components/interrupt-bar/demo";
+
+export const metadata = {
+  title: "Graceful Failure — Agent Pit Stop",
+  description:
+    "Software fails like glass. Agents fail like weather. Interfaces built for the first kind shatter in the second.",
+};
+
+<Link href="/" className="text-[13px] text-smoke hover:text-chalk">← Agent Pit Stop</Link>
+
+# Graceful Failure
+
+Traditional software fails like glass: rarely, loudly, all at once, and a dialog box apologizes. Agents fail like weather: routinely, partially, and probabilistically. Step four of seven breaks while the first three produced real value. A tool call times out on the second retry. An extraction is 90% right and 10% quietly wrong. Interfaces built for glass — the modal, the red toast, the start-over button — shatter under weather, because they treat a partial success as a total loss.
+
+The design shift: **failure is a state to render, not an event to apologize for.** It belongs in the same visual system as running and done, with the same legibility.
+
+## Preserve the partial
+
+The cardinal sin of agent failure UX is discarding completed work because a later step broke. Three booked-trip steps succeeded before the hold expired; the interface that throws that away just charged the user three steps of waiting for nothing, and taught them never to delegate anything long. The plan widget is the natural ledger: done stays done, failed shows its error inline, pending stays visibly untouched. Recovery means resuming from step four, never from zero.
+
+<div className="mt-6"><AgentTaskListDemo /></div>
+
+## Keep the evidence at the wreck
+
+When a step fails, the diagnostic material is the inputs, not just the error string. A failure that keeps its arguments attached lets a human spot the wrong assumption in seconds; a failure that shows only "something went wrong" forces a re-run to reproduce what the interface already knew. This is why every component in this system keeps arguments visible in the error state: the crash site should come with its flight recorder.
+
+## Bounded retries, honest waits
+
+Agents can retry, which is a gift and a trap. Unbounded silent retries turn a ten-second task into a two-minute mystery spinner. Render the retry ("attempt 2/3, waiting 30s"), bound it, and when the bound is hit, stop and say what's left undone. An honest "I couldn't finish steps 4-5; here's what's done and why it stopped" preserves more trust than any amount of optimistic spinning, because the user learns the agent fails legibly, and that is precisely what makes them willing to hand it the next task.
+
+Stopping is part of the same contract. A user-initiated stop is not a failure, and the receipt should prove it: what survived, stated plainly.
+
+<div className="mt-6"><InterruptBarDemo /></div>
+
+The rules that survive shipping: **failure is a rendered state, not a modal; partial work is never discarded; errors keep their inputs attached; retries are visible and bounded; and the end of a broken run states exactly what's done and what isn't.**
+
+<hr />
+
+<p className="text-[13px] text-ash">Applied in: <a href="/components/agent-task-list">Agent Task List</a>, <a href="/components/interrupt-bar">Interrupt Bar</a>, <a href="/components/tool-call-card">Tool Call Card</a>. Related: <a href="/principles/calibrated-trust">Calibrated Trust</a>.</p>
