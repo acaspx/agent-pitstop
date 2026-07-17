@@ -13,7 +13,18 @@ const CELL_H = 10;
 /** ripple amplitude grows toward the flag's free edge */
 const AMP = [0.7, 1.3, 1.9, 2.5];
 
-export function PitFlag({ size = 22, className }: { size?: number; className?: string }) {
+/** static per-column offsets used when animation is off: a frozen wave pose */
+const STATIC_POSE = [0.7, -0.9, 1.4, -1.8];
+
+export function PitFlag({
+  size = 22,
+  className,
+  animated = true,
+}: {
+  size?: number;
+  className?: string;
+  animated?: boolean;
+}) {
   return (
     <svg
       width={size}
@@ -26,18 +37,20 @@ export function PitFlag({ size = 22, className }: { size?: number; className?: s
     >
       <g transform="translate(12 9) skewX(-18) rotate(-7)">
         {Array.from({ length: COLS }, (_, col) => (
-          <g key={col}>
-            <animateTransform
-              attributeName="transform"
-              type="translate"
-              values={`0 ${AMP[col]}; 0 ${-AMP[col]}; 0 ${AMP[col]}`}
-              keyTimes="0; 0.5; 1"
-              dur="2.8s"
-              begin={`${-col * 0.35}s`}
-              repeatCount="indefinite"
-              calcMode="spline"
-              keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"
-            />
+          <g key={col} transform={animated ? undefined : `translate(0 ${STATIC_POSE[col]})`}>
+            {animated && (
+              <animateTransform
+                attributeName="transform"
+                type="translate"
+                values={`0 ${AMP[col]}; 0 ${-AMP[col]}; 0 ${AMP[col]}`}
+                keyTimes="0; 0.5; 1"
+                dur="2.8s"
+                begin={`${-col * 0.35}s`}
+                repeatCount="indefinite"
+                calcMode="spline"
+                keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"
+              />
+            )}
             {Array.from({ length: ROWS }, (_, row) =>
               (row + col) % 2 === 0 ? (
                 <rect
