@@ -28,6 +28,10 @@ const meta = {
     title: "Interrupt Bar",
     description: "The steering wheel and the brake for a running agent. Stop keeps partial work; steering redirects without restarting.",
   },
+  "confidence-meter": {
+    title: "Confidence Meter",
+    description: "Honest uncertainty as coarse bands, paired with a verification affordance below the threshold.",
+  },
 };
 
 await mkdir(OUT_DIR, { recursive: true });

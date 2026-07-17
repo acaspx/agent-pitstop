@@ -17,9 +17,9 @@ export interface PrincipleEntry {
 export const principles: PrincipleEntry[] = [
   { slug: "legible-thinking", title: "Legible Thinking", status: "live" },
   { slug: "interruptibility", title: "Interruptibility", status: "live" },
-  { slug: "delegation-contracts", title: "Delegation Contracts", status: "planned" },
-  { slug: "calibrated-trust", title: "Calibrated Trust", status: "planned" },
-  { slug: "graceful-failure", title: "Graceful Failure", status: "planned" },
+  { slug: "delegation-contracts", title: "Delegation Contracts", status: "live" },
+  { slug: "calibrated-trust", title: "Calibrated Trust", status: "live" },
+  { slug: "graceful-failure", title: "Graceful Failure", status: "live" },
 ];
 
 export const components: ComponentEntry[] = [
@@ -51,9 +51,16 @@ export const components: ComponentEntry[] = [
     category: "Control",
     formats: ["web", "mobile", "chat"],
   },
+  {
+    slug: "confidence-meter",
+    title: "Confidence Meter",
+    description: "Honest uncertainty bands with a verification affordance.",
+    category: "Trust",
+    formats: ["web", "mobile", "chat"],
+  },
 ];
 
-export const componentCategories = ["Legibility", "Control"] as const;
+export const componentCategories = ["Legibility", "Control", "Trust"] as const;
 
 export function componentsIn(category: string): ComponentEntry[] {
   return components.filter((c) => c.category === category);

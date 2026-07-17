@@ -4,6 +4,7 @@ import { ToolCallCard } from "@/registry/tool-call-card/tool-call-card";
 import { AgentTaskList } from "@/registry/agent-task-list/agent-task-list";
 import { ApprovalGate } from "@/registry/approval-gate/approval-gate";
 import { InterruptBar } from "@/registry/interrupt-bar/interrupt-bar";
+import { ConfidenceMeter } from "@/registry/confidence-meter/confidence-meter";
 
 export const metadata = {
   title: "Components — Agent Pit Stop",
@@ -32,6 +33,13 @@ const minis: Record<string, React.ReactNode> = {
   ),
   "interrupt-bar": (
     <InterruptBar activity="Comparing 14 flights…" elapsed={12} state="running" />
+  ),
+  "confidence-meter": (
+    <ConfidenceMeter
+      claim="This invoice matches PO #4412"
+      basis="3 matching fields, 1 OCR gap"
+      confidence={0.55}
+    />
   ),
 };
 

@@ -1,0 +1,45 @@
+import Link from "next/link";
+import { ApprovalGateDemo } from "@/app/components/approval-gate/demo";
+import { AgentTaskListDemo } from "@/app/components/agent-task-list/demo";
+
+export const metadata = {
+  title: "Delegation Contracts — Agent Pit Stop",
+  description:
+    "Delegation doesn't fail at execution. It fails at the handoff, where scope was never actually agreed.",
+};
+
+<Link href="/" className="text-[13px] text-smoke hover:text-chalk">← Agent Pit Stop</Link>
+
+# Delegation Contracts
+
+Delegation doesn't fail at execution. It fails at the handoff, where scope was never actually agreed. "Book my trip" means one thing to the user and another to the agent, and the gap between those two readings is where every horror story lives: the agent that emailed the whole company, the one that spent the budget, the one that deleted the drafts because "clean up" was ambiguous. The user calls it overreach. The agent, if it could argue, would call it instructions.
+
+A delegation contract closes that gap by making scope explicit before work begins: what the agent will do, what it will touch, what it may spend, and what it will not do without coming back. Not terms-of-service fine print, but an interface moment measured in seconds.
+
+## Scope is itemized, not summarized
+
+"Send the summary email?" is a summary. "Send email to 3 recipients, attach Q3-summary.pdf, CC yourself" is a contract. The difference is auditability: an itemized scope lets the user veto one line instead of guessing what the bundle contains. Every irreversible item is marked as such, because reversibility is the single fact that most changes a human's answer.
+
+<div className="mt-6"><ApprovalGateDemo /></div>
+
+## The plan is the contract's schedule
+
+An itemized approval covers one action. For a multi-step run, the plan itself is the contract: presenting the intended steps before execution is an offer, and letting the run proceed is acceptance. This is why plans shown after the fact are worthless as contracts; the user can't decline a step that already happened.
+
+<div className="mt-6"><AgentTaskListDemo /></div>
+
+## Boundaries beat permissions
+
+Permission-per-action doesn't scale; it decays into click-through and takes real oversight with it. Contracts scale by shape, not count: budgets ("up to $400"), domains ("only my calendar, never email"), and stop conditions ("pause if a fare exceeds the cap"). One approved boundary quietly replaces fifty approval clicks, and the user's attention is saved for the moments that actually breach it.
+
+The same logic makes "always allow" the most dangerous words in agent UX. A blanket grant is a contract with no terms. If the interface offers memory of a choice, it must scope that memory as narrowly as the choice: "always allow reading this calendar" is a boundary; "always allow" is an abdication.
+
+## Renegotiation is part of the contract
+
+Mid-run, the world changes: the fare expires, the file is bigger than expected, a step needs a permission that wasn't in the original scope. A well-designed agent doesn't guess and doesn't silently expand scope; it comes back with a delta: "this now requires X, still fine?" The re-ask is not friction. It's the agent honoring the contract, and every honored contract makes the next delegation bigger.
+
+The rules that survive shipping: **itemize scope before consent, mark what can't be undone, prefer boundaries to per-action permissions, scope any remembered choice as narrowly as the choice itself, and renegotiate deltas instead of assuming them.**
+
+<hr />
+
+<p className="text-[13px] text-ash">Applied in: <a href="/components/approval-gate">Approval Gate</a>, <a href="/components/agent-task-list">Agent Task List</a>. Related: <a href="/principles/interruptibility">Interruptibility</a>.</p>
