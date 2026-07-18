@@ -117,10 +117,10 @@ export default function Home() {
         <div className="mt-10 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
           {/* large card: headline / flag / paragraph */}
           <div className="flex flex-col gap-7 rounded-2xl border border-line bg-[#0e0e10] p-7 md:p-9">
-            <h1 className="max-w-md text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
-              An open source design system to keep agents on track.
+            <h1 className="max-w-md text-balance text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
+              An open source design system to keep agents on&nbsp;track.
             </h1>
-            <TrackLoop variant="hero" className="mx-auto w-full max-w-[440px]" />
+            <TrackLoop variant="full" className="mx-auto w-full" />
             <p className="max-w-md text-[14.5px] leading-relaxed text-smoke">
               Agents run laps on their own; the moments that matter are the pit stops.
               Principles and React components for approval, steering, and recovery. Free,
