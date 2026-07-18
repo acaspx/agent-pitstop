@@ -100,7 +100,7 @@ export default function Home() {
       <Reveal>
         <div className="relative flex items-center justify-between pb-3">
           <div className="flex items-center gap-3">
-            <PitFlag size={18} className="shrink-0 text-pit" />
+            <PitFlag size={18} className="shrink-0 text-chalk" />
             <span className="font-mono text-[13px] tracking-[0.3em] text-pit">AGENT PIT STOP</span>
           </div>
           <a
@@ -116,19 +116,15 @@ export default function Home() {
       <Reveal delay={0.1}>
         <div className="mt-10 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
           {/* large card: headline / flag / paragraph */}
-          <div className="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-2xl border border-line bg-[#0e0e10] p-7 md:min-h-[540px] md:p-9">
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <TrackLoop variant="hero" className="w-[420px] max-w-[88%] opacity-95" />
-            </div>
-            <h1 className="relative max-w-md text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
-              A design system for the moments where agents and humans sync.
+          <div className="flex flex-col gap-7 rounded-2xl border border-line bg-[#0e0e10] p-7 md:p-9">
+            <h1 className="max-w-md text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
+              An open source design system to keep agents on track.
             </h1>
-            <p className="relative max-w-md text-[14.5px] leading-relaxed text-smoke">
-              Agents run laps on their own. The interface moments that matter are the pit
-              stops: approval, inspection, handoff, recovery. Agent Pit Stop is an open
-              set of principles and React components for designing those moments, written
-              by a designer who has shipped agentic products since 2021. Free and built
-              to be distributed, and repurposed.
+            <TrackLoop variant="hero" className="mx-auto w-full max-w-[440px]" />
+            <p className="max-w-md text-[14.5px] leading-relaxed text-smoke">
+              Agents run laps on their own; the moments that matter are the pit stops.
+              Principles and React components for approval, steering, and recovery. Free,
+              MIT, and built to be copied.
             </p>
           </div>
 
