@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PitFlag } from "@/components/docs/pit-flag";
+import { TrackLoop } from "@/components/docs/track-loop";
 import { Reveal } from "@/components/docs/reveal";
 
 const principles = [
@@ -69,10 +70,10 @@ const heroCards = [
     icon: <BracketsIcon />,
   },
   {
-    title: "Documentation",
-    description: "The source. README, registry, and license.",
-    href: "https://github.com/acaspx/agent-pitstop",
-    external: true,
+    title: "How it works",
+    description: "The problem, the loop, and the system.",
+    href: "/how-it-works",
+    external: false,
     icon: <DocIcon />,
   },
 ];
@@ -99,7 +100,7 @@ export default function Home() {
       <Reveal>
         <div className="relative flex items-center justify-between pb-3">
           <div className="flex items-center gap-3">
-            <span className="h-2.5 w-2.5 rounded-full bg-pit" aria-hidden />
+            <PitFlag size={18} className="shrink-0 text-pit" />
             <span className="font-mono text-[13px] tracking-[0.3em] text-pit">AGENT PIT STOP</span>
           </div>
           <a
@@ -117,7 +118,7 @@ export default function Home() {
           {/* large card: headline / flag / paragraph */}
           <div className="relative flex min-h-[420px] flex-col justify-between overflow-hidden rounded-2xl border border-line bg-[#0e0e10] p-7 md:min-h-[540px] md:p-9">
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <PitFlag size={200} className="text-chalk" />
+              <TrackLoop variant="hero" className="w-[420px] max-w-[88%] opacity-95" />
             </div>
             <h1 className="relative max-w-md text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
               A design system for the moments where agents and humans sync.

@@ -50,6 +50,10 @@ export function Sidebar() {
         </Link>
 
         <div>
+          <NavLink href="/how-it-works" label="How it works" />
+        </div>
+
+        <div>
           <div className="px-2.5 pb-1.5 text-[11px] font-medium uppercase tracking-wide text-ash">
             Principles
           </div>
