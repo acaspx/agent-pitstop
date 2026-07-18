@@ -36,9 +36,9 @@ export default function HowItWorksPage() {
         <P>
           Agent Pit Stop is an open-source design system for agent interfaces: five UX
           principles with live demos, and production React components for the moments
-          where agents and humans sync — approval, inspection, handoff, recovery. It is
-          written from a designer&apos;s lens by someone who has shipped agentic products
-          since 2021, and everything is MIT and built to be copied.
+          where agents and humans sync. Approval, inspection, handoff, recovery. I write
+          it from a designer&apos;s lens, having shipped agentic products since 2021, and
+          everything is MIT and built to be copied.
         </P>
         <div className="mt-4">
           <CodeBlock
@@ -77,7 +77,7 @@ export default function HowItWorksPage() {
           how to show a tool call, when to ask permission, what a stop button should do to
           in-progress work, how confident an extraction should look. I rebuilt those
           moments at a conversational AI startup, at a medical documentation company, and
-          in an agentic capture app I co-founded — three products, three hand-rolled
+          in an agentic capture app I co-founded. Three products, three hand-rolled
           versions of the same interface, and each time the pattern knowledge existed only
           as scars. Agent Pit Stop is those scars written down, made installable, and
           argued for, so the next team starts from a system instead of a blank canvas.
@@ -129,7 +129,7 @@ export default function HowItWorksPage() {
         <P>
           A pit stop is the moment a fast autonomous thing submits to human hands: twelve
           seconds of inspection, correction, and consent, then back out at speed. That is
-          exactly the shape of good agent UX, and it names both halves honestly — the
+          exactly the shape of good agent UX, and it names both halves honestly: the
           agent&apos;s job is to run laps, and the interface&apos;s job is to make the
           stops fast, legible, and worth trusting. Also, we wanted to go fast.
         </P>

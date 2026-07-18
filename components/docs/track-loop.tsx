@@ -14,7 +14,7 @@ const PIT_LANE =
 
 function Car({ ghost = false }: { ghost?: boolean }) {
   return (
-    <g opacity={ghost ? 0.95 : 1}>
+    <g opacity={ghost ? 0.55 : 1}>
       <rect x="-15" y="-4" width="3" height="8" fill="var(--color-pit)" />
       <path
         d="M -12 0 L -8 -3.5 L 3 -3.5 L 9 -1.5 L 14 0 L 9 1.5 L 3 3.5 L -8 3.5 Z"
@@ -41,7 +41,7 @@ export function TrackLoop({
 
   return (
     <svg
-      viewBox={full ? "0 0 680 470" : "84 26 512 400"}
+      viewBox={full ? "0 0 724 470" : "84 26 512 400"}
       className={className}
       role="img"
       aria-label="The Agent Pit Stop loop: an agent laps autonomously; humans approve, steer, and verify at the pit."
@@ -59,14 +59,18 @@ export function TrackLoop({
       />
 
       {/* start/finish checkers */}
-      <g transform="translate(332 45)" fill="var(--color-chalk)">
-        <rect x="0" y="0" width="7" height="8.5" />
-        <rect x="7" y="8.5" width="7" height="8.5" />
-        <rect x="0" y="17" width="7" height="8.5" />
-        <rect x="7" y="25.5" width="7" height="8.5" />
+      <g transform="translate(332 45)">
+        <rect x="0" y="0" width="7" height="8.5" fill="var(--color-chalk)" />
+        <rect x="7" y="0" width="7" height="8.5" fill="var(--color-track)" />
+        <rect x="0" y="8.5" width="7" height="8.5" fill="var(--color-track)" />
+        <rect x="7" y="8.5" width="7" height="8.5" fill="var(--color-chalk)" />
+        <rect x="0" y="17" width="7" height="8.5" fill="var(--color-chalk)" />
+        <rect x="7" y="17" width="7" height="8.5" fill="var(--color-track)" />
+        <rect x="0" y="25.5" width="7" height="8.5" fill="var(--color-track)" />
+        <rect x="7" y="25.5" width="7" height="8.5" fill="var(--color-chalk)" />
       </g>
 
-      {/* direction chevrons */}
+      {/* direction chevrons: on the top straight, following travel (left → right) */}
       <g
         stroke="var(--color-ash)"
         strokeWidth="1.6"
@@ -75,8 +79,8 @@ export function TrackLoop({
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M 560 118 l 6 7 l 6 -7" />
-        <path d="M 560 140 l 6 7 l 6 -7" />
+        <path d="M 428 55 l 7 7 l -7 7" />
+        <path d="M 450 55 l 7 7 l -7 7" />
       </g>
 
       {/* pit lane */}
@@ -100,59 +104,83 @@ export function TrackLoop({
         fill="var(--color-asphalt)"
         stroke="var(--color-line)"
       />
-      <text
-        x="340"
-        y="342"
-        textAnchor="middle"
-        fontSize="11"
-        fontWeight="600"
-        fill="var(--color-chalk)"
-        className="font-mono"
-      >
-        PIT · HUMAN IN THE LOOP
-      </text>
-      <rect x="266" y="352" width="62" height="20" rx="6" fill="var(--color-pit)" />
-      <text
-        x="297"
-        y="365.5"
-        textAnchor="middle"
-        fontSize="10"
-        fontWeight="600"
-        fill="var(--color-track)"
-      >
-        Approve
-      </text>
-      <rect x="334" y="352" width="48" height="20" rx="6" fill="none" stroke="var(--color-line)" />
-      <text x="358" y="365.5" textAnchor="middle" fontSize="10" fill="var(--color-smoke)">
-        Deny
-      </text>
-      <line
-        x1="266"
-        y1="390"
-        x2="382"
-        y2="390"
-        stroke="var(--color-line)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <circle cx="330" cy="390" r="5" fill="var(--color-pit)" />
-      <text x="392" y="394" fontSize="10" fill="var(--color-smoke)">
-        steer
-      </text>
+      {full ? (
+        <>
+          <text
+            x="340"
+            y="342"
+            textAnchor="middle"
+            fontSize="11"
+            fontWeight="600"
+            fill="var(--color-chalk)"
+            className="font-mono"
+          >
+            PIT · HUMAN IN THE LOOP
+          </text>
+          <rect x="266" y="352" width="62" height="20" rx="6" fill="var(--color-pit)" />
+          <text
+            x="297"
+            y="365.5"
+            textAnchor="middle"
+            fontSize="10"
+            fontWeight="600"
+            fill="var(--color-track)"
+          >
+            Approve
+          </text>
+          <rect x="334" y="352" width="48" height="20" rx="6" fill="none" stroke="var(--color-line)" />
+          <text x="358" y="365.5" textAnchor="middle" fontSize="10" fill="var(--color-smoke)">
+            Deny
+          </text>
+          <line
+            x1="266"
+            y1="390"
+            x2="382"
+            y2="390"
+            stroke="var(--color-line)"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+          <circle cx="330" cy="390" r="5" fill="var(--color-pit)" />
+          <text x="392" y="394" fontSize="10" fill="var(--color-smoke)">
+            steer
+          </text>
+        </>
+      ) : (
+        <>
+          {/* hero: pure shapes, no micro-labels */}
+          <rect x="268" y="340" width="72" height="14" rx="7" fill="var(--color-pit)" />
+          <rect x="348" y="340" width="46" height="14" rx="7" fill="none" stroke="var(--color-line)" />
+          <line
+            x1="268"
+            y1="378"
+            x2="394"
+            y2="378"
+            stroke="var(--color-line)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          <circle cx="336" cy="378" r="6" fill="var(--color-pit)" />
+        </>
+      )}
 
       {/* human at the pit wall */}
       <g transform="translate(232 356)">
         <circle cx="0" cy="0" r="5.5" fill="var(--color-chalk)" />
         <path d="M -8 16 C -8 8 8 8 8 16 Z" fill="var(--color-chalk)" />
-        <text x="0" y="30" textAnchor="middle" fontSize="10" fill="var(--color-smoke)">
-          you
-        </text>
+        {full && (
+          <text x="0" y="30" textAnchor="middle" fontSize="10" fill="var(--color-smoke)">
+            you
+          </text>
+        )}
       </g>
 
-      {/* ghost car being serviced */}
-      <g transform="translate(340 302) rotate(180)">
-        <Car ghost />
-      </g>
+      {/* ghost car being serviced (full variant only, dimmed) */}
+      {full && (
+        <g transform="translate(340 302) rotate(180)">
+          <Car ghost />
+        </g>
+      )}
 
       {/* the agent, lapping */}
       <g>
