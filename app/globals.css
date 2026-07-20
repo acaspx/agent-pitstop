@@ -5,9 +5,10 @@
   --color-asphalt: #131316;
   --color-barrier: #1f1f24;
   --color-line: #2c2c33;
+  --color-carbon: #0e0e10;
   --color-chalk: #ececf1;
   --color-smoke: #9a9aa3;
-  --color-ash: #5c5c66;
+  --color-ash: #7f7f8a;
   --color-signal: #34d399;
   --color-caution: #fbbf24;
   --color-flag: #f87171;
@@ -27,4 +28,19 @@ html {
 
 ::selection {
   background: color-mix(in srgb, var(--color-pit) 30%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-pit);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

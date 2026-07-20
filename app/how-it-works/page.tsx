@@ -89,7 +89,7 @@ export default function HowItWorksPage() {
           where humans intervene. Design the pit well and users delegate more laps, the
           same way drivers go faster in cars with better brakes.
         </P>
-        <div className="mt-6 -mx-2 rounded-2xl border border-line bg-[#0e0e10] p-4 md:p-6">
+        <div className="mt-6 -mx-2 rounded-2xl border border-line bg-carbon p-4 md:p-6">
           <TrackLoop variant="full" className="w-full" />
         </div>
         <P>
