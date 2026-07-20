@@ -92,7 +92,7 @@ export function ConfidenceMeter({
             <button
               type="button"
               onClick={onVerify}
-              className="shrink-0 rounded-lg bg-chalk px-3 py-1.5 text-[12px] font-medium text-track transition-opacity hover:opacity-85"
+              className="min-h-9 shrink-0 rounded-lg bg-chalk px-3 py-1.5 text-[12px] font-medium text-track transition-opacity hover:opacity-85 pointer-coarse:min-h-11"
             >
               {verifyLabel}
             </button>

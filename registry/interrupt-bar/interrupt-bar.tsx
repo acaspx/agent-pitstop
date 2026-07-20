@@ -81,7 +81,7 @@ export function InterruptBar({
               <button
                 type="button"
                 onClick={stop}
-                className="shrink-0 rounded-lg border border-line px-3 py-1.5 text-[13px] font-medium text-smoke transition-colors hover:border-flag/50 hover:text-flag"
+                className="min-h-9 shrink-0 rounded-lg border border-line px-3 py-1.5 text-[13px] font-medium text-smoke transition-colors hover:border-flag/50 hover:text-flag pointer-coarse:min-h-11"
               >
                 Stop
               </button>
@@ -116,7 +116,7 @@ export function InterruptBar({
                 type="button"
                 onClick={steer}
                 disabled={!draft.trim()}
-                className="shrink-0 rounded-lg bg-barrier px-3 py-1 text-[12px] font-medium text-smoke transition-colors enabled:hover:text-chalk disabled:opacity-40"
+                className="min-h-9 shrink-0 rounded-lg bg-barrier px-3 py-1 text-[12px] font-medium text-smoke transition-colors enabled:hover:text-chalk disabled:opacity-40 pointer-coarse:min-h-11"
               >
                 Send
               </button>

@@ -32,6 +32,18 @@ const meta = {
     title: "Confidence Meter",
     description: "Honest uncertainty as coarse bands, paired with a verification affordance below the threshold.",
   },
+  "agent-roster": {
+    title: "Agent Roster",
+    description: "The team sheet for multi-agent runs: role, state, and live activity per agent, blockers named.",
+  },
+  "agent-inbox": {
+    title: "Agent Inbox",
+    description: "The review queue for background agents. Needs-review items carry the reason, not just a red dot.",
+  },
+  "context-budget": {
+    title: "Context Budget",
+    description: "A delegation contract's limits made visible: consumption vs caps in honest bands, cap-hit as a rendered state.",
+  },
 };
 
 await mkdir(OUT_DIR, { recursive: true });

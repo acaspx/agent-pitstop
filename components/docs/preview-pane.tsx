@@ -112,7 +112,7 @@ export function PreviewPane({ formats, children, variants, chatPrompt }: Preview
         ))}
       </div>
 
-      <div className="rounded-2xl border border-line bg-[#0e0e10] p-6">
+      <div className="rounded-2xl border border-line bg-carbon p-6">
         {format === "mobile" ? (
           <div className="mx-auto w-[300px] rounded-[2rem] border border-line bg-track p-3 pt-6 shadow-2xl">
             <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-barrier" aria-hidden />

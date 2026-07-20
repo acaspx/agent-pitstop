@@ -109,14 +109,14 @@ export function ApprovalGate({
               <button
                 type="button"
                 onClick={() => decide("approved")}
-                className="rounded-lg bg-chalk px-3.5 py-1.5 text-[13px] font-medium text-track transition-opacity hover:opacity-85"
+                className="min-h-9 rounded-lg bg-chalk px-3.5 py-1.5 text-[13px] font-medium text-track transition-opacity hover:opacity-85 pointer-coarse:min-h-11"
               >
                 {approveLabel}
               </button>
               <button
                 type="button"
                 onClick={() => decide("denied")}
-                className="rounded-lg border border-line px-3.5 py-1.5 text-[13px] font-medium text-smoke transition-colors hover:border-flag/50 hover:text-flag"
+                className="min-h-9 rounded-lg border border-line px-3.5 py-1.5 text-[13px] font-medium text-smoke transition-colors hover:border-flag/50 hover:text-flag pointer-coarse:min-h-11"
               >
                 {denyLabel}
               </button>

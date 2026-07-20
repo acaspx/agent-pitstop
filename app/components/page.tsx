@@ -1,47 +1,12 @@
 import Link from "next/link";
 import { componentCategories, componentsIn } from "@/lib/nav";
-import { ToolCallCard } from "@/registry/tool-call-card/tool-call-card";
-import { AgentTaskList } from "@/registry/agent-task-list/agent-task-list";
-import { ApprovalGate } from "@/registry/approval-gate/approval-gate";
-import { InterruptBar } from "@/registry/interrupt-bar/interrupt-bar";
-import { ConfidenceMeter } from "@/registry/confidence-meter/confidence-meter";
+import { minis } from "./gallery-minis";
 
 export const metadata = {
   title: "Components — Agent Pit Stop",
   description: "Every component, with live previews. Installable via the shadcn registry.",
 };
 
-const minis: Record<string, React.ReactNode> = {
-  "tool-call-card": (
-    <ToolCallCard name="search_flights" intent="Searching SFO → JFK, Aug 12" state="running" elapsed={3} />
-  ),
-  "agent-task-list": (
-    <AgentTaskList
-      tasks={[
-        { title: "Find flights", status: "done" },
-        { title: "Compare prices", status: "active", detail: "14 flights vs $400 cap" },
-        { title: "Hold best option", status: "pending" },
-      ]}
-    />
-  ),
-  "approval-gate": (
-    <ApprovalGate
-      title="Send the Q3 summary email?"
-      state="awaiting"
-      scope={[{ label: "Send email to 3 recipients", risky: true }]}
-    />
-  ),
-  "interrupt-bar": (
-    <InterruptBar activity="Comparing 14 flights…" elapsed={12} state="running" />
-  ),
-  "confidence-meter": (
-    <ConfidenceMeter
-      claim="This invoice matches PO #4412"
-      basis="3 matching fields, 1 OCR gap"
-      confidence={0.55}
-    />
-  ),
-};
 
 export default function ComponentsOverview() {
   return (
@@ -60,7 +25,7 @@ export default function ComponentsOverview() {
               <Link
                 key={c.slug}
                 href={`/components/${c.slug}`}
-                className="group rounded-2xl border border-line bg-[#0e0e10] p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-ash hover:shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+                className="group rounded-2xl border border-line bg-carbon p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-ash hover:shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
               >
                 <div className="pointer-events-none">{minis[c.slug]}</div>
                 <div className="mt-4 text-[15px] font-medium text-chalk group-hover:text-pit">

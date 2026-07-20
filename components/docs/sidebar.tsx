@@ -57,6 +57,7 @@ export function Sidebar() {
           <div className="px-2.5 pb-1.5 text-[11px] font-medium uppercase tracking-wide text-ash">
             Principles
           </div>
+          <NavLink href="/principles" label="Overview" muted />
           {principles.map((p) => (
             <NavLink
               key={p.slug}

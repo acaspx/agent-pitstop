@@ -29,7 +29,11 @@ npm run dev
 
 ## Status
 
-Early. v0.1 ships with 2 principles and 3 components. One new chapter or component lands weekly. Watch the repo or follow [@acaspx](https://github.com/acaspx).
+Five principles, five components, three categories. One new chapter or component lands weekly. Watch the repo or follow [@acaspx](https://github.com/acaspx).
+
+## Contributing
+
+Component proposals, fixes, and scars from real agent products are all welcome. Start with [CONTRIBUTING.md](./CONTRIBUTING.md) — it's short, and the definition of done keeps the system clean as it grows.
 
 ## License
 

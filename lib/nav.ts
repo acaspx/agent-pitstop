@@ -58,6 +58,27 @@ export const components: ComponentEntry[] = [
     category: "Trust",
     formats: ["web", "mobile", "chat"],
   },
+  {
+    slug: "agent-roster",
+    title: "Agent Roster",
+    description: "The team sheet for multi-agent runs: who's working, waiting, or blocked.",
+    category: "Legibility",
+    formats: ["web", "mobile", "chat"],
+  },
+  {
+    slug: "agent-inbox",
+    title: "Agent Inbox",
+    description: "The review queue for background agents, ordered by what needs you most.",
+    category: "Control",
+    formats: ["web", "mobile"],
+  },
+  {
+    slug: "context-budget",
+    title: "Context Budget",
+    description: "Tokens, spend, and time against their caps, in honest bands.",
+    category: "Trust",
+    formats: ["web", "mobile", "chat"],
+  },
 ];
 
 export const componentCategories = ["Legibility", "Control", "Trust"] as const;

@@ -17,6 +17,9 @@ const components = [
   { title: "Agent Task List", href: "/components/agent-task-list", status: "Live" },
   { title: "Interrupt Bar", href: "/components/interrupt-bar", status: "Live" },
   { title: "Confidence Meter", href: "/components/confidence-meter", status: "Live" },
+  { title: "Agent Roster", href: "/components/agent-roster", status: "Live" },
+  { title: "Agent Inbox", href: "/components/agent-inbox", status: "Live" },
+  { title: "Context Budget", href: "/components/context-budget", status: "Live" },
 ];
 
 /* two-tone icons in the site accent */
@@ -116,7 +119,7 @@ export default function Home() {
       <Reveal delay={0.1}>
         <div className="mt-10 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
           {/* large card: headline / flag / paragraph */}
-          <div className="flex flex-col gap-7 rounded-2xl border border-line bg-[#0e0e10] p-7 md:p-9">
+          <div className="flex flex-col gap-7 rounded-2xl border border-line bg-carbon p-7 md:p-9">
             <h1 className="max-w-md text-balance text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
               An open source design system to keep agents on&nbsp;track.
             </h1>
@@ -135,7 +138,7 @@ export default function Home() {
                 <a
                   key={card.title}
                   href={card.href}
-                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-[#0e0e10] p-6 transition-colors hover:border-ash md:min-h-[172px]"
+                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-carbon p-6 transition-colors hover:border-ash md:min-h-[172px]"
                 >
                   {card.icon}
                   <div>
@@ -149,7 +152,7 @@ export default function Home() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-[#0e0e10] p-6 transition-colors hover:border-ash md:min-h-[172px]"
+                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-carbon p-6 transition-colors hover:border-ash md:min-h-[172px]"
                 >
                   {card.icon}
                   <div>
