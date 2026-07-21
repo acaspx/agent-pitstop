@@ -51,6 +51,7 @@ export function Sidebar() {
 
         <div>
           <NavLink href="/how-it-works" label="How it works" />
+          <NavLink href="/full-lap" label="The Full Lap" />
         </div>
 
         <div>
