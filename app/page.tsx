@@ -141,6 +141,13 @@ export default function Home() {
               Principles and React components for approval, steering, and recovery. Free,
               MIT, and built to be copied.
             </p>
+            <Link
+              href="/full-lap"
+              className="group flex w-fit items-center gap-2 font-mono text-[12px] tracking-wide text-pit"
+            >
+              <span aria-hidden>▶</span>
+              <span className="group-hover:underline">WATCH THE FULL LAP</span>
+            </Link>
           </div>
 
           {/* three link cards */}
