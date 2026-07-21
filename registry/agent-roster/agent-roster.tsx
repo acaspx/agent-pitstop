@@ -33,6 +33,8 @@ export interface RosterAgent {
 export interface AgentRosterProps {
   agents: RosterAgent[];
   label?: string;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 const stateMeta: Record<AgentState, { label: string; text: string; pulse: boolean }> = {
@@ -59,11 +61,11 @@ function StateDot({ state }: { state: AgentState }) {
   );
 }
 
-export function AgentRoster({ agents, label = "Crew" }: AgentRosterProps) {
+export function AgentRoster({ agents, label = "Crew", className }: AgentRosterProps) {
   const working = agents.filter((a) => a.state === "working").length;
 
   return (
-    <div className="w-full rounded-xl border border-line bg-asphalt">
+    <div className={`w-full rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
         <span className="text-[13px] font-medium text-chalk">{label}</span>
         <span className="font-mono text-[12px] text-smoke">

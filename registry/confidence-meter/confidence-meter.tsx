@@ -29,6 +29,8 @@ export interface ConfidenceMeterProps {
   threshold?: number;
   onVerify?: () => void;
   verifyLabel?: string;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 export function bandOf(confidence: number): ConfidenceBand {
@@ -50,13 +52,14 @@ export function ConfidenceMeter({
   threshold = 0.75,
   onVerify,
   verifyLabel = "Check this",
+  className,
 }: ConfidenceMeterProps) {
   const band = bandOf(confidence);
   const meta = bandMeta[band];
   const needsVerification = confidence < threshold;
 
   return (
-    <div className="w-full rounded-xl border border-line bg-asphalt px-4 py-3">
+    <div className={`w-full rounded-xl border border-line bg-asphalt px-4 py-3 ${className ?? ""}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="text-[13px] leading-snug text-chalk">{claim}</div>

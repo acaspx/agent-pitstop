@@ -2,24 +2,40 @@ import Link from "next/link";
 import { PitFlag } from "@/components/docs/pit-flag";
 import { TrackLoop } from "@/components/docs/track-loop";
 import { Reveal } from "@/components/docs/reveal";
+import { minis } from "@/app/components/gallery-minis";
 
 const principles = [
-  { title: "Legible thinking", href: "/principles/legible-thinking", status: "Live" },
-  { title: "Interruptibility", href: "/principles/interruptibility", status: "Live" },
-  { title: "Delegation contracts", href: "/principles/delegation-contracts", status: "Live" },
-  { title: "Calibrated trust", href: "/principles/calibrated-trust", status: "Live" },
-  { title: "Graceful failure", href: "/principles/graceful-failure", status: "Live" },
+  {
+    title: "Legible thinking",
+    claim: "Agents don't lose trust by being wrong. They lose it by being wrong invisibly.",
+    href: "/principles/legible-thinking",
+  },
+  {
+    title: "Interruptibility",
+    claim: "Users delegate more to agents they can stop.",
+    href: "/principles/interruptibility",
+  },
+  {
+    title: "Delegation contracts",
+    claim: "Delegation fails at the handoff, not at execution.",
+    href: "/principles/delegation-contracts",
+  },
+  {
+    title: "Calibrated trust",
+    claim: "The goal is accurate trust, not more trust.",
+    href: "/principles/calibrated-trust",
+  },
+  {
+    title: "Graceful failure",
+    claim: "Software fails like glass. Agents fail like weather.",
+    href: "/principles/graceful-failure",
+  },
 ];
 
-const components = [
-  { title: "Tool Call Card", href: "/components/tool-call-card", status: "Live" },
-  { title: "Approval Gate", href: "/components/approval-gate", status: "Live" },
-  { title: "Agent Task List", href: "/components/agent-task-list", status: "Live" },
-  { title: "Interrupt Bar", href: "/components/interrupt-bar", status: "Live" },
-  { title: "Confidence Meter", href: "/components/confidence-meter", status: "Live" },
-  { title: "Agent Roster", href: "/components/agent-roster", status: "Live" },
-  { title: "Agent Inbox", href: "/components/agent-inbox", status: "Live" },
-  { title: "Context Budget", href: "/components/context-budget", status: "Live" },
+const teasers = [
+  { slug: "tool-call-card", title: "Tool Call Card", category: "Legibility" },
+  { slug: "approval-gate", title: "Approval Gate", category: "Control" },
+  { slug: "confidence-meter", title: "Confidence Meter", category: "Trust" },
 ];
 
 /* two-tone icons in the site accent */
@@ -81,17 +97,13 @@ const heroCards = [
   },
 ];
 
-function Row({ title, href, status }: { title: string; href: string | null; status: string }) {
+function PrincipleRow({ title, claim, href }: { title: string; claim: string; href: string }) {
   return (
-    <li className="flex items-center justify-between py-3">
-      {href ? (
-        <Link href={href} className="text-[15px] text-chalk hover:text-pit">
-          {title}
-        </Link>
-      ) : (
-        <span className="text-[15px] text-smoke">{title}</span>
-      )}
-      <span className={`text-[12px] ${status === "Live" ? "text-signal" : "text-ash"}`}>{status}</span>
+    <li>
+      <Link href={href} className="group block py-3.5">
+        <span className="text-[15px] text-chalk group-hover:text-pit">{title}</span>
+        <span className="mt-0.5 block text-[13px] leading-relaxed text-smoke">{claim}</span>
+      </Link>
     </li>
   );
 }
@@ -176,27 +188,41 @@ export default function Home() {
           </h2>
           <ul className="divide-y divide-line">
             {principles.map((p) => (
-              <Row key={p.title} {...p} />
+              <PrincipleRow key={p.title} {...p} />
             ))}
           </ul>
         </section>
       </Reveal>
 
       <Reveal delay={0.1}>
-        <section className="mt-16 grid gap-4 md:grid-cols-2 md:gap-12">
-          <div className="flex items-start justify-between md:flex-col md:gap-3">
+        <section className="mt-20">
+          <div className="flex items-center justify-between">
             <h2 className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-ash">
               Components
             </h2>
             <Link href="/components" className="text-[13px] text-smoke hover:text-pit">
-              Browse all →
+              Browse all 8 →
             </Link>
           </div>
-          <ul className="divide-y divide-line">
-            {components.map((c) => (
-              <Row key={c.title} {...c} />
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {teasers.map((t) => (
+              <Link
+                key={t.slug}
+                href={`/components/${t.slug}`}
+                className="group flex flex-col gap-4 rounded-2xl border border-line bg-carbon p-5 transition-colors hover:border-ash"
+              >
+                <div className="pointer-events-none">{minis[t.slug]}</div>
+                <div className="mt-auto flex items-baseline justify-between">
+                  <span className="text-[14px] font-medium text-chalk group-hover:text-pit">
+                    {t.title}
+                  </span>
+                  <span className="font-mono text-[11px] uppercase tracking-wide text-ash">
+                    {t.category}
+                  </span>
+                </div>
+              </Link>
             ))}
-          </ul>
+          </div>
         </section>
       </Reveal>
 

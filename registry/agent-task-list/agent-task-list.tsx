@@ -27,6 +27,8 @@ export interface AgentTaskListProps {
   /** Short label for the overall plan, e.g. "Booking your trip" */
   label?: string;
   tasks: AgentTask[];
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 function StatusIcon({ status }: { status: AgentTaskStatus }) {
@@ -82,11 +84,11 @@ function StatusIcon({ status }: { status: AgentTaskStatus }) {
   );
 }
 
-export function AgentTaskList({ label, tasks }: AgentTaskListProps) {
+export function AgentTaskList({ label, tasks, className }: AgentTaskListProps) {
   const done = tasks.filter((t) => t.status === "done").length;
 
   return (
-    <div className="w-full rounded-xl border border-line bg-asphalt">
+    <div className={`w-full rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       {label && (
         <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
           <span className="text-[13px] font-medium text-chalk">{label}</span>

@@ -27,6 +27,8 @@ export interface ToolCallCardProps {
   detail?: string;
   /** Seconds elapsed while running (optional) */
   elapsed?: number;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 const stateMeta: Record<ToolCallState, { label: string; dot: string; text: string }> = {
@@ -36,13 +38,13 @@ const stateMeta: Record<ToolCallState, { label: string; dot: string; text: strin
   error: { label: "Failed", dot: "bg-flag", text: "text-flag" },
 };
 
-export function ToolCallCard({ name, intent, state, args, detail, elapsed }: ToolCallCardProps) {
+export function ToolCallCard({ name, intent, state, args, detail, elapsed, className }: ToolCallCardProps) {
   const [open, setOpen] = useState(false);
   const meta = stateMeta[state];
   const expandable = Boolean(args || detail);
 
   return (
-    <div className="w-full overflow-hidden rounded-xl border border-line bg-asphalt">
+    <div className={`w-full overflow-hidden rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       <button
         type="button"
         onClick={() => expandable && setOpen((v) => !v)}

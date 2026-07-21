@@ -125,6 +125,43 @@ export default function HowItWorksPage() {
           product; what happens when a human leans in is what we make excellent.
         </P>
 
+        <H2>Make it yours</H2>
+        <P>
+          Every component speaks in semantic tokens, never raw values. That means the
+          whole system rethemes from one place: define the tokens in your Tailwind theme
+          with your own values, and every card, gate, and meter follows. No wrapping, no
+          forking, no component edits.
+        </P>
+        <div className="mt-4">
+          <CodeBlock
+            title="globals.css"
+            code={`@theme {
+  /* surfaces */
+  --color-track: #0a0a0b;    /* page */
+  --color-asphalt: #131316;  /* component surface */
+  --color-carbon: #0e0e10;   /* card surface */
+  --color-barrier: #1f1f24;  /* raised surface */
+  --color-line: #2c2c33;     /* borders */
+  /* text */
+  --color-chalk: #ececf1;    /* primary */
+  --color-smoke: #9a9aa3;    /* secondary */
+  --color-ash: #7f7f8a;      /* tertiary (keep >= 4.5:1) */
+  /* signals */
+  --color-pit: #60a5fa;      /* accent: swap for your brand */
+  --color-signal: #34d399;   /* success */
+  --color-caution: #fbbf24;  /* attention */
+  --color-flag: #f87171;     /* danger */
+}`}
+          />
+        </div>
+        <P>
+          Past tokens, the path escalates one step at a time: pass{" "}
+          <code className="rounded bg-asphalt px-1.5 py-0.5 font-mono text-[13px] text-chalk">className</code>{" "}
+          for layout and overrides, or take the single source file and own it entirely.
+          Keep the contrast honest when you retheme; the tokens above all clear WCAG AA on
+          their surfaces.
+        </P>
+
         <H2>The name</H2>
         <P>
           A pit stop is the moment a fast autonomous thing submits to human hands: twelve
