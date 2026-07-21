@@ -39,6 +39,8 @@ export interface ApprovalGateProps {
   onDeny?: () => void;
   approveLabel?: string;
   denyLabel?: string;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 export function ApprovalGate({
@@ -50,6 +52,7 @@ export function ApprovalGate({
   onDeny,
   approveLabel = "Approve",
   denyLabel = "Deny",
+  className,
 }: ApprovalGateProps) {
   const [internal, setInternal] = useState<ApprovalState>("awaiting");
   const state = controlled ?? internal;
@@ -60,7 +63,7 @@ export function ApprovalGate({
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-xl border border-line bg-asphalt">
+    <div className={`w-full overflow-hidden rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       <AnimatePresence mode="wait" initial={false}>
         {state === "awaiting" ? (
           <motion.div

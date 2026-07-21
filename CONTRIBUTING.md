@@ -9,6 +9,10 @@ Thanks for pulling into the pit. This doc is the whole contract: what a contribu
 - **Fixes** — bugs, typos, broken demos. No proposal needed; just PR.
 - **Principle chapters** are held to the highest bar: a real claim plus a working component as evidence. Open a discussion before writing one.
 
+## Start from the template
+
+Copy `registry/_template/component-name.tsx` — it encodes every convention below (tokens, states-in-words, tap targets, className pass-through) so your first five minutes are building, not reverse-engineering.
+
 ## Definition of done (components)
 
 Every component PR ships all five, or it isn't done:

@@ -50,9 +50,10 @@ await mkdir(OUT_DIR, { recursive: true });
 
 const entries = await readdir(REGISTRY_DIR, { withFileTypes: true });
 let count = 0;
+const index = [];
 
 for (const entry of entries) {
-  if (!entry.isDirectory()) continue;
+  if (!entry.isDirectory() || entry.name.startsWith("_")) continue;
   const name = entry.name;
   const dir = path.join(REGISTRY_DIR, name);
   const files = (await readdir(dir)).filter((f) => f.endsWith(".tsx") || f.endsWith(".ts"));
@@ -75,7 +76,51 @@ for (const entry of entries) {
   };
 
   await writeFile(path.join(OUT_DIR, `${name}.json`), JSON.stringify(item, null, 2));
+  index.push({
+    name,
+    title: item.title,
+    description: item.description,
+    url: `https://agent-pitstop.vercel.app/r/${name}.json`,
+    docs: `https://agent-pitstop.vercel.app/components/${name}`,
+  });
   count++;
 }
 
-console.log(`registry: wrote ${count} item(s) to public/r/`);
+// machine-readable catalog: one fetch discovers every component
+await writeFile(path.join(OUT_DIR, "index.json"), JSON.stringify({ items: index }, null, 2));
+
+// llms.txt: the whole system, consumable by an AI assistant in one request
+const llms = `# Agent Pit Stop
+
+> An open source design system for agent interfaces: UX principles with live
+> demos and production React components for the moments where agents and
+> humans sync (approval, inspection, handoff, recovery). MIT licensed.
+> Components depend only on React, Tailwind, and Motion, and install via the
+> shadcn registry. Site: https://agent-pitstop.vercel.app
+
+## Install
+
+Any component: npx shadcn@latest add https://agent-pitstop.vercel.app/r/<name>.json
+Catalog (JSON): https://agent-pitstop.vercel.app/r/index.json
+
+## Components
+
+${index.map((i) => `- [${i.title}](${i.docs}): ${i.description} (source: ${i.url})`).join("\n")}
+
+## Principles
+
+- [Legible Thinking](https://agent-pitstop.vercel.app/principles/legible-thinking): agents lose trust by being wrong invisibly; show intent, state, and evidence
+- [Interruptibility](https://agent-pitstop.vercel.app/principles/interruptibility): users delegate more to agents they can stop; steer beats stop
+- [Delegation Contracts](https://agent-pitstop.vercel.app/principles/delegation-contracts): itemize scope before consent; boundaries beat permissions
+- [Calibrated Trust](https://agent-pitstop.vercel.app/principles/calibrated-trust): bands not decimals; verification cheaper than redoing
+- [Graceful Failure](https://agent-pitstop.vercel.app/principles/graceful-failure): failure is a rendered state; partial work is never discarded
+
+## Docs
+
+- [How it works](https://agent-pitstop.vercel.app/how-it-works)
+- [Rules for the pit](https://agent-pitstop.vercel.app/principles)
+- [Contributing](https://github.com/acaspx/agent-pitstop/blob/main/CONTRIBUTING.md)
+`;
+await writeFile(path.join(ROOT, "public", "llms.txt"), llms);
+
+console.log(`registry: wrote ${count} item(s) + index.json + llms.txt to public/`);

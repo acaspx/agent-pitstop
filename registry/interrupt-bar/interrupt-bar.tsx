@@ -33,6 +33,8 @@ export interface InterruptBarProps {
   onSteer?: (message: string) => void;
   /** The agent's acknowledgment of the last steer, shown inline */
   acknowledgment?: string;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 export function InterruptBar({
@@ -43,6 +45,7 @@ export function InterruptBar({
   onStop,
   onSteer,
   acknowledgment,
+  className,
 }: InterruptBarProps) {
   const [internal, setInternal] = useState<InterruptBarState>("running");
   const [draft, setDraft] = useState("");
@@ -61,7 +64,7 @@ export function InterruptBar({
   };
 
   return (
-    <div className="w-full overflow-hidden rounded-xl border border-line bg-asphalt">
+    <div className={`w-full overflow-hidden rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       <AnimatePresence mode="wait" initial={false}>
         {state === "running" ? (
           <motion.div key="running" exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>

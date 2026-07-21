@@ -30,6 +30,8 @@ export interface ContextBudgetProps {
   label?: string;
   /** Called when the human raises a cap after one is hit */
   onRaise?: (label: string) => void;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 function bandFor(pct: number): { word: string; bar: string; text: string } {
@@ -38,9 +40,9 @@ function bandFor(pct: number): { word: string; bar: string; text: string } {
   return { word: "Fine", bar: "bg-pit", text: "text-smoke" };
 }
 
-export function ContextBudget({ lines, label = "Run budget", onRaise }: ContextBudgetProps) {
+export function ContextBudget({ lines, label = "Run budget", onRaise, className }: ContextBudgetProps) {
   return (
-    <div className="w-full rounded-xl border border-line bg-asphalt px-4 py-3">
+    <div className={`w-full rounded-xl border border-line bg-asphalt px-4 py-3 ${className ?? ""}`}>
       <div className="flex items-center justify-between pb-1">
         <span className="text-[13px] font-medium text-chalk">{label}</span>
       </div>

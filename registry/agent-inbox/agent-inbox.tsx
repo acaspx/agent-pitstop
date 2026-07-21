@@ -36,6 +36,8 @@ export interface AgentInboxProps {
   /** Called when the human opens a run for review */
   onOpen?: (id: string) => void;
   label?: string;
+  /** Extra classes merged onto the root element */
+  className?: string;
 }
 
 const statusMeta: Record<InboxStatus, { label: string; dot: string; text: string }> = {
@@ -45,11 +47,11 @@ const statusMeta: Record<InboxStatus, { label: string; dot: string; text: string
   failed: { label: "Failed", dot: "bg-flag", text: "text-flag" },
 };
 
-export function AgentInbox({ items, onOpen, label = "Agent inbox" }: AgentInboxProps) {
+export function AgentInbox({ items, onOpen, label = "Agent inbox", className }: AgentInboxProps) {
   const needsYou = items.filter((i) => i.status === "needs_review").length;
 
   return (
-    <div className="w-full rounded-xl border border-line bg-asphalt">
+    <div className={`w-full rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
         <span className="text-[13px] font-medium text-chalk">{label}</span>
         <span className="font-mono text-[12px] text-smoke">
