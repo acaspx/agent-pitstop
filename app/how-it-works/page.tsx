@@ -89,7 +89,7 @@ export default function HowItWorksPage() {
           where humans intervene. Design the pit well and users delegate more laps, the
           same way drivers go faster in cars with better brakes.
         </P>
-        <div className="mt-6 -mx-2 rounded-2xl border border-line bg-carbon p-4 md:p-6">
+        <div className="mt-6 -mx-2 rounded-3xl border border-line bg-carbon bg-dots p-4 md:p-6">
           <TrackLoop variant="full" className="w-full" />
         </div>
         <P>
@@ -147,9 +147,9 @@ export default function HowItWorksPage() {
   --color-smoke: #9a9aa3;    /* secondary */
   --color-ash: #7f7f8a;      /* tertiary (keep >= 4.5:1) */
   /* signals */
-  --color-pit: #60a5fa;      /* accent: swap for your brand */
+  --color-pit: #fb923c;      /* accent: swap for your brand */
   --color-signal: #34d399;   /* success */
-  --color-caution: #fbbf24;  /* attention */
+  --color-caution: #fde047;  /* attention */
   --color-flag: #f87171;     /* danger */
 }`}
           />

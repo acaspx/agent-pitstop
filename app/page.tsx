@@ -131,7 +131,7 @@ export default function Home() {
       <Reveal delay={0.1}>
         <div className="mt-10 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
           {/* large card: headline / flag / paragraph */}
-          <div className="flex flex-col gap-7 rounded-2xl border border-line bg-carbon p-7 md:p-9">
+          <div className="flex flex-col gap-7 rounded-3xl border border-line bg-carbon bg-dots p-7 md:p-9">
             <h1 className="max-w-md text-balance text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
               An open source design system to keep agents on&nbsp;track.
             </h1>
@@ -151,13 +151,13 @@ export default function Home() {
           </div>
 
           {/* three link cards */}
-          <div className="grid gap-3">
+          <div className="dim-siblings grid gap-3">
             {heroCards.map((card) =>
               card.external ? (
                 <a
                   key={card.title}
                   href={card.href}
-                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-carbon p-6 transition-colors hover:border-ash md:min-h-[172px]"
+                  className="group flex min-h-[150px] flex-col justify-between rounded-3xl border border-line bg-carbon p-6 transition-colors hover:border-ash md:min-h-[172px]"
                 >
                   {card.icon}
                   <div>
@@ -171,7 +171,7 @@ export default function Home() {
                 <Link
                   key={card.title}
                   href={card.href}
-                  className="group flex min-h-[150px] flex-col justify-between rounded-2xl border border-line bg-carbon p-6 transition-colors hover:border-ash md:min-h-[172px]"
+                  className="group flex min-h-[150px] flex-col justify-between rounded-3xl border border-line bg-carbon p-6 transition-colors hover:border-ash md:min-h-[172px]"
                 >
                   {card.icon}
                   <div>
@@ -211,12 +211,12 @@ export default function Home() {
               Browse all 8 →
             </Link>
           </div>
-          <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="dim-siblings mt-4 grid gap-3 md:grid-cols-3">
             {teasers.map((t) => (
               <Link
                 key={t.slug}
                 href={`/components/${t.slug}`}
-                className="group flex flex-col gap-4 rounded-2xl border border-line bg-carbon p-5 transition-colors hover:border-ash"
+                className="group flex flex-col gap-4 rounded-3xl border border-line bg-carbon p-5 transition-colors hover:border-ash"
               >
                 <div className="pointer-events-none">{minis[t.slug]}</div>
                 <div className="mt-auto flex items-baseline justify-between">

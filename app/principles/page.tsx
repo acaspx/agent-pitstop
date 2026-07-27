@@ -96,6 +96,62 @@ export default function PrinciplesOverview() {
       </ul>
 
       <h2 className="mt-12 font-mono text-lg font-semibold tracking-tight text-chalk">
+        The design language: headlights
+      </h2>
+      <p className="mt-3 max-w-prose text-[15px] leading-relaxed text-smoke">
+        A night race. The interface is dark and calm; light is spent only on what matters
+        right now. Attention is the scarcest resource in an agent product, so the visual
+        system is built to spend it deliberately.
+      </p>
+      <ul className="mt-4 max-w-prose space-y-3 text-[15px] leading-relaxed text-smoke">
+        <li>
+          <strong className="text-chalk">One bright thing per surface.</strong> The current
+          element renders at full strength; supporting context ghosts back to ~45–60%.
+          If everything is lit, nothing is.
+        </li>
+        <li>
+          <strong className="text-chalk">The past dims, the present glows, the future is
+          outlined.</strong> Completed work fades to smoke, the active step holds chalk with
+          a pit-orange pulse, pending work is drawn in ash outlines. Time is rendered as
+          light.
+        </li>
+        <li>
+          <strong className="text-chalk">Large calm containers.</strong> Feature surfaces use
+          24px radius, generous padding, hairline borders one step above their background,
+          and a whisper of dot-grid texture. Components inside stay tighter at 12px.
+        </li>
+        <li>
+          <strong className="text-chalk">Pit-lane orange is earned.</strong> The accent marks
+          the live thing: the running dot, the agent car, the primary action. It never
+          decorates. Caution is yellow, success is green, danger is red, and none of them
+          ever speak through color alone.
+        </li>
+      </ul>
+
+      <h2 className="mt-12 font-mono text-lg font-semibold tracking-tight text-chalk">Motion</h2>
+      <ul className="mt-4 max-w-prose space-y-3 text-[15px] leading-relaxed text-smoke">
+        <li>
+          <strong className="text-chalk">Motion is state change, never decoration.</strong>{" "}
+          Every animation answers one question: what just happened, or where should I look?
+        </li>
+        <li>
+          <strong className="text-chalk">Three speeds.</strong> Micro-feedback at ~150ms,
+          element entrances and collapses at 250–400ms with the house ease
+          (0.32, 0.72, 0, 1), ambient pulses at 1.2–1.4s. Nothing else.
+        </li>
+        <li>
+          <strong className="text-chalk">Arrive rising, leave collapsing.</strong> New
+          information enters with a small rise and settle; resolved information collapses
+          to a receipt. Closing is always faster than opening.
+        </li>
+        <li>
+          <strong className="text-chalk">Ambient means honest.</strong> Pulses mark genuinely
+          live processes only; no fake progress, no decorative loops. All motion respects
+          prefers-reduced-motion.
+        </li>
+      </ul>
+
+      <h2 className="mt-12 font-mono text-lg font-semibold tracking-tight text-chalk">
         The essentials
       </h2>
       <p className="mt-3 max-w-prose text-[15px] leading-relaxed text-smoke">

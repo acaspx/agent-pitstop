@@ -20,12 +20,12 @@ export default function ComponentsOverview() {
       {componentCategories.map((cat) => (
         <section key={cat} className="mt-12">
           <h2 className="text-sm font-medium uppercase tracking-wide text-ash">{cat}</h2>
-          <div className="mt-4 grid gap-5 md:grid-cols-2">
+          <div className="dim-siblings mt-4 grid gap-5 md:grid-cols-2">
             {componentsIn(cat).map((c) => (
               <Link
                 key={c.slug}
                 href={`/components/${c.slug}`}
-                className="group rounded-2xl border border-line bg-carbon p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-ash hover:shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+                className="group rounded-3xl border border-line bg-carbon p-5 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-ash hover:shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
               >
                 <div className="pointer-events-none">{minis[c.slug]}</div>
                 <div className="mt-4 text-[15px] font-medium text-chalk group-hover:text-pit">
