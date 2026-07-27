@@ -129,6 +129,7 @@ export function LapRun() {
           title="Start the booking run?"
           reason="I'll search, compare, and hold the best fare. Nothing gets charged without you."
           state={past("contract") || step !== "contract" ? "approved" : "awaiting"}
+          className={`transition-opacity duration-700 ${past("plan") ? "opacity-60" : ""}`}
           scope={[
             { label: "Search flights across 3 providers" },
             { label: "Hold one fare (free to cancel)" },
@@ -145,6 +146,7 @@ export function LapRun() {
                 state={past("search") ? "success" : interrupted ? "pending" : "running"}
                 elapsed={step === "search" ? tick + 1 : undefined}
                 detail={past("search") ? "14 flights found. Cheapest nonstop: $278 (JetBlue 616)." : undefined}
+                className={`transition-opacity duration-700 ${past("confidence") ? "opacity-60" : ""}`}
               />
             </motion.div>
           )}
@@ -157,6 +159,7 @@ export function LapRun() {
                 claim="JetBlue 616 is your best option: $278, nonstop, aisle available"
                 basis="price, your seat history, 92% on-time"
                 confidence={0.86}
+                className={`transition-opacity duration-700 ${atOrPast("book-gate") ? "opacity-60" : ""}`}
               />
             </motion.div>
           )}
@@ -183,6 +186,7 @@ export function LapRun() {
                       ? "Held for 20 minutes. No charge yet."
                       : undefined
                 }
+                className={`transition-opacity duration-700 ${atOrPast("booked") ? "opacity-60" : ""}`}
               />
             </motion.div>
           )}

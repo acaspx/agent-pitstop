@@ -10,9 +10,9 @@
   --color-smoke: #9a9aa3;
   --color-ash: #7f7f8a;
   --color-signal: #34d399;
-  --color-caution: #fbbf24;
+  --color-caution: #fde047;
   --color-flag: #f87171;
-  --color-pit: #60a5fa;
+  --color-pit: #fb923c;
 }
 
 @theme inline {
@@ -28,6 +28,20 @@ html {
 
 ::selection {
   background: color-mix(in srgb, var(--color-pit) 30%, transparent);
+}
+
+/* headlights language: faint dot-grid texture for large surfaces */
+.bg-dots {
+  background-image: radial-gradient(color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* headlights language: hovering one child ghosts its siblings */
+.dim-siblings > * {
+  transition: opacity 0.35s ease;
+}
+.dim-siblings:hover > :not(:hover) {
+  opacity: 0.45;
 }
 
 :focus-visible {
