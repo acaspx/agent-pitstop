@@ -114,10 +114,13 @@ export default function HowItWorksPage() {
         </P>
         <P>
           <strong className="text-chalk">One system for humans and agents.</strong> The registry
-          endpoints are machine-readable JSON with full source, so an AI coding assistant
-          installs and composes these components exactly the way a person does. Agent
-          interfaces, installable by agents, is not a gimmick; it&apos;s the distribution
-          model.
+          endpoints are machine-readable JSON with full source, and the contract an agent
+          consumes is generated from the component TypeScript at build time: descriptions,
+          props, and principle tags are parsed from source, never hand-typed, so the feed
+          cannot drift. A dense, prose-free version sized for a context window lives at{" "}
+          <code className="rounded bg-asphalt px-1.5 py-0.5 font-mono text-[13px] text-chalk">/r/contract.json</code>
+          , and it carries something prop schemas can&apos;t: the behavioral guarantees each
+          component makes, derived from the principles.
         </P>
         <P>
           <strong className="text-chalk">Designed for the pit, not the lap.</strong> The system
