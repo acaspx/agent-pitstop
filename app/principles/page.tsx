@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { principles } from "@/lib/nav";
+import { PitFlag } from "@/components/docs/pit-flag";
 
 export const metadata = {
   title: "Principles — Agent Pit Stop",
@@ -43,7 +44,8 @@ export default function PrinciplesOverview() {
   return (
     <main>
       <div className="text-[11px] font-medium uppercase tracking-wide text-ash">Principles</div>
-      <h1 className="mt-2 font-mono text-2xl font-semibold tracking-tight text-chalk">
+      <h1 className="mt-2 flex items-center gap-3 font-mono text-2xl font-semibold tracking-tight text-chalk">
+        <PitFlag size={30} className="shrink-0 text-chalk" />
         Rules for the pit
       </h1>
       <p className="mt-3 max-w-prose text-[15px] leading-relaxed text-smoke">

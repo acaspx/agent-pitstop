@@ -79,6 +79,20 @@ export const components: ComponentEntry[] = [
     category: "Trust",
     formats: ["web", "mobile", "chat"],
   },
+  {
+    slug: "citation-chip",
+    title: "Citation Chip",
+    description: "A claim's basis one tap away: the exact passage, verbatim.",
+    category: "Trust",
+    formats: ["web", "mobile", "chat"],
+  },
+  {
+    slug: "diff-review-card",
+    title: "Diff Review Card",
+    description: "The approval gate for edits: accept or reject per hunk.",
+    category: "Control",
+    formats: ["web", "ide"],
+  },
 ];
 
 export const componentCategories = ["Legibility", "Control", "Trust"] as const;

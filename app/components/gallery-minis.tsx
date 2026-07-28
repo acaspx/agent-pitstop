@@ -9,6 +9,8 @@ import { ConfidenceMeter } from "@/registry/confidence-meter/confidence-meter";
 import { AgentRoster } from "@/registry/agent-roster/agent-roster";
 import { AgentInbox } from "@/registry/agent-inbox/agent-inbox";
 import { ContextBudget } from "@/registry/context-budget/context-budget";
+import { CitationChip } from "@/registry/citation-chip/citation-chip";
+import { DiffReviewCard } from "@/registry/diff-review-card/diff-review-card";
 
 export const minis: Record<string, ReactNode> = {
   "tool-call-card": (
@@ -64,6 +66,35 @@ export const minis: Record<string, ReactNode> = {
       lines={[
         { label: "Spend", used: 4.1, cap: 5, format: (n) => `$${n.toFixed(2)}` },
         { label: "Time", used: 21, cap: 45, format: (n) => `${n}m` },
+      ]}
+    />
+  ),
+  "citation-chip": (
+    <div className="rounded-xl border border-line bg-asphalt px-4 py-3 text-[13px] leading-relaxed text-chalk">
+      On-time rate improved to 92%
+      <CitationChip
+        n={1}
+        source={{
+          title: "DOT Air Travel Consumer Report",
+          publisher: "transportation.gov",
+          quote: "…an on-time arrival rate of 92.1 percent…",
+          retrieved: "2h ago",
+        }}
+      />
+      this quarter.
+    </div>
+  ),
+  "diff-review-card": (
+    <DiffReviewCard
+      title="Tighten the pricing copy"
+      target="pricing.md"
+      hunks={[
+        {
+          id: "h1",
+          label: "Hero headline",
+          before: ["Powerful plans for every team"],
+          after: ["Plans that scale with your team"],
+        },
       ]}
     />
   ),

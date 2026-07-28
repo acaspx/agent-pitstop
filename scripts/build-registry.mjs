@@ -50,9 +50,10 @@ function parseHeader(src) {
   const pStart = lines.findIndex((l) => l.startsWith("Principles applied"));
   if (pStart !== -1) {
     for (let i = pStart + 1; i < lines.length; i++) {
+      if (lines[i].startsWith("Contributor notes")) break;
       const m = lines[i].match(/^-\s*([A-Za-z ]+?):/);
       if (m) principles.push(m[1].trim());
-      else if (lines[i].startsWith("-") === false && lines[i] !== "") break;
+      // continuation lines of a wrapped principle entry are skipped, not a stop signal
     }
   }
   return { title, description, principles };

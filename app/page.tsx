@@ -208,7 +208,7 @@ export default function Home() {
               Components
             </h2>
             <Link href="/components" className="text-[13px] text-smoke hover:text-pit">
-              Browse all 8 →
+              Browse all 10 →
             </Link>
           </div>
           <div className="dim-siblings mt-4 grid gap-3 md:grid-cols-3">
