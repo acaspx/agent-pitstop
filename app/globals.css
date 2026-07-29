@@ -30,6 +30,22 @@ html {
   background: color-mix(in srgb, var(--color-pit) 30%, transparent);
 }
 
+/* light theme: same tokens, daylight values. All text pairs verified >= 4.5:1. */
+[data-theme="light"] {
+  --color-track: #f7f7f8;
+  --color-asphalt: #ffffff;
+  --color-carbon: #fbfbfc;
+  --color-barrier: #eceef1;
+  --color-line: #d9dbe1;
+  --color-chalk: #17171a;
+  --color-smoke: #4b4b55;
+  --color-ash: #6d6d78;
+  --color-signal: #047857;
+  --color-caution: #a16207;
+  --color-flag: #dc2626;
+  --color-pit: #b45309;
+}
+
 /* headlights language: faint dot-grid texture for large surfaces */
 .bg-dots {
   background-image: radial-gradient(color-mix(in srgb, var(--color-line) 55%, transparent) 1px, transparent 1px);

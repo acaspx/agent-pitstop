@@ -34,7 +34,7 @@ Every component PR ships all five, or it isn't done:
 ## How changes land
 
 1. Fork, branch from `main` (`feat/<name>` or `fix/<name>`).
-2. `npm install && npm run dev` to work; `npm run build` must pass clean.
+2. `npm install && npm run dev` to work; `npm test` and `npm run build` must pass clean. The test suite asserts the contract's behavioral guarantees — if your change fails one, the fix is the change, not the test.
 3. Open a PR using the template. CI runs the build; a maintainer reviews for principle adherence, not just code.
 4. Squash-merged. Releases roll weekly.
 

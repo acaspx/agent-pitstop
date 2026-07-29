@@ -158,6 +158,26 @@ export default function HowItWorksPage() {
           />
         </div>
         <P>
+          Light mode is the same twelve tokens with daylight values, every text pair
+          verified at 4.5:1 or better. Scope them under a{" "}
+          <code className="rounded bg-asphalt px-1.5 py-0.5 font-mono text-[13px] text-chalk">data-theme=&quot;light&quot;</code>{" "}
+          attribute and toggle it anywhere in the tree; every component page&apos;s preview
+          has a sun toggle so you can see both.
+        </P>
+        <div className="mt-4">
+          <CodeBlock
+            title="globals.css (light)"
+            code={`[data-theme="light"] {
+  --color-track: #f7f7f8;   --color-asphalt: #ffffff;
+  --color-carbon: #fbfbfc;  --color-barrier: #eceef1;
+  --color-line: #d9dbe1;    --color-chalk: #17171a;
+  --color-smoke: #4b4b55;   --color-ash: #6d6d78;
+  --color-pit: #b45309;     --color-signal: #047857;
+  --color-caution: #a16207; --color-flag: #dc2626;
+}`}
+          />
+        </div>
+        <P>
           Past tokens, the path escalates one step at a time: pass{" "}
           <code className="rounded bg-asphalt px-1.5 py-0.5 font-mono text-[13px] text-chalk">className</code>{" "}
           for layout and overrides, or take the single source file and own it entirely.

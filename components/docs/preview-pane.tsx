@@ -88,11 +88,31 @@ export interface PreviewPaneProps {
 
 export function PreviewPane({ formats, children, variants, chatPrompt }: PreviewPaneProps) {
   const [format, setFormat] = useState<Format>(formats[0] ?? "web");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const content = variants?.[format] ?? children;
 
   return (
     <div>
       <div className="mb-2 flex items-center justify-end gap-1">
+        <button
+          type="button"
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          title={theme === "dark" ? "Preview light theme" : "Preview dark theme"}
+          aria-label={theme === "dark" ? "Preview light theme" : "Preview dark theme"}
+          aria-pressed={theme === "light"}
+          className="mr-1 flex h-7 w-7 items-center justify-center rounded-md border border-transparent text-ash transition-colors hover:text-smoke"
+        >
+          {theme === "dark" ? (
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
+              <circle cx="8" cy="8" r="3.2" />
+              <path d="M8 1.5v1.8M8 12.7v1.8M1.5 8h1.8M12.7 8h1.8M3.4 3.4l1.3 1.3M11.3 11.3l1.3 1.3M12.6 3.4l-1.3 1.3M4.7 11.3l-1.3 1.3" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
+              <path d="M13.5 9.5A6 6 0 1 1 6.5 2.5a4.8 4.8 0 0 0 7 7Z" strokeLinejoin="round" />
+            </svg>
+          )}
+        </button>
         {formats.map((f) => (
           <button
             key={f}
@@ -112,7 +132,7 @@ export function PreviewPane({ formats, children, variants, chatPrompt }: Preview
         ))}
       </div>
 
-      <div className="rounded-3xl border border-line bg-carbon bg-dots p-6">
+      <div data-theme={theme === "light" ? "light" : undefined} className="rounded-3xl border border-line bg-carbon bg-dots p-6 transition-colors duration-300">
         {format === "mobile" ? (
           <div className="mx-auto w-[300px] rounded-[2rem] border border-line bg-track p-3 pt-6 shadow-2xl">
             <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-barrier" aria-hidden />
