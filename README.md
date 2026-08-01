@@ -8,9 +8,10 @@ Most agentic design writing covers architecture (orchestration, tool use, memory
 
 ## What's inside
 
-- **Principles** — essays on agent UX with live demos: legible thinking, interruptibility, delegation contracts, calibrated trust, graceful failure
-- **Components** — production-quality React components, installable via the shadcn registry or copy-paste: tool call card, approval gate, agent task list, and more
-- **Resources** — teardowns of production agent UIs, a Figma library, and a glossary
+- **Principles** — five argued essays on agent UX with live demos: legible thinking, interruptibility, delegation contracts, calibrated trust, graceful failure
+- **Components** — ten production React components across Legibility, Control, and Trust, installable via the shadcn registry or copy-paste
+- **The contract** — machine-readable and generated from component source at build time: [llms.txt](https://agent-pitstop.vercel.app/llms.txt), a [catalog](https://agent-pitstop.vercel.app/r/index.json), and a [dense contract](https://agent-pitstop.vercel.app/r/contract.json) with behavioral guarantees that the test suite asserts in CI
+- **The Full Lap** — [every component driven through one interruptible agent run](https://agent-pitstop.vercel.app/full-lap)
 
 ## Install a component
 
@@ -29,7 +30,7 @@ npm run dev
 
 ## Status
 
-Five principles, five components, three categories. One new chapter or component lands weekly. Watch the repo or follow [@acaspx](https://github.com/acaspx).
+Five principles, ten components, three categories, dark and light themes, CI-enforced behavioral guarantees. One new piece lands weekly. Watch the repo or follow [@acaspx](https://github.com/acaspx).
 
 ## Contributing
 

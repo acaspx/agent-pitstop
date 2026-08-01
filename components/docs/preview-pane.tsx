@@ -11,6 +11,7 @@
 
 import { useState, type ReactNode } from "react";
 import type { Format } from "@/lib/nav";
+import { ThemeToggle, type PreviewTheme } from "./theme-toggle";
 
 const formatMeta: Record<Format, { label: string; icon: ReactNode }> = {
   web: {
@@ -88,11 +89,13 @@ export interface PreviewPaneProps {
 
 export function PreviewPane({ formats, children, variants, chatPrompt }: PreviewPaneProps) {
   const [format, setFormat] = useState<Format>(formats[0] ?? "web");
+  const [theme, setTheme] = useState<PreviewTheme>("dark");
   const content = variants?.[format] ?? children;
 
   return (
     <div>
       <div className="mb-2 flex items-center justify-end gap-1">
+        <ThemeToggle value={theme} onChange={setTheme} className="mr-2" />
         {formats.map((f) => (
           <button
             key={f}
@@ -112,7 +115,10 @@ export function PreviewPane({ formats, children, variants, chatPrompt }: Preview
         ))}
       </div>
 
-      <div className="rounded-3xl border border-line bg-carbon bg-dots p-6">
+      <div
+        data-theme={theme === "light" ? "light" : undefined}
+        className="rounded-3xl border border-line bg-carbon bg-dots p-6 transition-colors duration-300"
+      >
         {format === "mobile" ? (
           <div className="mx-auto w-[300px] rounded-[2rem] border border-line bg-track p-3 pt-6 shadow-2xl">
             <div className="mx-auto mb-3 h-1.5 w-16 rounded-full bg-barrier" aria-hidden />
