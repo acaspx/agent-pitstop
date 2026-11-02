@@ -1,0 +1,195 @@
+/* Landing hero demo. Every rule is scoped under .hl; the look maps Pit
+   Stop's tokens onto Stageshow's so the frame reads as this system. */
+.hl {
+  & .ss-stage {
+    --ss-font: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    --ss-mono: var(--font-geist-mono), ui-monospace, monospace;
+    --ss-accent: var(--color-pit);
+    --ss-canvas: var(--color-carbon);
+    --ss-surface: var(--color-carbon);
+    --ss-chrome: var(--color-asphalt);
+    --ss-line: var(--color-line);
+    --ss-line-faint: color-mix(in srgb, var(--color-line) 60%, transparent);
+    --ss-text-strong: var(--color-chalk);
+    --ss-text: var(--color-smoke);
+    --ss-text-faint: var(--color-ash);
+    --ss-radius-window: 16px;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  /* Fade crop: the window spans the column, its top and sides whole, and
+     dissolves over its last stretch, where only the composer sits */
+  & .hl-win {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+    pointer-events: none; /* an illustration: the real controls aren't live here */
+  }
+
+  & .hl-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    height: 100%;
+    background: var(--color-carbon);
+  }
+  & .hl-body[data-layout="compact"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  & .hl-run {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    min-width: 0;
+  }
+  /* Phone column: the window keeps a desktop's shape by bleeding off the
+     right and the bottom; the thread stays inside the visible crop */
+  & .ss-stage[data-layout="compact"] .hl-win {
+    inset: 16px auto auto 16px;
+    width: 440px;
+    height: 360px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  & .hl-body[data-layout="compact"] .hl-run {
+    width: 326px;
+    padding: 16px;
+  }
+
+  /* The person's request, as the product draws it: a quiet bubble on the right */
+  & .hl-ask {
+    align-self: flex-end;
+    max-width: 85%;
+    padding: 9px 13px;
+    border-radius: 14px;
+    background: var(--color-barrier);
+    color: var(--color-chalk);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  /* The agent's reply: plain text, as AI products set it, not a bubble */
+  & .hl-reply {
+    margin: 2px 2px 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--color-chalk);
+  }
+
+  & .hl-composer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-asphalt);
+  }
+
+  & .hl-trip {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    border-left: 1px solid var(--color-line);
+    background: var(--color-track);
+  }
+  & .hl-trip__head {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+  & .hl-trip__title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-chalk);
+  }
+
+  & .hl-fare {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-asphalt);
+    transition: border-color 0.4s ease;
+  }
+  & .hl-fare[data-fare="booked"] {
+    border-color: color-mix(in srgb, var(--color-signal) 45%, var(--color-line));
+  }
+  & .hl-fare--filler {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  & .hl-fare__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+  & .hl-fare__name {
+    font-size: 13px;
+    color: var(--color-chalk);
+    line-height: 1.3;
+  }
+  & .hl-fare__price {
+    font-family: var(--ss-mono);
+    font-size: 13px;
+    color: var(--color-chalk);
+  }
+
+  /* One pill, three states: the dot eases its color, the word crossfades in a fixed slot */
+  & .hl-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 76px;
+    justify-content: flex-end;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-pit);
+    transition: color 0.3s ease;
+  }
+  & .hl-status__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+  }
+  & .hl-status[data-fare="held"] {
+    color: var(--color-caution);
+  }
+  & .hl-status[data-fare="booked"] {
+    color: var(--color-signal);
+  }
+}
+
+.hl-host {
+  display: flex;
+  flex-direction: column;
+}
+.hl-replay {
+  align-self: flex-end;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 4px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ash);
+  transition: color 0.2s ease;
+}
+.hl-replay:hover {
+  color: var(--color-pit);
+}
