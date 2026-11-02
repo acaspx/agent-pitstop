@@ -8,6 +8,14 @@ All notable changes to Agent Pit Stop. The format follows [Keep a Changelog](htt
 
 - Landing demo: one pit stop in a believable product, built from Tool Call Card, Approval Gate and Agent Task List with Stageshow
 - `/changelog` page and `/changelog.md`, generated from `lib/changelog.ts`
+- Eight components (16 total): Reasoning Trace, Citation Chip + Source Drawer, Plan Review, Clarifying Question, Diff Review Card, Takeover Banner, Checkpoint, Memory Panel
+- Live interactive showcase on `/components` (six tiles on the landing) with a theme and accent switcher
+- A Stageshow demo at the top of each of the five principle chapters
+
+### Changed
+
+- Checkpoint accepts a controlled `confirming`; Plan Review accepts a controlled `dropped`
+- Guarantee tests extended to the new components (18 total)
 
 ## [0.1.0] — 2026-07-30
 

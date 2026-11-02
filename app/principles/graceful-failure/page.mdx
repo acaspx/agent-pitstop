@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GracefulFailureDemo from "@/components/demos/principles/GracefulFailureLap";
 import { AgentTaskListDemo } from "@/app/components/agent-task-list/demo";
 import { InterruptBarDemo } from "@/app/components/interrupt-bar/demo";
 
@@ -15,6 +16,8 @@ export const metadata = {
 Traditional software fails like glass: rarely, loudly, all at once, and a dialog box apologizes. Agents fail like weather: routinely, partially, and probabilistically. Step four of seven breaks while the first three produced real value. A tool call times out on the second retry. An extraction is 90% right and 10% quietly wrong. Interfaces built for glass — the modal, the red toast, the start-over button — shatter under weather, because they treat a partial success as a total loss.
 
 The design shift: **failure is a state to render, not an event to apologize for.** It belongs in the same visual system as running and done, with the same legibility.
+
+<GracefulFailureDemo />
 
 ## Preserve the partial
 

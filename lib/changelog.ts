@@ -46,9 +46,60 @@ export const changelog: ChangeMonth[] = [
   {
     id: "2026-11",
     label: "November 2026",
-    headline: "One pit stop, shown in a real product, and this changelog",
-    summary: "The landing page now opens on the system at work. Nothing needs a migration.",
+    headline: "Eight new components, a live showcase, and every principle shown in a product",
+    summary:
+      "The system doubles to 16 components, drawn from how Vercel, Cursor, OpenAI, Grok and Meta now ship agents. Every component is live on the showcase, and every principle opens on a short demo of it at work. Nothing needs a migration.",
     added: [
+      {
+        title: "Reasoning Trace",
+        href: "/components/reasoning-trace",
+        body: "The agent's thinking as steps you can follow: open while it works, folded to \"Thought for Ns\" when it's done, with the sources each step used.",
+      },
+      {
+        title: "Citation Chip and Source Drawer",
+        href: "/components/citation-chip",
+        body: "Inline numbered sources on each claim. The drawer shows the exact passage relied on; a source the agent couldn't reach says so.",
+      },
+      {
+        title: "Plan Review",
+        href: "/components/plan-review",
+        body: "The plan before the run. Drop or reword steps, see risky ones marked, and approve. Nothing starts until you do.",
+      },
+      {
+        title: "Clarifying Question",
+        href: "/components/clarifying-question",
+        body: "The agent asks instead of guessing: one question, tappable answers with number keys, room for your own, and a stated default if you skip.",
+      },
+      {
+        title: "Diff Review Card",
+        href: "/components/diff-review-card",
+        body: "Accept or reject an agent's edits hunk by hunk, each with a one-line reason.",
+      },
+      {
+        title: "Takeover Banner",
+        href: "/components/takeover-banner",
+        body: "Who has the wheel when an agent drives a browser, with a one-click handoff each way and a privacy note while you drive.",
+      },
+      {
+        title: "Checkpoint",
+        href: "/components/checkpoint",
+        body: "Save points for a run. Restore asks once, inline, and names what it will undo.",
+      },
+      {
+        title: "Memory Panel",
+        href: "/components/memory-panel",
+        body: "What the agent remembers, where it learned it, and Forget with a few seconds of Undo. Remembering pauses with one switch.",
+      },
+      {
+        title: "Live showcase",
+        href: "/components",
+        body: "Every component, interactive, in one masonry of tiles. Re-theme them all at once with Make them yours: dark or light, and four accents. The landing shows six.",
+      },
+      {
+        title: "Principle demos",
+        href: "/principles/legible-thinking",
+        body: "Each of the five principles opens on a short Stageshow demo in a believable product: a cited research answer, a stopped search, an edited plan, a checked invoice, and a restored checkpoint.",
+      },
       {
         title: "Landing demo",
         href: "/",
@@ -59,6 +110,21 @@ export const changelog: ChangeMonth[] = [
         title: "Changelog",
         href: "/changelog",
         body: "Every change, month by month, with the commits behind it. Also served as Markdown at `/changelog.md` for agents and feeds.",
+      },
+    ],
+    updated: [
+      {
+        title: "Components page",
+        href: "/components",
+        body: "The static preview gallery is replaced by the live showcase, with a compact index by category underneath.",
+      },
+      {
+        title: "Checkpoint and Plan Review are controllable",
+        body: "Checkpoint takes `confirming`, and Plan Review takes `dropped`, so a host can drive them. Both stay uncontrolled by default.",
+      },
+      {
+        title: "Guarantee tests",
+        body: "Seven more tests cover the new components: review before apply, plans that run only as approved, undoable forgetting, and take-over always on offer.",
       },
     ],
   },

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DelegationContractsDemo from "@/components/demos/principles/DelegationContractsLap";
 import { ApprovalGateDemo } from "@/app/components/approval-gate/demo";
 import { AgentTaskListDemo } from "@/app/components/agent-task-list/demo";
 
@@ -15,6 +16,8 @@ export const metadata = {
 Delegation doesn't fail at execution. It fails at the handoff, where scope was never actually agreed. "Book my trip" means one thing to the user and another to the agent, and the gap between those two readings is where every horror story lives: the agent that emailed the whole company, the one that spent the budget, the one that deleted the drafts because "clean up" was ambiguous. The user calls it overreach. The agent, if it could argue, would call it instructions.
 
 A delegation contract closes that gap by making scope explicit before work begins: what the agent will do, what it will touch, what it may spend, and what it will not do without coming back. Not terms-of-service fine print, but an interface moment measured in seconds.
+
+<DelegationContractsDemo />
 
 ## Scope is itemized, not summarized
 

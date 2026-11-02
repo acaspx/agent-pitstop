@@ -2,7 +2,8 @@ import Link from "next/link";
 import { PitFlag } from "@/components/docs/pit-flag";
 import { TrackLoop } from "@/components/docs/track-loop";
 import { Reveal } from "@/components/docs/reveal";
-import { minis } from "@/app/components/gallery-minis";
+import { Showcase } from "@/components/showcase/Showcase";
+import { components as allComponents } from "@/lib/nav";
 import HeroLapDemo from "@/components/demos/hero-lap/HeroLap";
 
 const principles = [
@@ -31,12 +32,6 @@ const principles = [
     claim: "Software fails like glass. Agents fail like weather.",
     href: "/principles/graceful-failure",
   },
-];
-
-const teasers = [
-  { slug: "tool-call-card", title: "Tool Call Card", category: "Legibility" },
-  { slug: "approval-gate", title: "Approval Gate", category: "Control" },
-  { slug: "confidence-meter", title: "Confidence Meter", category: "Trust" },
 ];
 
 /* two-tone icons in the site accent */
@@ -217,28 +212,10 @@ export default function Home() {
               Components
             </h2>
             <Link href="/components" className="text-[13px] text-smoke hover:text-pit">
-              Browse all 8 →
+              Browse all {allComponents.length} →
             </Link>
           </div>
-          <div className="dim-siblings mt-4 grid gap-3 md:grid-cols-3">
-            {teasers.map((t) => (
-              <Link
-                key={t.slug}
-                href={`/components/${t.slug}`}
-                className="group flex flex-col gap-4 rounded-3xl border border-line bg-carbon p-5 transition-colors hover:border-ash"
-              >
-                <div className="pointer-events-none">{minis[t.slug]}</div>
-                <div className="mt-auto flex items-baseline justify-between">
-                  <span className="text-[14px] font-medium text-chalk group-hover:text-pit">
-                    {t.title}
-                  </span>
-                  <span className="font-mono text-[11px] uppercase tracking-wide text-ash">
-                    {t.category}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <Showcase limit={6} className="mt-4" />
         </section>
       </Reveal>
 
