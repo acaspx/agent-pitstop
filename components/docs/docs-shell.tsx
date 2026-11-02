@@ -21,6 +21,9 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           <Link href="/components" className="flex min-h-11 items-center text-smoke hover:text-chalk">
             Components
           </Link>
+          <Link href="/changelog" className="flex min-h-11 items-center text-smoke hover:text-chalk">
+            Changelog
+          </Link>
         </div>
       </nav>
 
