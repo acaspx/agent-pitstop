@@ -1,0 +1,132 @@
+/* Principle demos. One look for all five: Pit Stop's tokens mapped onto
+   Stageshow's, a single-column product thread in a window that spans the
+   prose column and fades out at its foot. Scoped under .pl. */
+.pl {
+  & .ss-stage {
+    --ss-font: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    --ss-mono: var(--font-geist-mono), ui-monospace, monospace;
+    --ss-accent: var(--color-pit);
+    --ss-canvas: var(--color-carbon);
+    --ss-surface: var(--color-carbon);
+    --ss-chrome: var(--color-asphalt);
+    --ss-line: var(--color-line);
+    --ss-line-faint: color-mix(in srgb, var(--color-line) 60%, transparent);
+    --ss-text-strong: var(--color-chalk);
+    --ss-text: var(--color-smoke);
+    --ss-text-faint: var(--color-ash);
+    --ss-radius-window: 16px;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  /* Fade crop: top and sides whole, the last stretch (the composer) dissolves */
+  & .pl-win {
+    position: absolute;
+    inset: 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 84%, transparent 100%);
+    pointer-events: none; /* an illustration: the real controls aren't live here */
+  }
+  /* Phone column: the window keeps a desktop's shape by bleeding off the
+     right and the bottom; the thread stays inside the visible crop */
+  & .ss-stage[data-layout="compact"] .pl-win {
+    inset: 16px auto auto 16px;
+    width: 440px;
+    height: 420px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  & .pl-run {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 20px 24px;
+    background: var(--color-carbon);
+    min-width: 0;
+  }
+  & .pl-run > * {
+    flex-shrink: 0;
+  }
+  & .pl-run[data-layout="compact"] {
+    width: 326px;
+    padding: 16px;
+  }
+
+  & .pl-ask {
+    align-self: flex-end;
+    max-width: 85%;
+    padding: 9px 13px;
+    border-radius: 14px;
+    background: var(--color-barrier);
+    color: var(--color-chalk);
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  & .pl-reply {
+    margin: 0 2px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--color-chalk);
+  }
+
+  /* an inline part arriving inside streamed text fades and settles in */
+  & .pl-pop {
+    display: inline-block;
+    animation: pl-pop 0.32s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  & .pl-composer {
+    margin-top: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    background: var(--color-asphalt);
+  }
+}
+
+.pl-host {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1.5rem;
+}
+.pl-replay {
+  align-self: flex-end;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 4px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-ash);
+  transition: color 0.2s ease;
+}
+.pl-replay:hover {
+  color: var(--color-pit);
+}
+
+@keyframes pl-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pl .pl-pop {
+    animation: none;
+  }
+}

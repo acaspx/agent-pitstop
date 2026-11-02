@@ -79,6 +79,62 @@ export const components: ComponentEntry[] = [
     category: "Trust",
     formats: ["web", "mobile", "chat"],
   },
+  {
+    slug: "reasoning-trace",
+    title: "Reasoning Trace",
+    description: "The agent's thinking as steps you can follow, folded when it's done.",
+    category: "Legibility",
+    formats: ["web", "mobile", "chat"],
+  },
+  {
+    slug: "citation-chip",
+    title: "Citation Chip",
+    description: "Inline sources on every claim, with the passage one tap away.",
+    category: "Legibility",
+    formats: ["web", "mobile", "chat"],
+  },
+  {
+    slug: "plan-review",
+    title: "Plan Review",
+    description: "Edit the agent's plan before it runs. Nothing starts until you approve.",
+    category: "Control",
+    formats: ["web", "mobile", "chat", "ide"],
+  },
+  {
+    slug: "clarifying-question",
+    title: "Clarifying Question",
+    description: "The agent asks instead of guessing, with answers ready to tap.",
+    category: "Control",
+    formats: ["web", "mobile", "chat", "cli", "ide"],
+  },
+  {
+    slug: "diff-review-card",
+    title: "Diff Review Card",
+    description: "Accept or reject an agent's edits hunk by hunk.",
+    category: "Control",
+    formats: ["web", "ide"],
+  },
+  {
+    slug: "takeover-banner",
+    title: "Takeover Banner",
+    description: "Who has the wheel when an agent drives a browser, and the handoff.",
+    category: "Control",
+    formats: ["web", "extension"],
+  },
+  {
+    slug: "checkpoint",
+    title: "Checkpoint",
+    description: "Save points for a run, and a confirmed way back to any of them.",
+    category: "Trust",
+    formats: ["web", "ide", "cli"],
+  },
+  {
+    slug: "memory-panel",
+    title: "Memory Panel",
+    description: "What the agent remembers, where it learned it, and a way to forget.",
+    category: "Trust",
+    formats: ["web", "mobile", "chat"],
+  },
 ];
 
 export const componentCategories = ["Legibility", "Control", "Trust"] as const;

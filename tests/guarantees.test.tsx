@@ -7,7 +7,7 @@
  * guarantee it protects.
  */
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 
 import { InterruptBar } from "@/registry/interrupt-bar/interrupt-bar";
 import { ApprovalGate } from "@/registry/approval-gate/approval-gate";
@@ -136,5 +136,98 @@ describe("guarantee: state is never communicated by color alone", () => {
   it("the approval gate's waiting state is labeled in words", () => {
     render(<ApprovalGate title="T" scope={[{ label: "s" }]} />);
     expect(screen.getByText(/Waiting for you/)).toBeTruthy();
+  });
+});
+
+/* ---- guarantees for the second wave of components ---- */
+import { DiffReviewCard } from "@/registry/diff-review-card/diff-review-card";
+import { PlanReview } from "@/registry/plan-review/plan-review";
+import { Checkpoint } from "@/registry/checkpoint/checkpoint";
+import { MemoryPanel } from "@/registry/memory-panel/memory-panel";
+import { ClarifyingQuestion } from "@/registry/clarifying-question/clarifying-question";
+import { CitationChip } from "@/registry/citation-chip/citation-chip";
+import { TakeoverBanner } from "@/registry/takeover-banner/takeover-banner";
+
+describe("guarantee: nothing irreversible without explicit consent (review surfaces)", () => {
+  it("a diff hunk applies only when accepted, one hunk at a time", () => {
+    const onDecide = vi.fn();
+    render(
+      <DiffReviewCard
+        file="a.ts"
+        onDecide={onDecide}
+        hunks={[
+          { id: "1", removed: ["a"], added: ["b"] },
+          { id: "2", removed: ["c"], added: ["d"] },
+        ]}
+      />,
+    );
+    expect(onDecide).not.toHaveBeenCalled();
+    fireEvent.click(screen.getAllByRole("button", { name: "Reject" })[0]);
+    expect(onDecide).toHaveBeenCalledWith("1", "rejected");
+    expect(screen.getByText("1/2 reviewed")).toBeTruthy();
+  });
+
+  it("a plan runs only as approved, without the steps the person dropped", () => {
+    const onApprove = vi.fn();
+    render(
+      <PlanReview goal="g" onApprove={onApprove} steps={[{ title: "Read" }, { title: "Migrate", risky: true }]} />,
+    );
+    expect(screen.getByText("Risky")).toBeTruthy();
+    fireEvent.click(screen.getAllByRole("button", { name: "Drop" })[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Approve plan" }));
+    expect(onApprove).toHaveBeenCalledWith([{ title: "Read" }]);
+  });
+
+  it("restoring a checkpoint asks once and names what it undoes", () => {
+    const onRestore = vi.fn();
+    render(
+      <Checkpoint
+        onRestore={onRestore}
+        checkpoints={[
+          { id: "b", label: "Now", time: "now" },
+          { id: "a", label: "Earlier", time: "4m", undoes: "3 file edits" },
+        ]}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Restore" }));
+    expect(onRestore).not.toHaveBeenCalled();
+    expect(screen.getByText(/This undoes 3 file edits/)).toBeTruthy();
+    const confirm = screen.getByText(/This undoes/).parentElement!;
+    fireEvent.click(within(confirm).getByRole("button", { name: "Restore" }));
+    expect(onRestore).toHaveBeenCalledWith("a");
+  });
+});
+
+describe("guarantee: the person can always see and take back control", () => {
+  it("forgetting a memory is undoable before it is final", () => {
+    vi.useFakeTimers();
+    const onForget = vi.fn();
+    render(<MemoryPanel onForget={onForget} memories={[{ id: "m", text: "Likes aisle seats" }]} />);
+    fireEvent.click(screen.getByRole("button", { name: /Forget/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+    vi.advanceTimersByTime(6000);
+    expect(onForget).not.toHaveBeenCalled();
+    vi.useRealTimers();
+  });
+
+  it("take over is always offered while the agent drives, and the privacy note shows while you do", async () => {
+    const { rerender } = render(<TakeoverBanner state="agent" reason="Filling a form" />);
+    expect(screen.getByRole("button", { name: "Take over" })).toBeTruthy();
+    rerender(<TakeoverBanner state="you" />);
+    expect(await screen.findByText(/can't see the screen/)).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Hand back" })).toBeTruthy();
+  });
+
+  it("a clarifying question records the answer in words", async () => {
+    const onAnswer = vi.fn();
+    render(<ClarifyingQuestion question="Which seat?" options={[{ label: "Aisle" }, { label: "Window" }]} onAnswer={onAnswer} />);
+    fireEvent.click(screen.getByRole("radio", { name: /Window/ }));
+    expect(onAnswer).toHaveBeenCalledWith(["Window"]);
+    expect(await screen.findByText("You chose Window")).toBeTruthy();
+  });
+
+  it("an unreachable source says so on the chip", () => {
+    render(<CitationChip index={1} source={{ title: "Delays", domain: "bts.gov", unreachable: true }} />);
+    expect(screen.getByRole("button", { name: /couldn't be reached/ })).toBeTruthy();
   });
 });
