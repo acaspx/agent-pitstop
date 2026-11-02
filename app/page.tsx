@@ -3,6 +3,7 @@ import { PitFlag } from "@/components/docs/pit-flag";
 import { TrackLoop } from "@/components/docs/track-loop";
 import { Reveal } from "@/components/docs/reveal";
 import { minis } from "@/app/components/gallery-minis";
+import HeroLapDemo from "@/components/demos/hero-lap/HeroLap";
 
 const principles = [
   {
@@ -185,6 +186,14 @@ export default function Home() {
             )}
           </div>
         </div>
+      </Reveal>
+
+      {/* one pit stop in a believable product, built from the system's own
+          components: the agent holds a seat, stops at the booking, waits */}
+      <Reveal delay={0.14}>
+        <section aria-label="A pit stop in a product" className="mt-3">
+          <HeroLapDemo />
+        </section>
       </Reveal>
 
       {/* two-rail sections */}

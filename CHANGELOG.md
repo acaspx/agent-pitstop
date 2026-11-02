@@ -1,6 +1,13 @@
 # Changelog
 
-All notable changes to Agent Pit Stop. The format follows [Keep a Changelog](https://keepachangelog.com); versions follow semver.
+All notable changes to Agent Pit Stop. The format follows [Keep a Changelog](https://keepachangelog.com); versions follow semver. The site's month-by-month changelog lives at [/changelog](https://agent-pitstop.vercel.app/changelog) (data in `lib/changelog.ts`).
+
+## [Unreleased]
+
+### Added
+
+- Landing demo: one pit stop in a believable product, built from Tool Call Card, Approval Gate and Agent Task List with Stageshow
+- `/changelog` page and `/changelog.md`, generated from `lib/changelog.ts`
 
 ## [0.1.0] — 2026-07-30
 
@@ -11,11 +18,11 @@ The first release: a complete, principled, contract-generating design system for
 - Five argued chapters with live embedded demos: Legible Thinking, Interruptibility, Delegation Contracts, Calibrated Trust, Graceful Failure
 - "Rules for the pit" overview: philosophy, ten rules, anti-patterns, the headlights design language, and motion rules
 
-### Components (10, shadcn-registry installable)
+### Components (8, shadcn-registry installable)
 
 - **Legibility:** Tool Call Card, Agent Task List, Agent Roster
-- **Control:** Approval Gate, Interrupt Bar, Agent Inbox, Diff Review Card
-- **Trust:** Confidence Meter, Context Budget, Citation Chip + Source Drawer
+- **Control:** Approval Gate, Interrupt Bar, Agent Inbox
+- **Trust:** Confidence Meter, Context Budget
 - Every component: single file, React + Tailwind tokens + Motion only, `className` pass-through, 44px touch targets, states labeled in words
 
 ### Agent contract (generated, never hand-typed)

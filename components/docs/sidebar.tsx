@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { componentCategories, componentsIn, principles } from "@/lib/nav";
 import { PitFlag } from "./pit-flag";
 
-function NavLink({ href, label, muted }: { href: string | null; label: string; muted?: boolean }) {
+function NavLink({ href, label, muted, badge }: { href: string | null; label: string; muted?: boolean; badge?: string }) {
   const pathname = usePathname();
   const active = href !== null && pathname === href;
 
@@ -33,6 +33,11 @@ function NavLink({ href, label, muted }: { href: string | null; label: string; m
         />
       )}
       <span className="relative">{label}</span>
+      {badge && (
+        <span className="relative ml-2 rounded bg-pit/15 px-1 py-px font-mono text-[10px] uppercase tracking-wide text-pit">
+          {badge}
+        </span>
+      )}
     </Link>
   );
 }
@@ -52,6 +57,7 @@ export function Sidebar() {
         <div>
           <NavLink href="/how-it-works" label="How it works" />
           <NavLink href="/full-lap" label="The Full Lap" />
+          <NavLink href="/changelog" label="Changelog" badge="New" />
         </div>
 
         <div>
