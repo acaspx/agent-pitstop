@@ -12,6 +12,12 @@
  *   words, never color alone
  * - Graceful failure: hitting a cap is a rendered state with a next step,
  *   not a silent stall
+ *
+ * Accessibility:
+ * - Keyboard: Raise cap is a button where a cap is reached and `onRaise` is given.
+ * - Screen reader: each line is a progress bar named with its label, use and cap; the band reads in words.
+ * - Motion: the bar eases to its new width.
+ * - Host: give lines distinct labels; pause the run at a cap before showing Raise.
  */
 
 import { motion } from "motion/react";

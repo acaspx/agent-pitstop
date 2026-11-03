@@ -10,6 +10,12 @@
  * - Latency choreography: one active task with live status beats a spinner
  * - Graceful failure: a failed step stays in the list with its error attached;
  *   the plan is the recovery UI
+ *
+ * Accessibility:
+ * - Keyboard: nothing to operate; it is a read-only list.
+ * - Screen reader: a list named by `label`; every step starts with its status in words (Not started, Working on, Done, Failed), and a failed step keeps its error.
+ * - Motion: the active step's pulse stops under prefers-reduced-motion.
+ * - Host: pass `label` so the list has a name; keep task titles unique (they key the rows).
  */
 
 import { AnimatePresence, motion } from "motion/react";
@@ -30,6 +36,9 @@ export interface AgentTaskListProps {
   /** Extra classes merged onto the root element */
   className?: string;
 }
+
+/** The status in words, read before each step's title (the icon alone says nothing to a screen reader). */
+const STATUS_WORD: Record<AgentTaskStatus, string> = { pending: "Not started", active: "Working on", done: "Done", failed: "Failed" };
 
 function StatusIcon({ status }: { status: AgentTaskStatus }) {
   if (status === "done") {
@@ -69,7 +78,7 @@ function StatusIcon({ status }: { status: AgentTaskStatus }) {
     return (
       <span className="relative inline-flex h-[14px] w-[14px] items-center justify-center">
         <motion.span
-          className="absolute inline-flex h-full w-full rounded-full border border-pit"
+          className="motion-reduce:hidden absolute inline-flex h-full w-full rounded-full border border-pit"
           animate={{ scale: [1, 1.5], opacity: [0.7, 0] }}
           transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut" }}
         />
@@ -97,10 +106,10 @@ export function AgentTaskList({ label, tasks, className }: AgentTaskListProps) {
           </span>
         </div>
       )}
-      <ul className="px-4 py-1.5">
+      <ul className="px-4 py-1.5" aria-label={label ?? "Plan"}>
         {tasks.map((task) => (
           <li key={task.title} className="flex items-start gap-3 py-2">
-            <span className="mt-0.5 shrink-0">
+            <span className="mt-0.5 shrink-0" aria-hidden>
               <StatusIcon status={task.status} />
             </span>
             <span className="min-w-0 flex-1">
@@ -113,6 +122,7 @@ export function AgentTaskList({ label, tasks, className }: AgentTaskListProps) {
                       : "text-chalk"
                 }`}
               >
+                <span className="sr-only">{STATUS_WORD[task.status]}: </span>
                 {task.title}
               </span>
               <AnimatePresence initial={false}>

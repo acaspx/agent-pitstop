@@ -12,6 +12,12 @@
  * - Legible thinking: the claim and its basis stay together
  * - Delegation contracts: below the threshold, the meter turns into
  *   a request for human judgment instead of a decoration
+ *
+ * Accessibility:
+ * - Keyboard: the verify button is in tab order whenever it shows.
+ * - Screen reader: the meter reads its band in words ("Medium confidence"), never a percentage; the claim and its basis read as text.
+ * - Motion: opacity and height only.
+ * - Host: pass `confidence` from 0 to 1 and never print the number beside it; give `onVerify` whenever the person can check the claim.
  */
 
 import { motion } from "motion/react";
@@ -77,7 +83,7 @@ export function ConfidenceMeter({
               />
             ))}
           </div>
-          <div className={`mt-1 text-[11px] font-medium ${meta.text}`}>{meta.label}</div>
+          <div className={`mt-1 text-[11px] font-medium ${meta.text}`} aria-hidden>{meta.label}</div>
         </div>
       </div>
 

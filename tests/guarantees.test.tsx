@@ -1,13 +1,13 @@
 /**
  * The contract's guarantees, asserted.
  *
- * /r/contract.json declares five behavioral guarantees. These tests are
+ * /r/contract.json declares seven behavioral guarantees. These tests are
  * their enforcement: a change that breaks a guarantee fails CI, so the
  * philosophy cannot be broken silently. Each describe block names the
  * guarantee it protects.
  */
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
 
 import { InterruptBar } from "@/registry/interrupt-bar/interrupt-bar";
 import { ApprovalGate } from "@/registry/approval-gate/approval-gate";
@@ -162,7 +162,7 @@ describe("guarantee: nothing irreversible without explicit consent (review surfa
       />,
     );
     expect(onDecide).not.toHaveBeenCalled();
-    fireEvent.click(screen.getAllByRole("button", { name: "Reject" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /^Reject:/ })[0]);
     expect(onDecide).toHaveBeenCalledWith("1", "rejected");
     expect(screen.getByText("1/2 reviewed")).toBeTruthy();
   });
@@ -173,7 +173,7 @@ describe("guarantee: nothing irreversible without explicit consent (review surfa
       <PlanReview goal="g" onApprove={onApprove} steps={[{ title: "Read" }, { title: "Migrate", risky: true }]} />,
     );
     expect(screen.getByText("Risky")).toBeTruthy();
-    fireEvent.click(screen.getAllByRole("button", { name: "Drop" })[1]);
+    fireEvent.click(screen.getByRole("button", { name: /^Drop step 2:/ }));
     fireEvent.click(screen.getByRole("button", { name: "Approve plan" }));
     expect(onApprove).toHaveBeenCalledWith([{ title: "Read" }]);
   });
@@ -189,7 +189,7 @@ describe("guarantee: nothing irreversible without explicit consent (review surfa
         ]}
       />,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Restore" }));
+    fireEvent.click(screen.getByRole("button", { name: "Restore to Earlier" }));
     expect(onRestore).not.toHaveBeenCalled();
     expect(screen.getByText(/This undoes 3 file edits/)).toBeTruthy();
     const confirm = screen.getByText(/This undoes/).parentElement!;
@@ -221,7 +221,7 @@ describe("guarantee: the person can always see and take back control", () => {
   it("a clarifying question records the answer in words", async () => {
     const onAnswer = vi.fn();
     render(<ClarifyingQuestion question="Which seat?" options={[{ label: "Aisle" }, { label: "Window" }]} onAnswer={onAnswer} />);
-    fireEvent.click(screen.getByRole("radio", { name: /Window/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Window/ }));
     expect(onAnswer).toHaveBeenCalledWith(["Window"]);
     expect(await screen.findByText("You chose Window")).toBeTruthy();
   });
@@ -229,5 +229,59 @@ describe("guarantee: the person can always see and take back control", () => {
   it("an unreachable source says so on the chip", () => {
     render(<CitationChip index={1} source={{ title: "Delays", domain: "bts.gov", unreachable: true }} />);
     expect(screen.getByRole("button", { name: /couldn't be reached/ })).toBeTruthy();
+  });
+});
+
+/* ---- guarantees added with the accessibility pass ---- */
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+describe("guarantee: focus is never dropped", () => {
+  it("after approving, focus moves to the receipt, which is announced", async () => {
+    render(<ApprovalGate title="Send it?" scope={[{ label: "Send", risky: true }]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Approve" }));
+    const receipt = await screen.findByRole("status");
+    await waitFor(() => expect(document.activeElement).toBe(receipt));
+  });
+
+  it("after stopping, focus moves to the stopped receipt", async () => {
+    render(<InterruptBar activity="Working" keptOnStop="3 results kept" />);
+    fireEvent.click(screen.getByRole("button", { name: "Stop" }));
+    await waitFor(() => expect(document.activeElement?.textContent).toMatch(/Stopped by you/));
+  });
+
+  it("opening a restore confirm puts focus on the confirm, and Escape backs out", async () => {
+    render(
+      <Checkpoint
+        checkpoints={[
+          { id: "b", label: "Now", time: "now" },
+          { id: "a", label: "Earlier", time: "4m", undoes: "2 edits" },
+        ]}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Restore to Earlier" }));
+    const confirm = screen.getByRole("group", { name: "Restore to Earlier?" });
+    expect(confirm.contains(document.activeElement)).toBe(true);
+    fireEvent.keyDown(confirm, { key: "Escape" });
+    await waitFor(() => expect(screen.queryByRole("group", { name: "Restore to Earlier?" })).toBeNull());
+  });
+});
+
+describe("guarantee: continuous motion stops under prefers-reduced-motion", () => {
+  // jsdom can't emulate the media query, so this checks the source: every animation that
+  // loops forever must carry motion-reduce:hidden on the element it moves.
+  it("every looping animation in the registry hides under reduced motion", () => {
+    const root = path.resolve(__dirname, "../registry");
+    const offenders: string[] = [];
+    for (const dir of readdirSync(root)) {
+      if (dir.startsWith("_")) continue;
+      const src = readFileSync(path.join(root, dir, `${dir}.tsx`), "utf8").split("\n");
+      src.forEach((line, i) => {
+        if (!line.includes("repeat: Infinity")) return;
+        const near = src.slice(Math.max(0, i - 5), i + 1).join("\n");
+        if (!near.includes("motion-reduce:hidden")) offenders.push(`${dir}:${i + 1}`);
+      });
+    }
+    expect(offenders).toEqual([]);
   });
 });

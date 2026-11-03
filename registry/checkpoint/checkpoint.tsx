@@ -11,9 +11,15 @@
  * - Interruptibility: the way back is visible during the run, not only
  *   after it fails
  * - Delegation contracts: restore names what it undoes before it undoes it
+ *
+ * Accessibility:
+ * - Keyboard: Restore opens an inline confirm that takes focus; Escape keeps going.
+ * - Screen reader: "You are here" reads in words; each Restore names its checkpoint, and the confirm says what will be undone.
+ * - Motion: opacity, scale and height on the confirm only.
+ * - Host: give `undoes` for every checkpoint but the current one.
  */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 export interface CheckpointEntry {
@@ -56,6 +62,13 @@ export function Checkpoint({
   const [internal, setInternal] = useState<string | undefined>(undefined);
   const at = current ?? internal ?? checkpoints[0]?.id;
 
+  // The confirm opens in place of the Restore button: take focus to it, so the keyboard
+  // lands on the choice rather than on nothing.
+  const confirmRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (confirming) confirmRef.current?.focus();
+  }, [confirming]);
+
   const restore = (id: string) => {
     setConfirming(null);
     if (current === undefined) setInternal(id);
@@ -95,6 +108,7 @@ export function Checkpoint({
                     transition={{ duration: 0.18 }}
                     type="button"
                     onClick={() => setConfirming(c.id)}
+                    aria-label={`Restore to ${c.label}`}
                     className="min-h-8 shrink-0 rounded-md border border-line px-2.5 text-[12px] font-medium text-smoke transition-colors hover:border-ash hover:text-chalk pointer-coarse:min-h-11"
                   >
                     Restore
@@ -110,12 +124,18 @@ export function Checkpoint({
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
                   >
-                    <div className="ml-[22px] mt-2 rounded-lg border border-line bg-carbon px-3 py-2.5">
+                    <div
+                      className="ml-[22px] mt-2 rounded-lg border border-line bg-carbon px-3 py-2.5"
+                      role="group"
+                      aria-label={`Restore to ${c.label}?`}
+                      onKeyDown={(e) => e.key === "Escape" && setConfirming(null)}
+                    >
                       <p className="text-[12px] leading-relaxed text-smoke">
                         Restore to here? This undoes {c.undoes ?? "everything after it"}.
                       </p>
                       <div className="mt-2 flex gap-2">
                         <button
+                          ref={confirmRef}
                           type="button"
                           onClick={() => restore(c.id)}
                           className="min-h-8 rounded-lg bg-chalk px-3 text-[12px] font-medium text-track hover:opacity-85 pointer-coarse:min-h-11"

@@ -14,6 +14,10 @@ All notable changes to Agent Pit Stop. The format follows [Keep a Changelog](htt
 
 ### Changed
 
+- Accessibility block in every component header (keyboard, screen reader, motion, host), published to `contract.json` (`a`), registry `meta.accessibility`, and each doc page; the build fails without it
+- Two new contract guarantees: focus is never dropped; continuous motion stops under `prefers-reduced-motion`
+- CI: axe-core over every component state, and token contrast (both themes) against WCAG AA
+- Fixes: status words for screen readers in Agent Task List and Reasoning Trace; focus and announcement after Approve and Stop; Checkpoint confirm focus and Escape; named Accept, Reject, Edit and Drop buttons; Clarifying Question no longer claims radio semantics; Source Drawer closes on Escape; looping pulses hide under reduced motion
 - Checkpoint accepts a controlled `confirming`; Plan Review accepts a controlled `dropped`
 - Guarantee tests extended to the new components (18 total)
 

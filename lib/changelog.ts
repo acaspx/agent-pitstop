@@ -114,6 +114,15 @@ export const changelog: ChangeMonth[] = [
     ],
     updated: [
       {
+        title: "Accessibility, in the contract",
+        href: "https://github.com/acaspx/agent-pitstop/blob/main/docs/accessibility.md",
+        body: "Every component now states its keyboard, screen-reader and motion behavior, and what the host must do, in its header. The build publishes it to `contract.json` (the `a` field), the registry items and each doc page. Two new guarantees: focus is never dropped, and looping motion stops under reduced motion. CI runs axe over every component state and checks token contrast in both themes.",
+      },
+      {
+        title: "Fixes from the accessibility pass",
+        body: "Task and reasoning steps read their status to screen readers. Approval Gate and Interrupt Bar move focus to their receipt and announce it. Checkpoint focuses its confirm, and Escape backs out. Diff Review and Plan Review buttons name their hunk or step. Clarifying Question uses plain buttons instead of radios that ignored arrow keys. The Source Drawer closes on Escape.",
+      },
+      {
         title: "Components page",
         href: "/components",
         body: "The static preview gallery is replaced by the live showcase, with a compact index by category underneath.",

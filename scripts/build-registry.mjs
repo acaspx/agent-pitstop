@@ -58,6 +58,37 @@ function parseHeader(src) {
   return { title, description, principles };
 }
 
+/**
+ * Parse the header's "Accessibility:" block: what the component guarantees on its own
+ * (keyboard, screen reader, motion) and what the host has to do for it to hold. Agents
+ * read the host line most: it is the part they get wrong. Every component must have all
+ * four; the build fails otherwise, so the contract can never go silent on accessibility.
+ */
+const A11Y_KEYS = { Keyboard: "keyboard", "Screen reader": "screenReader", Motion: "motion", Host: "host" };
+function parseA11y(src, name) {
+  const block = src.match(/\/\*\*([\s\S]*?)\*\//);
+  const lines = (block?.[1] ?? "").split("\n").map((l) => l.replace(/^\s*\*\s?/, "").trim());
+  const start = lines.findIndex((l) => l.startsWith("Accessibility"));
+  const out = {};
+  if (start !== -1) {
+    let key = null;
+    for (const l of lines.slice(start + 1)) {
+      const m = l.match(/^-\s*(Keyboard|Screen reader|Motion|Host):\s*(.*)$/);
+      if (m) {
+        key = A11Y_KEYS[m[1]];
+        out[key] = m[2];
+      } else if (key && l && !l.startsWith("-")) {
+        out[key] += ` ${l}`; // a wrapped line continues the bullet above
+      } else if (!l) {
+        key = null;
+      }
+    }
+  }
+  const missing = Object.values(A11Y_KEYS).filter((k) => !out[k]);
+  if (missing.length) throw new Error(`registry/${name}: header is missing Accessibility lines for ${missing.join(", ")}`);
+  return out;
+}
+
 /** Parse `export interface <Component>Props { ... }` into structured props. */
 function parseProps(src, componentName) {
   const iface = src.match(
@@ -101,6 +132,7 @@ for (const entry of entries) {
   const mainSrc = await readFile(path.join(dir, `${name}.tsx`), "utf8");
 
   const header = parseHeader(mainSrc);
+  const a11y = parseA11y(mainSrc, name);
   const componentName = pascal(name);
   const props = parseProps(mainSrc, componentName);
   const title = header.title ?? componentName;
@@ -120,6 +152,7 @@ for (const entry of entries) {
       longDescription: header.description,
       principles: header.principles,
       props,
+      accessibility: a11y,
       docs: `${SITE}/components/${name}`,
     },
     files: await Promise.all(
@@ -137,6 +170,7 @@ for (const entry of entries) {
     title,
     description: oneLiner,
     principles: header.principles,
+    accessibility: a11y,
     url: `${SITE}/r/${name}.json`,
     docs: `${SITE}/components/${name}`,
   });
@@ -146,6 +180,8 @@ for (const entry of entries) {
     d: oneLiner,
     pr: header.principles,
     p: props.map((p) => `${p.name}${p.required ? "" : "?"}:${p.type}${p.description ? ` // ${p.description}` : ""}`),
+    // a11y: k keyboard, sr screen reader, m motion, h what the host must do
+    a: { k: a11y.keyboard, sr: a11y.screenReader, m: a11y.motion, h: a11y.host },
   });
   count++;
 }
@@ -167,6 +203,8 @@ await writeFile(
         "stopping preserves partial work",
         "nothing irreversible without explicit consent",
         "confidence renders as bands, never decimals",
+        "focus is never dropped: when a control goes away after use, focus moves to what replaced it",
+        "continuous motion stops under prefers-reduced-motion",
       ],
       components: dense,
     },
@@ -188,12 +226,12 @@ const llms = `# Agent Pit Stop
 
 Any component: npx shadcn@latest add ${SITE}/r/<name>.json
 Catalog (JSON): ${SITE}/r/index.json
-Dense contract for agents (props, principles, guarantees): ${SITE}/r/contract.json
+Dense contract for agents (props, principles, guarantees, accessibility): ${SITE}/r/contract.json
 This file, the catalog, and the contract are generated from component source at build time; they cannot drift.
 
 ## Components
 
-${index.map((i) => `- [${i.title}](${i.docs}): ${i.description} (source: ${i.url})`).join("\n")}
+${index.map((i) => `- [${i.title}](${i.docs}): ${i.description} (source: ${i.url})\n  Host must: ${i.accessibility.host}`).join("\n")}
 
 ## Principles
 

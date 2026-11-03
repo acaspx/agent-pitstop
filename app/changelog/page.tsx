@@ -70,7 +70,7 @@ function Group({ name, entries, tone }: { name: string; entries?: ChangeEntry[];
     <div className="mt-8">
       <div className="flex items-center gap-2 border-b border-line pb-2">
         <span className={`font-mono text-[11px] font-medium uppercase tracking-[0.18em] ${tone}`}>{name}</span>
-        <span className="rounded-full bg-barrier px-1.5 font-mono text-[11px] text-ash">{entries.length}</span>
+        <span className="rounded-full bg-barrier px-1.5 font-mono text-[11px] text-smoke">{entries.length}</span>
       </div>
       <ul className="divide-y divide-line/60">
         {entries.map((e) => (
