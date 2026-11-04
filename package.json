@@ -12,7 +12,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "contrast": "node scripts/check-contrast.mjs"
+    "contrast": "node scripts/check-contrast.mjs",
+    "eval": "node scripts/eval.mjs"
   },
   "dependencies": {
     "geist": "^1.4.0",

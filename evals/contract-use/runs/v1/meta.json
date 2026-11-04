@@ -1,0 +1,6 @@
+{
+  "agent": "Claude Opus 5.5 (claude-opus-5-5), one fresh subagent per prompt, no tools beyond reading the two contract files",
+  "contract": "v1: contract.json + llms.txt as published on 2026-11-04 (props with named types, guarantees, accessibility)",
+  "ranAt": "2026-11-04",
+  "notes": "Every agent reported reading only the two contract files. Outputs are saved verbatim."
+}

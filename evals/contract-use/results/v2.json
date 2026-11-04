@@ -1,0 +1,444 @@
+{
+  "eval": "contract-use",
+  "run": "v2",
+  "scoredAt": "2026-11-04",
+  "agent": "Claude Opus 5.5 (claude-opus-5-5), one fresh subagent per prompt, no tools beyond reading the two contract files",
+  "contract": "v2: adds the import line, every exported type (unions spelled out, interfaces as fields) and every component in each file; the registry pins the install path",
+  "notes": "Same brief and prompts as v1. Every agent reported reading only the two contract files. Outputs are saved verbatim.",
+  "totals": {
+    "prompts": 10,
+    "promptsPassed": 10,
+    "checks": 84,
+    "checksPassed": 84
+  },
+  "prompts": [
+    {
+      "id": "01-send-email",
+      "components": [
+        "approval-gate"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "sends nothing until the user agrees",
+          "pass": true
+        },
+        {
+          "name": "sends exactly once on approve",
+          "pass": true
+        },
+        {
+          "name": "denying never sends",
+          "pass": true
+        },
+        {
+          "name": "marks sending as something that can't be undone",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "02-flight-search",
+      "components": [
+        "tool-call-card",
+        "interrupt-bar"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows the tool call running, in words",
+          "pass": true
+        },
+        {
+          "name": "Stop calls onStop",
+          "pass": true
+        },
+        {
+          "name": "says what was kept, not the default",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "03-invoice-confidence",
+      "components": [
+        "confidence-meter"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows the band the confidence earns (medium)",
+          "pass": true
+        },
+        {
+          "name": "never prints the number",
+          "pass": true
+        },
+        {
+          "name": "checking calls onVerify",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "04-failed-plan",
+      "components": [
+        "agent-task-list"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "keeps the failed step's error",
+          "pass": true
+        },
+        {
+          "name": "gives each step its true status",
+          "pass": true
+        },
+        {
+          "name": "names the plan",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "05-plan-review",
+      "components": [
+        "plan-review"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "runs nothing before approval",
+          "pass": true
+        },
+        {
+          "name": "marks the staging step risky",
+          "pass": true
+        },
+        {
+          "name": "approving runs the approved steps' titles",
+          "pass": true
+        },
+        {
+          "name": "a dropped step is not run",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "06-diff-review",
+      "components": [
+        "diff-review-card"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "applies nothing up front",
+          "pass": true
+        },
+        {
+          "name": "accepting one change applies only that one",
+          "pass": true
+        },
+        {
+          "name": "rejecting never applies",
+          "pass": true
+        },
+        {
+          "name": "every change says what it does",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "07-clarifying-question",
+      "components": [
+        "clarifying-question"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "offers both seats to tap",
+          "pass": true
+        },
+        {
+          "name": "returns the choice as a string",
+          "pass": true
+        },
+        {
+          "name": "offers to skip, saying what the agent will do",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "08-takeover",
+      "components": [
+        "takeover-banner"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "says it's the user's turn, and why",
+          "pass": true
+        },
+        {
+          "name": "Take over calls onTakeOver",
+          "pass": true
+        },
+        {
+          "name": "is announced to screen readers",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "09-cited-answer",
+      "components": [
+        "reasoning-trace",
+        "citation-chip"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows the finished reasoning, folded",
+          "pass": true
+        },
+        {
+          "name": "cites each claim",
+          "pass": true
+        },
+        {
+          "name": "flags the source it couldn't load",
+          "pass": true
+        },
+        {
+          "name": "opening a source shows the passage",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "10-memory",
+      "components": [
+        "memory-panel"
+      ],
+      "pass": true,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows all three memories",
+          "pass": true
+        },
+        {
+          "name": "deletes only after the undo window",
+          "pass": true
+        },
+        {
+          "name": "Undo means nothing is deleted",
+          "pass": true
+        }
+      ]
+    }
+  ]
+}

@@ -114,6 +114,11 @@ export const changelog: ChangeMonth[] = [
     ],
     updated: [
       {
+        title: "Evals, and a tighter contract",
+        href: "/evals/contract-use",
+        body: "A new Evals section. The first eval gives ten product requests to fresh agents that see only the contract, then compiles and drives what they write against the real components. Baseline: 0/10 screens fully correct (73% of checks). The contract never said where components install, named types like `DiffHunk` without defining them, and hid second components like `SourceDrawer`. The generator now emits each component's import line, every exported type, and every component in the file, and the registry pins the install path. Rerun: 10/10 (100%). Rerun it with `npm run eval -- v2`.",
+      },
+      {
         title: "Accessibility, in the contract",
         href: "https://github.com/acaspx/agent-pitstop/blob/main/docs/accessibility.md",
         body: "Every component now states its keyboard, screen-reader and motion behavior, and what the host must do, in its header. The build publishes it to `contract.json` (the `a` field), the registry items and each doc page. Two new guarantees: focus is never dropped, and looping motion stops under reduced motion. CI runs axe over every component state and checks token contrast in both themes.",
