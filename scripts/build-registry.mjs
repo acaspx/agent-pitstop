@@ -58,25 +58,75 @@ function parseHeader(src) {
   return { title, description, principles };
 }
 
-/** Parse `export interface <Component>Props { ... }` into structured props. */
-function parseProps(src, componentName) {
-  const iface = src.match(
-    new RegExp(`export interface ${componentName}Props \\{([\\s\\S]*?)\\n\\}`),
-  );
+/**
+ * Parse the header's "Accessibility:" block: what the component guarantees on its own
+ * (keyboard, screen reader, motion) and what the host has to do for it to hold. Agents
+ * read the host line most: it is the part they get wrong. Every component must have all
+ * four; the build fails otherwise, so the contract can never go silent on accessibility.
+ */
+const A11Y_KEYS = { Keyboard: "keyboard", "Screen reader": "screenReader", Motion: "motion", Host: "host" };
+function parseA11y(src, name) {
+  const block = src.match(/\/\*\*([\s\S]*?)\*\//);
+  const lines = (block?.[1] ?? "").split("\n").map((l) => l.replace(/^\s*\*\s?/, "").trim());
+  const start = lines.findIndex((l) => l.startsWith("Accessibility"));
+  const out = {};
+  if (start !== -1) {
+    let key = null;
+    for (const l of lines.slice(start + 1)) {
+      const m = l.match(/^-\s*(Keyboard|Screen reader|Motion|Host):\s*(.*)$/);
+      if (m) {
+        key = A11Y_KEYS[m[1]];
+        out[key] = m[2];
+      } else if (key && l && !l.startsWith("-")) {
+        out[key] += ` ${l}`; // a wrapped line continues the bullet above
+      } else if (!l) {
+        key = null;
+      }
+    }
+  }
+  const missing = Object.values(A11Y_KEYS).filter((k) => !out[k]);
+  if (missing.length) throw new Error(`registry/${name}: header is missing Accessibility lines for ${missing.join(", ")}`);
+  return out;
+}
+
+/** Parse `export interface <Name> { ... }` into structured fields (props, or a data type's fields). */
+function parseFields(src, ifaceName) {
+  const iface = src.match(new RegExp(`export interface ${ifaceName} \\{([\\s\\S]*?)\\n\\}`));
   if (!iface) return [];
   const body = iface[1];
-  const props = [];
+  const fields = [];
   const re = /(?:\/\*\*\s*([\s\S]*?)\s*\*\/\s*)?(\w+)(\?)?:\s*([^;]+);/g;
   let m;
   while ((m = re.exec(body)) !== null) {
-    props.push({
+    fields.push({
       name: m[2],
       type: m[4].trim().replace(/\s+/g, " "),
       required: m[3] !== "?",
-      description: (m[1] ?? "").replace(/\s+/g, " ").trim(),
+      description: (m[1] ?? "").replace(/^\s*\*\s?/gm, "").replace(/\s+/g, " ").trim(),
     });
   }
-  return props;
+  return fields;
+}
+const parseProps = (src, componentName) => parseFields(src, `${componentName}Props`);
+const denseField = (f) => `${f.name}${f.required ? "" : "?"}:${f.type}${f.description ? ` // ${f.description}` : ""}`;
+
+/**
+ * Everything a file exports that an agent needs to write correct code against it: the
+ * components (any exported PascalCase function with a <Name>Props interface), and every
+ * other exported type, unions spelled out and interfaces as fields. The v1 contract named
+ * types like ScopeItem without defining them, and agents guessed their fields wrong.
+ */
+function parseExports(src) {
+  const components = [...src.matchAll(/export function ([A-Z]\w*)\(/g)]
+    .map((m) => m[1])
+    .filter((c) => new RegExp(`export interface ${c}Props \\{`).test(src));
+  const types = {};
+  for (const m of src.matchAll(/export type (\w+) = ([^;]+);/g)) types[m[1]] = m[2].replace(/\s+/g, " ").trim();
+  for (const m of src.matchAll(/export interface (\w+) \{/g)) {
+    if (m[1].endsWith("Props")) continue;
+    types[m[1]] = parseFields(src, m[1]);
+  }
+  return { components, types };
 }
 
 function pascal(name) {
@@ -101,8 +151,13 @@ for (const entry of entries) {
   const mainSrc = await readFile(path.join(dir, `${name}.tsx`), "utf8");
 
   const header = parseHeader(mainSrc);
+  const a11y = parseA11y(mainSrc, name);
   const componentName = pascal(name);
   const props = parseProps(mainSrc, componentName);
+  const exported = parseExports(mainSrc);
+  const extra = exported.components.filter((c) => c !== componentName);
+  // Where the installer puts it (each file's `target` below) and the line to import it with.
+  const importLine = `import { ${[...exported.components, ...Object.keys(exported.types).map((t) => `type ${t}`)].join(", ")} } from "@/components/${name}";`;
   const title = header.title ?? componentName;
   // first sentence of the parsed description = the one-liner
   const oneLiner = (header.description.match(/^.*?[.!?](\s|$)/)?.[0] ?? header.description).trim();
@@ -120,12 +175,18 @@ for (const entry of entries) {
       longDescription: header.description,
       principles: header.principles,
       props,
+      import: importLine,
+      types: exported.types,
+      ...(extra.length ? { alsoExports: extra.map((c) => ({ component: c, props: parseProps(mainSrc, c) })) } : {}),
+      accessibility: a11y,
       docs: `${SITE}/components/${name}`,
     },
     files: await Promise.all(
       files.map(async (f) => ({
         path: `registry/${name}/${f}`,
         type: "registry:component",
+        // Pinned, so the install location is what the contract says, not a CLI default.
+        target: `components/${f}`,
         content: await readFile(path.join(dir, f), "utf8"),
       })),
     ),
@@ -137,6 +198,7 @@ for (const entry of entries) {
     title,
     description: oneLiner,
     principles: header.principles,
+    accessibility: a11y,
     url: `${SITE}/r/${name}.json`,
     docs: `${SITE}/components/${name}`,
   });
@@ -145,7 +207,13 @@ for (const entry of entries) {
     c: componentName,
     d: oneLiner,
     pr: header.principles,
-    p: props.map((p) => `${p.name}${p.required ? "" : "?"}:${p.type}${p.description ? ` // ${p.description}` : ""}`),
+    i: importLine,
+    p: props.map(denseField),
+    // t: every exported type the props use: unions as strings, interfaces as fields
+    t: Object.fromEntries(Object.entries(exported.types).map(([k, v]) => [k, typeof v === "string" ? v : v.map(denseField)])),
+    ...(extra.length ? { x: extra.map((c) => ({ c, p: parseProps(mainSrc, c).map(denseField) })) } : {}),
+    // a11y: k keyboard, sr screen reader, m motion, h what the host must do
+    a: { k: a11y.keyboard, sr: a11y.screenReader, m: a11y.motion, h: a11y.host },
   });
   count++;
 }
@@ -160,6 +228,8 @@ await writeFile(
     {
       system: "agent-pitstop",
       install: `npx shadcn@latest add ${SITE}/r/<n>.json`,
+      importFrom: "@/components/<n>",
+      legend: "n name, c component, i import line, d description, pr principles, p props, t exported types (unions as strings, interfaces as fields), x other components in the file, a accessibility (k keyboard, sr screen reader, m motion, h what the host must do)",
       deps: ["react", "tailwind", "motion"],
       guarantees: [
         "state is never communicated by color alone",
@@ -167,6 +237,8 @@ await writeFile(
         "stopping preserves partial work",
         "nothing irreversible without explicit consent",
         "confidence renders as bands, never decimals",
+        "focus is never dropped: when a control goes away after use, focus moves to what replaced it",
+        "continuous motion stops under prefers-reduced-motion",
       ],
       components: dense,
     },
@@ -187,13 +259,14 @@ const llms = `# Agent Pit Stop
 ## Install
 
 Any component: npx shadcn@latest add ${SITE}/r/<name>.json
+It installs to components/<name>.tsx. Import it from "@/components/<name>"; the contract gives each component's exact import line and every type it uses.
 Catalog (JSON): ${SITE}/r/index.json
-Dense contract for agents (props, principles, guarantees): ${SITE}/r/contract.json
+Dense contract for agents (props, principles, guarantees, accessibility): ${SITE}/r/contract.json
 This file, the catalog, and the contract are generated from component source at build time; they cannot drift.
 
 ## Components
 
-${index.map((i) => `- [${i.title}](${i.docs}): ${i.description} (source: ${i.url})`).join("\n")}
+${index.map((i) => `- [${i.title}](${i.docs}): ${i.description} (source: ${i.url})\n  Host must: ${i.accessibility.host}`).join("\n")}
 
 ## Principles
 

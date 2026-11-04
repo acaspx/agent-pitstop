@@ -1,0 +1,63 @@
+# Agent Pit Stop
+
+> An open source design system for agent interfaces: UX principles with live
+> demos and production React components for the moments where agents and
+> humans sync (approval, inspection, handoff, recovery). MIT licensed.
+> Components depend only on React, Tailwind, and Motion, and install via the
+> shadcn registry. Site: https://agent-pitstop.vercel.app
+
+## Install
+
+Any component: npx shadcn@latest add https://agent-pitstop.vercel.app/r/<name>.json
+Catalog (JSON): https://agent-pitstop.vercel.app/r/index.json
+Dense contract for agents (props, principles, guarantees, accessibility): https://agent-pitstop.vercel.app/r/contract.json
+This file, the catalog, and the contract are generated from component source at build time; they cannot drift.
+
+## Components
+
+- [AgentInbox](https://agent-pitstop.vercel.app/components/agent-inbox): The review queue for background agents. (source: https://agent-pitstop.vercel.app/r/agent-inbox.json)
+  Host must: pass `onOpen`, or the rows are buttons that do nothing; order is yours, but put runs that need the person first.
+- [AgentRoster](https://agent-pitstop.vercel.app/components/agent-roster): The team sheet for multi-agent runs: who's working, who's waiting, who's blocked, and on what. (source: https://agent-pitstop.vercel.app/r/agent-roster.json)
+  Host must: keep agent ids stable across updates; keep `activity` to one short line.
+- [AgentTaskList](https://agent-pitstop.vercel.app/components/agent-task-list): The agent's plan, made visible: what it will do, what it's doing, what's done, and what broke. (source: https://agent-pitstop.vercel.app/r/agent-task-list.json)
+  Host must: pass `label` so the list has a name; keep task titles unique (they key the rows).
+- [ApprovalGate](https://agent-pitstop.vercel.app/components/approval-gate): An inline permission request: the agent states what it wants to do, shows the exact scope, and waits. (source: https://agent-pitstop.vercel.app/r/approval-gate.json)
+  Host must: one gate per irreversible action, each with a distinct `title`; set `state` only from a real decision, never on mount.
+- [Checkpoint](https://agent-pitstop.vercel.app/components/checkpoint): The run's save points, newest at the top, and a way back to any of them. (source: https://agent-pitstop.vercel.app/r/checkpoint.json)
+  Host must: give `undoes` for every checkpoint but the current one.
+- [CitationChip](https://agent-pitstop.vercel.app/components/citation-chip): An inline source marker on a claim, and the drawer it opens. (source: https://agent-pitstop.vercel.app/r/citation-chip.json)
+  Host must: one chip right after the sentence it supports; keep `index` matching the drawer's order.
+- [ClarifyingQuestion](https://agent-pitstop.vercel.app/components/clarifying-question): One question the agent needs answered before it goes further, with the likely answers ready to tap and room for your own. (source: https://agent-pitstop.vercel.app/r/clarifying-question.json)
+  Host must: ask one question at a time; set `fallback` whenever the agent has a sensible default.
+- [ConfidenceMeter](https://agent-pitstop.vercel.app/components/confidence-meter): Honest uncertainty display: confidence as coarse bands, never decimal theater, paired with a verification affordance exactly when doubt is warranted. (source: https://agent-pitstop.vercel.app/r/confidence-meter.json)
+  Host must: pass `confidence` from 0 to 1 and never print the number beside it; give `onVerify` whenever the person can check the claim.
+- [ContextBudget](https://agent-pitstop.vercel.app/components/context-budget): A delegation contract's limits, made visible: tokens, spend, or time against their caps. (source: https://agent-pitstop.vercel.app/r/context-budget.json)
+  Host must: give lines distinct labels; pause the run at a cap before showing Raise.
+- [DiffReviewCard](https://agent-pitstop.vercel.app/components/diff-review-card): An agent's proposed change to a file, reviewed hunk by hunk before it lands. (source: https://agent-pitstop.vercel.app/r/diff-review-card.json)
+  Host must: give every hunk a `summary`; apply a hunk only from onDecide.
+- [InterruptBar](https://agent-pitstop.vercel.app/components/interrupt-bar): The steering wheel and the brake for a running agent. (source: https://agent-pitstop.vercel.app/r/interrupt-bar.json)
+  Host must: keep the bar on screen for the whole run, and set `acknowledgment` after onSteer so the person hears the steer was taken.
+- [MemoryPanel](https://agent-pitstop.vercel.app/components/memory-panel): What the agent remembers about you, in its own words, with where each memory came from and a way to forget it. (source: https://agent-pitstop.vercel.app/r/memory-panel.json)
+  Host must: forget for real only in onForget, which fires after the undo window.
+- [PlanReview](https://agent-pitstop.vercel.app/components/plan-review): The agent's plan, shown before it starts, as steps the person can drop or reword. (source: https://agent-pitstop.vercel.app/r/plan-review.json)
+  Host must: mark steps that change things outside the sandbox `risky`; run only the steps passed to onApprove.
+- [ReasoningTrace](https://agent-pitstop.vercel.app/components/reasoning-trace): The agent's thinking as a short list of steps the user can follow: open while it works, folded to a one-line summary when it's done, and never gone. (source: https://agent-pitstop.vercel.app/r/reasoning-trace.json)
+  Host must: write steps as actions ("Checking carry-on rules"), not raw model tokens; set `streaming` false when the answer lands, so it folds.
+- [TakeoverBanner](https://agent-pitstop.vercel.app/components/takeover-banner): Who has the wheel, said plainly. (source: https://agent-pitstop.vercel.app/r/takeover-banner.json)
+  Host must: pin it to the surface the agent controls, and never hide Take over while the agent acts.
+- [ToolCallCard](https://agent-pitstop.vercel.app/components/tool-call-card): Shows an agent's tool call with legible, progressive disclosure. (source: https://agent-pitstop.vercel.app/r/tool-call-card.json)
+  Host must: update `state` on the same card instead of swapping cards, so its place in the transcript holds; write `intent` in the person's words, not the API's.
+
+## Principles
+
+- [Legible Thinking](https://agent-pitstop.vercel.app/principles/legible-thinking): agents lose trust by being wrong invisibly; show intent, state, and evidence
+- [Interruptibility](https://agent-pitstop.vercel.app/principles/interruptibility): users delegate more to agents they can stop; steer beats stop
+- [Delegation Contracts](https://agent-pitstop.vercel.app/principles/delegation-contracts): itemize scope before consent; boundaries beat permissions
+- [Calibrated Trust](https://agent-pitstop.vercel.app/principles/calibrated-trust): bands not decimals; verification cheaper than redoing
+- [Graceful Failure](https://agent-pitstop.vercel.app/principles/graceful-failure): failure is a rendered state; partial work is never discarded
+
+## Docs
+
+- [How it works](https://agent-pitstop.vercel.app/how-it-works)
+- [Rules for the pit](https://agent-pitstop.vercel.app/principles)
+- [Contributing](https://github.com/acaspx/agent-pitstop/blob/main/CONTRIBUTING.md)

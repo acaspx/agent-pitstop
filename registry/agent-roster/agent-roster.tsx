@@ -13,6 +13,12 @@
  *   blocker named; the team doesn't pretend to be smaller
  * - Interruptibility: the roster is the map for targeted intervention;
  *   pair rows with your stop/steer controls
+ *
+ * Accessibility:
+ * - Keyboard: nothing to operate; it is a read-only list.
+ * - Screen reader: a list named by `label`; each agent's state reads in words (Working, Waiting, Blocked, Idle).
+ * - Motion: the working pulse stops under prefers-reduced-motion.
+ * - Host: keep agent ids stable across updates; keep `activity` to one short line.
  */
 
 import { motion } from "motion/react";
@@ -51,7 +57,7 @@ function StateDot({ state }: { state: AgentState }) {
     <span className="relative flex h-2 w-2 shrink-0">
       {stateMeta[state].pulse && (
         <motion.span
-          className={`absolute inline-flex h-full w-full rounded-full ${color}`}
+          className={`motion-reduce:hidden absolute inline-flex h-full w-full rounded-full ${color}`}
           animate={{ scale: [1, 2.1], opacity: [0.6, 0] }}
           transition={{ duration: 1.3, repeat: Infinity, ease: "easeOut" }}
         />
@@ -72,7 +78,7 @@ export function AgentRoster({ agents, label = "Crew", className }: AgentRosterPr
           {working}/{agents.length} working
         </span>
       </div>
-      <ul className="px-4 py-1.5">
+      <ul className="px-4 py-1.5" aria-label={label}>
         {agents.map((agent) => {
           const meta = stateMeta[agent.state];
           return (

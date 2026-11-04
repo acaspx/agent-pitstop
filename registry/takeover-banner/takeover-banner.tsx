@@ -13,6 +13,12 @@
  *   anything it shouldn't type, and says why
  * - Calibrated trust: while you drive, the agent isn't watching, and the
  *   banner says so
+ *
+ * Accessibility:
+ * - Keyboard: Take over and Hand back are buttons.
+ * - Screen reader: a polite status region; every change of who is driving is announced, with the reason.
+ * - Motion: the driving pulse stops under prefers-reduced-motion.
+ * - Host: pin it to the surface the agent controls, and never hide Take over while the agent acts.
  */
 
 import { AnimatePresence, motion } from "motion/react";
@@ -59,7 +65,7 @@ export function TakeoverBanner({
         <span className="relative inline-flex h-2 w-2 shrink-0" aria-hidden>
           {(state === "agent" || state === "needs-you") && (
             <motion.span
-              className={`absolute inline-flex h-full w-full rounded-full ${c.dot}`}
+              className={`motion-reduce:hidden absolute inline-flex h-full w-full rounded-full ${c.dot}`}
               animate={{ scale: [1, 2.2], opacity: [0.5, 0] }}
               transition={{ duration: 1.3, repeat: Infinity, ease: "easeOut" }}
             />

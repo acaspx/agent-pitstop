@@ -8,6 +8,12 @@
  * - Legible thinking: name + one-line intent always visible; args/result on demand
  * - Calibrated trust: state is color + icon + label, never color alone
  * - Graceful failure: errors keep the args visible so the human can diagnose
+ *
+ * Accessibility:
+ * - Keyboard: the header is one button; Enter or Space shows and hides the arguments and result, when there are any.
+ * - Screen reader: reads the tool name, the intent and the state in words ("Running · 3s", "Failed"); aria-expanded reports the disclosure.
+ * - Motion: the running pulse stops under prefers-reduced-motion.
+ * - Host: update `state` on the same card instead of swapping cards, so its place in the transcript holds; write `intent` in the person's words, not the API's.
  */
 
 import { useState } from "react";
@@ -48,13 +54,13 @@ export function ToolCallCard({ name, intent, state, args, detail, elapsed, class
       <button
         type="button"
         onClick={() => expandable && setOpen((v) => !v)}
-        aria-expanded={open}
+        aria-expanded={expandable ? open : undefined}
         className="flex w-full items-center gap-3 px-4 py-3 text-left"
       >
         <span className="relative flex h-2 w-2 shrink-0">
           {state === "running" && (
             <motion.span
-              className="absolute inline-flex h-full w-full rounded-full bg-pit"
+              className="motion-reduce:hidden absolute inline-flex h-full w-full rounded-full bg-pit"
               animate={{ scale: [1, 2.2], opacity: [0.6, 0] }}
               transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
             />

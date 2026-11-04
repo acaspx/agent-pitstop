@@ -12,6 +12,12 @@
  * - Legible thinking: the agent's intent is readable before it acts
  * - Calibrated trust: risky steps are named so review time goes where it
  *   matters
+ *
+ * Accessibility:
+ * - Keyboard: Edit opens an inline field (Enter or Escape to finish); Drop and Keep toggle a step; Approve plan submits.
+ * - Screen reader: Edit and Drop name their step ("Drop step 3: Run the migration on staging"); dropped steps read "Dropped".
+ * - Motion: opacity and height only.
+ * - Host: mark steps that change things outside the sandbox `risky`; run only the steps passed to onApprove.
  */
 
 import { useState } from "react";
@@ -98,6 +104,7 @@ export function PlanReview({
                 />
               ) : (
                 <div className={`text-[13px] leading-snug ${s.on ? "text-chalk" : "text-ash line-through"}`}>
+                  {!s.on && <span className="sr-only">Dropped: </span>}
                   {s.title}
                   {s.risky && s.on && (
                     <span className="ml-2 rounded border border-caution/40 px-1 py-px align-middle text-[10px] font-medium uppercase tracking-wide text-caution">
@@ -114,6 +121,7 @@ export function PlanReview({
                   <button
                     type="button"
                     onClick={() => setEditing(i)}
+                    aria-label={`Edit step ${i + 1}: ${s.title}`}
                     className="min-h-7 rounded-md px-1.5 text-[12px] text-ash hover:text-chalk pointer-coarse:min-h-11"
                   >
                     Edit
@@ -123,6 +131,7 @@ export function PlanReview({
                   type="button"
                   onClick={() => toggleStep(i)}
                   aria-pressed={!s.on}
+                  aria-label={`${s.on ? "Drop" : "Keep"} step ${i + 1}: ${s.title}`}
                   className="min-h-7 rounded-md px-1.5 text-[12px] text-ash hover:text-chalk pointer-coarse:min-h-11"
                 >
                   {s.on ? "Drop" : "Keep"}

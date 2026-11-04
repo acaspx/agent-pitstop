@@ -12,6 +12,12 @@
  * - Legible thinking: each item is a one-line intent + status, never a wall
  * - Calibrated trust: needs-review items surface the reason (low
  *   confidence, irreversible step, failure), not just a red dot
+ *
+ * Accessibility:
+ * - Keyboard: each run is a button in tab order.
+ * - Screen reader: a list named by `label`; each button reads the title, summary, what it waits on, and its status in words.
+ * - Motion: rows fade in and out; nothing moves on its own.
+ * - Host: pass `onOpen`, or the rows are buttons that do nothing; order is yours, but put runs that need the person first.
  */
 
 import { AnimatePresence, motion } from "motion/react";
@@ -58,7 +64,7 @@ export function AgentInbox({ items, onOpen, label = "Agent inbox", className }: 
           {needsYou > 0 ? `${needsYou} need${needsYou === 1 ? "s" : ""} you` : "all clear"}
         </span>
       </div>
-      <ul>
+      <ul aria-label={label}>
         <AnimatePresence initial={false}>
           {items.map((item) => {
             const meta = statusMeta[item.status];

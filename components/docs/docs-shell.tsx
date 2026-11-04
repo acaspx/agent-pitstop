@@ -15,6 +15,9 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           <Link href="/how-it-works" className="flex min-h-11 items-center text-smoke hover:text-chalk">
             How it works
           </Link>
+          <Link href="/evals" className="flex min-h-11 items-center text-smoke hover:text-chalk">
+            Evals
+          </Link>
           <Link href="/principles" className="flex min-h-11 items-center text-smoke hover:text-chalk">
             Principles
           </Link>

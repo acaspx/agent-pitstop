@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { adjacentComponents, components, type Format } from "@/lib/nav";
@@ -20,11 +22,35 @@ export interface ComponentDocProps {
   chatPrompt?: string;
 }
 
+interface A11y { keyboard: string; screenReader: string; motion: string; host: string }
+
+/**
+ * The accessibility notes, read from the same generated registry item an agent installs
+ * (public/r/<slug>.json, built from the component's header), so the page and the contract
+ * can't disagree.
+ */
+function accessibilityOf(slug: string): A11y | null {
+  try {
+    const item = JSON.parse(readFileSync(path.join(process.cwd(), "public", "r", `${slug}.json`), "utf8"));
+    return item.meta?.accessibility ?? null;
+  } catch {
+    return null;
+  }
+}
+
+const A11Y_ROWS: [keyof A11y, string][] = [
+  ["keyboard", "Keyboard"],
+  ["screenReader", "Screen reader"],
+  ["motion", "Motion"],
+  ["host", "You provide"],
+];
+
 export function ComponentDoc({ slug, intro, sections, preview, variants, chatPrompt }: ComponentDocProps) {
   const entry = components.find((c) => c.slug === slug);
   if (!entry) return null;
   const { prev, next } = adjacentComponents(slug);
   const installCmd = `npx shadcn@latest add https://agent-pitstop.vercel.app/r/${slug}.json`;
+  const a11y = accessibilityOf(slug);
 
   return (
     <main>
@@ -52,6 +78,20 @@ export function ComponentDoc({ slug, intro, sections, preview, variants, chatPro
               )}
             </section>
           ))}
+
+          {a11y && (
+            <section aria-labelledby="a11y">
+              <h2 id="a11y" className="text-sm font-medium uppercase tracking-wide text-ash">Accessibility</h2>
+              <dl className="mt-3 divide-y divide-line rounded-xl border border-line">
+                {A11Y_ROWS.map(([key, label]) => (
+                  <div key={key} className="grid gap-1 px-4 py-3 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
+                    <dt className={`text-[13px] font-medium ${key === "host" ? "text-pit" : "text-chalk"}`}>{label}</dt>
+                    <dd className="text-[14px] leading-relaxed text-smoke">{a11y[key].replace(/`/g, "")}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
 
           <section>
             <h2 className="text-sm font-medium uppercase tracking-wide text-ash">Install</h2>

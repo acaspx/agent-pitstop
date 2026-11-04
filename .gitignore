@@ -8,3 +8,6 @@ next-env.d.ts
 .DS_Store
 *.tsbuildinfo
 public/r/
+
+# eval scratch (compiled copies, raw test reports)
+evals/contract-use/.tmp/

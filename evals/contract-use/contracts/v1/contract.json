@@ -1,0 +1,380 @@
+{
+ "system": "agent-pitstop",
+ "install": "npx shadcn@latest add https://agent-pitstop.vercel.app/r/<n>.json",
+ "deps": [
+  "react",
+  "tailwind",
+  "motion"
+ ],
+ "guarantees": [
+  "state is never communicated by color alone",
+  "failures keep their inputs visible",
+  "stopping preserves partial work",
+  "nothing irreversible without explicit consent",
+  "confidence renders as bands, never decimals",
+  "focus is never dropped: when a control goes away after use, focus moves to what replaced it",
+  "continuous motion stops under prefers-reduced-motion"
+ ],
+ "components": [
+  {
+   "n": "agent-inbox",
+   "c": "AgentInbox",
+   "d": "The review queue for background agents.",
+   "pr": [
+    "Delegation contracts"
+   ],
+   "p": [
+    "items:InboxItem[]",
+    "onOpen?:(id: string) => void // Called when the human opens a run for review",
+    "label?:string",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "each run is a button in tab order.",
+    "sr": "a list named by `label`; each button reads the title, summary, what it waits on, and its status in words.",
+    "m": "rows fade in and out; nothing moves on its own.",
+    "h": "pass `onOpen`, or the rows are buttons that do nothing; order is yours, but put runs that need the person first."
+   }
+  },
+  {
+   "n": "agent-roster",
+   "c": "AgentRoster",
+   "d": "The team sheet for multi-agent runs: who's working, who's waiting, who's blocked, and on what.",
+   "pr": [
+    "Legible thinking"
+   ],
+   "p": [
+    "agents:RosterAgent[]",
+    "label?:string",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "nothing to operate; it is a read-only list.",
+    "sr": "a list named by `label`; each agent's state reads in words (Working, Waiting, Blocked, Idle).",
+    "m": "the working pulse stops under prefers-reduced-motion.",
+    "h": "keep agent ids stable across updates; keep `activity` to one short line."
+   }
+  },
+  {
+   "n": "agent-task-list",
+   "c": "AgentTaskList",
+   "d": "The agent's plan, made visible: what it will do, what it's doing, what's done, and what broke.",
+   "pr": [
+    "Legible thinking",
+    "Latency choreography",
+    "Graceful failure"
+   ],
+   "p": [
+    "label?:string // Short label for the overall plan, e.g. \"Booking your trip\"",
+    "tasks:AgentTask[]",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "nothing to operate; it is a read-only list.",
+    "sr": "a list named by `label`; every step starts with its status in words (Not started, Working on, Done, Failed), and a failed step keeps its error.",
+    "m": "the active step's pulse stops under prefers-reduced-motion.",
+    "h": "pass `label` so the list has a name; keep task titles unique (they key the rows)."
+   }
+  },
+  {
+   "n": "approval-gate",
+   "c": "ApprovalGate",
+   "d": "An inline permission request: the agent states what it wants to do, shows the exact scope, and waits.",
+   "pr": [
+    "Delegation contracts",
+    "Calibrated trust",
+    "Interruptibility",
+    "Legible thinking"
+   ],
+   "p": [
+    "title:string // Plain-language request, e.g. \"Send the Q3 summary email?\"",
+    "reason?:string // Why the agent wants to do this",
+    "scope:ScopeItem[]",
+    "state?:ApprovalState // Controlled state; omit to let the component manage it",
+    "onApprove?:() => void",
+    "onDeny?:() => void",
+    "approveLabel?:string",
+    "denyLabel?:string",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Approve and Deny are ordinary buttons in tab order. Neither takes focus on its own, so a stray Enter can never consent.",
+    "sr": "a group named by `title`; risky scope items say \"Can't undo\" in words. After a decision the receipt is announced and takes focus.",
+    "m": "opacity and height only.",
+    "h": "one gate per irreversible action, each with a distinct `title`; set `state` only from a real decision, never on mount."
+   }
+  },
+  {
+   "n": "checkpoint",
+   "c": "Checkpoint",
+   "d": "The run's save points, newest at the top, and a way back to any of them.",
+   "pr": [
+    "Graceful failure",
+    "Interruptibility"
+   ],
+   "p": [
+    "checkpoints:CheckpointEntry[] // Newest first; the first entry is the current state",
+    "current?:string // Id of the checkpoint the run is at (defaults to the first)",
+    "onRestore?:(id: string) => void",
+    "confirming?:string | null // Controlled id of the checkpoint whose restore confirm is open",
+    "onConfirmingChange?:(id: string | null) => void",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Restore opens an inline confirm that takes focus; Escape keeps going.",
+    "sr": "\"You are here\" reads in words; each Restore names its checkpoint, and the confirm says what will be undone.",
+    "m": "opacity, scale and height on the confirm only.",
+    "h": "give `undoes` for every checkpoint but the current one."
+   }
+  },
+  {
+   "n": "citation-chip",
+   "c": "CitationChip",
+   "d": "An inline source marker on a claim, and the drawer it opens.",
+   "pr": [
+    "Calibrated trust"
+   ],
+   "p": [
+    "index:number // 1-based number shown on the chip",
+    "source:Source",
+    "active?:boolean // Marks the chip whose source is open in the drawer",
+    "onOpen?:(index: number) => void",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "chips are buttons; Escape inside the drawer closes it.",
+    "sr": "a chip reads \"Source 1: <title>\", and says when the source could not be reached; the drawer is a region named Sources.",
+    "m": "the drawer fades and rises 8px.",
+    "h": "one chip right after the sentence it supports; keep `index` matching the drawer's order."
+   }
+  },
+  {
+   "n": "clarifying-question",
+   "c": "ClarifyingQuestion",
+   "d": "One question the agent needs answered before it goes further, with the likely answers ready to tap and room for your own.",
+   "pr": [
+    "Delegation contracts"
+   ],
+   "p": [
+    "question:string",
+    "why?:string // Why the agent is asking, e.g. \"This changes which files I edit\"",
+    "options:ClarifyingOption[]",
+    "multi?:boolean // Allow choosing more than one option",
+    "allowOther?:boolean // Show a free-text \"Something else\" field",
+    "fallback?:string // What the agent does if the person skips; shows a Skip button when set",
+    "answer?:string[] | null // Controlled answer; omit to let the component manage it",
+    "onAnswer?:(answer: string[]) => void",
+    "onSkip?:() => void",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "each option is a button; keys 1 to 9 pick an option while it is open (not while typing); in multi mode options are checkboxes toggled with Space.",
+    "sr": "the options are a list named by the question; once answered it reads \"You chose …\".",
+    "m": "opacity only.",
+    "h": "ask one question at a time; set `fallback` whenever the agent has a sensible default."
+   }
+  },
+  {
+   "n": "confidence-meter",
+   "c": "ConfidenceMeter",
+   "d": "Honest uncertainty display: confidence as coarse bands, never decimal theater, paired with a verification affordance exactly when doubt is warranted.",
+   "pr": [
+    "Calibrated trust"
+   ],
+   "p": [
+    "claim:string // The claim being qualified, e.g. \"This invoice matches PO #4412\"",
+    "confidence:number // Model confidence 0..1; rendered as a band, not a number",
+    "basis?:string // What the confidence is based on, e.g. \"3 matching fields, 1 OCR gap\"",
+    "threshold?:number // Below this, the verify affordance becomes prominent (default 0.75)",
+    "onVerify?:() => void",
+    "verifyLabel?:string",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "the verify button is in tab order whenever it shows.",
+    "sr": "the meter reads its band in words (\"Medium confidence\"), never a percentage; the claim and its basis read as text.",
+    "m": "opacity and height only.",
+    "h": "pass `confidence` from 0 to 1 and never print the number beside it; give `onVerify` whenever the person can check the claim."
+   }
+  },
+  {
+   "n": "context-budget",
+   "c": "ContextBudget",
+   "d": "A delegation contract's limits, made visible: tokens, spend, or time against their caps.",
+   "pr": [
+    "Delegation contracts"
+   ],
+   "p": [
+    "lines:BudgetLine[]",
+    "label?:string",
+    "onRaise?:(label: string) => void // Called when the human raises a cap after one is hit",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Raise cap is a button where a cap is reached and `onRaise` is given.",
+    "sr": "each line is a progress bar named with its label, use and cap; the band reads in words.",
+    "m": "the bar eases to its new width.",
+    "h": "give lines distinct labels; pause the run at a cap before showing Raise."
+   }
+  },
+  {
+   "n": "diff-review-card",
+   "c": "DiffReviewCard",
+   "d": "An agent's proposed change to a file, reviewed hunk by hunk before it lands.",
+   "pr": [
+    "Delegation contracts"
+   ],
+   "p": [
+    "file:string // File path, e.g. \"src/api/client.ts\"",
+    "hunks:DiffHunk[]",
+    "decisions?:Record<string, HunkDecision> // Controlled decisions by hunk id; omit to let the card manage them",
+    "onDecide?:(id: string, decision: Exclude<HunkDecision, \"pending\">) => void",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Accept and Reject per hunk, and Accept all, are buttons in tab order.",
+    "sr": "each button names its hunk (\"Accept: Retry once on timeout\"); removed and added lines are announced as such.",
+    "m": "opacity and height only.",
+    "h": "give every hunk a `summary`; apply a hunk only from onDecide."
+   }
+  },
+  {
+   "n": "interrupt-bar",
+   "c": "InterruptBar",
+   "d": "The steering wheel and the brake for a running agent.",
+   "pr": [
+    "Interruptibility"
+   ],
+   "p": [
+    "activity:string // What the agent is doing right now, e.g. \"Comparing 14 flights\"",
+    "elapsed?:number // Seconds elapsed in the run",
+    "state?:InterruptBarState",
+    "keptOnStop?:string // What was kept when stopped, e.g. \"Search results saved\"",
+    "onStop?:() => void",
+    "onSteer?:(message: string) => void // Called with the user's mid-run redirect",
+    "acknowledgment?:string // The agent's acknowledgment of the last steer, shown inline",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Stop is a button; the steer field sends on Enter.",
+    "sr": "the steer acknowledgment and the stopped receipt are announced; after Stop, focus moves to the receipt.",
+    "m": "the running pulse stops under prefers-reduced-motion.",
+    "h": "keep the bar on screen for the whole run, and set `acknowledgment` after onSteer so the person hears the steer was taken."
+   }
+  },
+  {
+   "n": "memory-panel",
+   "c": "MemoryPanel",
+   "d": "What the agent remembers about you, in its own words, with where each memory came from and a way to forget it.",
+   "pr": [
+    "Calibrated trust"
+   ],
+   "p": [
+    "memories:Memory[]",
+    "onForget?:(id: string) => void // Called once a forget is final (after the undo window)",
+    "paused?:boolean // Controlled paused state; omit to let the panel manage it",
+    "onPausedChange?:(paused: boolean) => void",
+    "undoMs?:number // How long Undo stays available, in ms (default 5000)",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Forget, Undo and the remembering switch are buttons.",
+    "sr": "the switch reports on or off; forgetting is announced with its Undo.",
+    "m": "rows collapse as they are forgotten.",
+    "h": "forget for real only in onForget, which fires after the undo window."
+   }
+  },
+  {
+   "n": "plan-review",
+   "c": "PlanReview",
+   "d": "The agent's plan, shown before it starts, as steps the person can drop or reword.",
+   "pr": [
+    "Delegation contracts"
+   ],
+   "p": [
+    "goal:string // What the plan is for, e.g. \"Migrate billing to the new API\"",
+    "steps:PlanStep[]",
+    "state?:PlanReviewState // Controlled state; omit to let the component manage it",
+    "onApprove?:(steps: PlanStep[]) => void // Called with the steps as edited, minus any the person dropped",
+    "onRevise?:() => void",
+    "dropped?:number[] // Controlled indexes of dropped steps; omit to let the component manage them",
+    "onDroppedChange?:(dropped: number[]) => void",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Edit opens an inline field (Enter or Escape to finish); Drop and Keep toggle a step; Approve plan submits.",
+    "sr": "Edit and Drop name their step (\"Drop step 3: Run the migration on staging\"); dropped steps read \"Dropped\".",
+    "m": "opacity and height only.",
+    "h": "mark steps that change things outside the sandbox `risky`; run only the steps passed to onApprove."
+   }
+  },
+  {
+   "n": "reasoning-trace",
+   "c": "ReasoningTrace",
+   "d": "The agent's thinking as a short list of steps the user can follow: open while it works, folded to a one-line summary when it's done, and never gone.",
+   "pr": [
+    "Legible thinking"
+   ],
+   "p": [
+    "steps:ReasoningStep[]",
+    "streaming?:boolean // True while the agent is still thinking; the trace stays open",
+    "seconds?:number // Seconds spent thinking, shown in the folded summary",
+    "defaultOpen?:boolean // Start open after the run is done (default false: folds when finished)",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "the summary line is a button; Enter or Space opens and folds the steps.",
+    "sr": "aria-expanded reports open or folded; each step starts with Now, Next or Done.",
+    "m": "the active pulse stops under prefers-reduced-motion.",
+    "h": "write steps as actions (\"Checking carry-on rules\"), not raw model tokens; set `streaming` false when the answer lands, so it folds."
+   }
+  },
+  {
+   "n": "takeover-banner",
+   "c": "TakeoverBanner",
+   "d": "Who has the wheel, said plainly.",
+   "pr": [
+    "Interruptibility"
+   ],
+   "p": [
+    "state:TakeoverState",
+    "reason?:string // What the agent is doing, or why it needs you, e.g. \"Sign in to continue\"",
+    "onTakeOver?:() => void",
+    "onHandBack?:() => void",
+    "privacyNote?:string // Shown while the person drives (default: the agent can't see the screen)",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "Take over and Hand back are buttons.",
+    "sr": "a polite status region; every change of who is driving is announced, with the reason.",
+    "m": "the driving pulse stops under prefers-reduced-motion.",
+    "h": "pin it to the surface the agent controls, and never hide Take over while the agent acts."
+   }
+  },
+  {
+   "n": "tool-call-card",
+   "c": "ToolCallCard",
+   "d": "Shows an agent's tool call with legible, progressive disclosure.",
+   "pr": [
+    "Legible thinking",
+    "Calibrated trust",
+    "Graceful failure"
+   ],
+   "p": [
+    "name:string // Machine name of the tool, e.g. \"search_flights\"",
+    "intent:string // One-line human intent, e.g. \"Searching SFO → JFK for Aug 12\"",
+    "state:ToolCallState",
+    "args?:string // Pretty-printed arguments (JSON string or plain text)",
+    "detail?:string // Result or error detail",
+    "elapsed?:number // Seconds elapsed while running (optional)",
+    "className?:string // Extra classes merged onto the root element"
+   ],
+   "a": {
+    "k": "the header is one button; Enter or Space shows and hides the arguments and result, when there are any.",
+    "sr": "reads the tool name, the intent and the state in words (\"Running · 3s\", \"Failed\"); aria-expanded reports the disclosure.",
+    "m": "the running pulse stops under prefers-reduced-motion.",
+    "h": "update `state` on the same card instead of swapping cards, so its place in the transcript holds; write `intent` in the person's words, not the API's."
+   }
+  }
+ ]
+}

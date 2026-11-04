@@ -11,9 +11,15 @@
  * - Interruptibility: denying is as easy and as prominent as approving
  * - Legible thinking: after the decision, the gate collapses to a receipt,
  *   preserving an audit trail without hogging the transcript
+ *
+ * Accessibility:
+ * - Keyboard: Approve and Deny are ordinary buttons in tab order. Neither takes focus on its own, so a stray Enter can never consent.
+ * - Screen reader: a group named by `title`; risky scope items say "Can't undo" in words. After a decision the receipt is announced and takes focus.
+ * - Motion: opacity and height only.
+ * - Host: one gate per irreversible action, each with a distinct `title`; set `state` only from a real decision, never on mount.
  */
 
-import { useState } from "react";
+import { useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 export interface ScopeItem {
@@ -57,7 +63,16 @@ export function ApprovalGate({
   const [internal, setInternal] = useState<ApprovalState>("awaiting");
   const state = controlled ?? internal;
 
+  const titleId = useId();
+  // After a click on Approve or Deny the buttons are gone: move focus to the receipt as it
+  // appears (after the exit animation), so a keyboard user is not dropped at the top of the page.
+  const decided = useRef(false);
+  const focusReceipt = (el: HTMLDivElement | null) => {
+    if (el && decided.current) el.focus();
+  };
+
   const decide = (next: Exclude<ApprovalState, "awaiting">) => {
+    decided.current = true;
     if (controlled === undefined) setInternal(next);
     (next === "approved" ? onApprove : onDeny)?.();
   };
@@ -68,6 +83,8 @@ export function ApprovalGate({
         {state === "awaiting" ? (
           <motion.div
             key="awaiting"
+            role="group"
+            aria-labelledby={titleId}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
           >
@@ -78,7 +95,7 @@ export function ApprovalGate({
                   Waiting for you
                 </span>
               </div>
-              <div className="mt-1.5 text-[15px] font-medium text-chalk">{title}</div>
+              <div id={titleId} className="mt-1.5 text-[15px] font-medium text-chalk">{title}</div>
               {reason && <div className="mt-1 text-[13px] leading-relaxed text-smoke">{reason}</div>}
             </div>
 
@@ -128,6 +145,9 @@ export function ApprovalGate({
         ) : (
           <motion.div
             key="receipt"
+            ref={focusReceipt}
+            tabIndex={-1}
+            role="status"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}

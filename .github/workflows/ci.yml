@@ -17,5 +17,8 @@ jobs:
           cache: npm
           cache-dependency-path: package.json
       - run: npm install
+      # Token contrast (both themes) against WCAG AA; fails on any allowed pair below 4.5:1.
+      - run: npm run contrast
+      # Guarantee tests and axe over every component state.
       - run: npm test
       - run: npm run build

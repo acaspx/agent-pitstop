@@ -1,0 +1,67 @@
+{
+  "eval": "contract-use",
+  "title": "Can an agent build correct screens from the contract alone?",
+  "summary": "Ten product requests of the kind a coding agent gets. Each one goes to a fresh agent that sees only llms.txt and contract.json, never the source. The code it writes is scored by tests that render it against the real components.",
+  "prompts": [
+    {
+      "id": "01-send-email",
+      "components": ["approval-gate"],
+      "signature": "export default function Screen({ onSend }: { onSend: () => void })",
+      "prompt": "Our assistant has drafted the Q3 summary email to alice@acme.com, bob@acme.com and carol@acme.com, with Q3-summary.pdf attached. Before it sends, the user has to OK it. Build that moment. Call onSend only when the user agrees."
+    },
+    {
+      "id": "02-flight-search",
+      "components": ["tool-call-card", "interrupt-bar"],
+      "signature": "export default function Screen({ onStop }: { onStop: () => void })",
+      "prompt": "Show the agent mid-way through a search_flights call (SFO to JFK, Aug 12, nonstop), 4 seconds in, while it compares 14 results against the user's $400 cap. The user must be able to stop it without losing the results found so far. Call onStop when they stop it."
+    },
+    {
+      "id": "03-invoice-confidence",
+      "components": ["confidence-meter"],
+      "signature": "export default function Screen({ onVerify }: { onVerify: () => void })",
+      "prompt": "The model thinks invoice #2231 matches purchase order #4412 with 0.62 confidence: vendor, PO number and line items match, but the total is a blurry scan. Show that to the user and let them check it themselves. Call onVerify when they choose to check."
+    },
+    {
+      "id": "04-failed-plan",
+      "components": ["agent-task-list"],
+      "signature": "export default function Screen()",
+      "prompt": "Show the agent's plan for booking a trip to Lisbon: it compared nonstop fares (done), held seat 14A (done), tried to book the flight (failed: card declined), and still has to email the itinerary (not started)."
+    },
+    {
+      "id": "05-plan-review",
+      "components": ["plan-review"],
+      "signature": "export default function Screen({ onRun }: { onRun: (stepTitles: string[]) => void })",
+      "prompt": "Before the agent migrates billing to the v2 payments API, show the user its plan: read the billing client, swap charge() for createPayment(), run the migration on the staging database, open a pull request. Writing to staging is the step to worry about. The user can drop steps, then approve. Call onRun with the titles of the steps they approved, in order, and never before they approve."
+    },
+    {
+      "id": "06-diff-review",
+      "components": ["diff-review-card"],
+      "signature": "export default function Screen({ onApply }: { onApply: (changeId: string) => void })",
+      "prompt": "The agent proposes two changes to src/api/client.ts: retry once on timeout (change id 'retry': `return fetch(url, opts);` becomes `return withRetry(() => fetch(url, opts));`) and log the request id with errors (change id 'log': `console.error(\"failed\");` becomes `console.error(\"failed\", { id });`). Let the user review them separately. Call onApply(changeId) for each change they accept, and only for those."
+    },
+    {
+      "id": "07-clarifying-question",
+      "components": ["clarifying-question"],
+      "signature": "export default function Screen({ onAnswer, onSkip }: { onAnswer: (choice: string) => void; onSkip: () => void })",
+      "prompt": "Two fares tie on price, so the agent needs to know which seat to hold before booking: aisle on United 1532 or window on JetBlue 616. If the user doesn't care, it will take the earlier flight. Ask them. Call onAnswer with their choice, or onSkip if they leave it to the agent."
+    },
+    {
+      "id": "08-takeover",
+      "components": ["takeover-banner"],
+      "signature": "export default function Screen({ onTakeOver }: { onTakeOver: () => void })",
+      "prompt": "The agent is booking a flight in the browser and has reached JetBlue's sign-in page. It doesn't type passwords, so the user has to take over. Show that. Call onTakeOver when they take control."
+    },
+    {
+      "id": "09-cited-answer",
+      "components": ["reasoning-trace", "citation-chip"],
+      "signature": "export default function Screen()",
+      "prompt": "Show the agent's finished answer to 'Is the cheapest SFO to JFK fare still cheapest with a carry-on?': 'No. JetBlue's cheapest fare doesn't include a carry-on, so United Basic is $19 cheaper all in.' It took 4 seconds and three steps (searched fare tables, checked carry-on rules, compared totals). The JetBlue claim comes from jetblue.com ('Carry-on bags are not included with Blue Basic.'); the United claim is from united.com, which the agent couldn't load to double-check. Let the user see where each claim came from."
+    },
+    {
+      "id": "10-memory",
+      "components": ["memory-panel"],
+      "signature": "export default function Screen({ onForget }: { onForget: (id: string) => void })",
+      "prompt": "Show what the assistant remembers about the user and let them make it forget things: 'Prefers aisle seats on long flights' (id m1, from a chat about a New York trip, Oct 12), 'Flies out of SFO, not OAK' (id m2, same chat), 'Expense reports go to finance@ on Fridays' (id m3, the user said so, Sep 30). onForget deletes the memory on our server for good."
+    }
+  ]
+}

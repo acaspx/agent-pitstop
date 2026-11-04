@@ -1,0 +1,467 @@
+{
+  "eval": "contract-use",
+  "run": "v1",
+  "scoredAt": "2026-11-04",
+  "agent": "Claude Opus 5.5 (claude-opus-5-5), one fresh subagent per prompt, no tools beyond reading the two contract files",
+  "contract": "v1: contract.json + llms.txt as published on 2026-11-04 (props with named types, guarantees, accessibility)",
+  "notes": "Every agent reported reading only the two contract files. Outputs are saved verbatim.",
+  "totals": {
+    "prompts": 10,
+    "promptsPassed": 0,
+    "checks": 84,
+    "checksPassed": 61
+  },
+  "prompts": [
+    {
+      "id": "01-send-email",
+      "components": [
+        "approval-gate"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/approval-gate' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "sends nothing until the user agrees",
+          "pass": true
+        },
+        {
+          "name": "sends exactly once on approve",
+          "pass": true
+        },
+        {
+          "name": "denying never sends",
+          "pass": true
+        },
+        {
+          "name": "marks sending as something that can't be undone",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "02-flight-search",
+      "components": [
+        "tool-call-card",
+        "interrupt-bar"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/tool-call-card' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows the tool call running, in words",
+          "pass": true
+        },
+        {
+          "name": "Stop calls onStop",
+          "pass": true
+        },
+        {
+          "name": "says what was kept, not the default",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "03-invoice-confidence",
+      "components": [
+        "confidence-meter"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/confidence-meter' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows the band the confidence earns (medium)",
+          "pass": true
+        },
+        {
+          "name": "never prints the number",
+          "pass": true
+        },
+        {
+          "name": "checking calls onVerify",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "04-failed-plan",
+      "components": [
+        "agent-task-list"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": false,
+          "why": "TS2353: Object literal may only specify known properties, and 'error' does not exist in type 'AgentTask'."
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/agent-task-list' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "keeps the failed step's error",
+          "pass": false,
+          "why": "AssertionError: expected 'Booking your trip to Lisbon2/4Done: C…' to match /card declined/i"
+        },
+        {
+          "name": "gives each step its true status",
+          "pass": true
+        },
+        {
+          "name": "names the plan",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "05-plan-review",
+      "components": [
+        "plan-review"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/plan-review' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "runs nothing before approval",
+          "pass": true
+        },
+        {
+          "name": "marks the staging step risky",
+          "pass": true
+        },
+        {
+          "name": "approving runs the approved steps' titles",
+          "pass": true
+        },
+        {
+          "name": "a dropped step is not run",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "06-diff-review",
+      "components": [
+        "diff-review-card"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": false,
+          "why": "TS2353: Object literal may only specify known properties, and 'lines' does not exist in type 'DiffHunk'. | TS2353: Object literal may only specify known properties, and 'lines' does not exist in type 'DiffHunk'."
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/diff-review-card' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": false,
+          "why": "AssertionError: expected [Function] to not throw an error but 'TypeError: Cannot read properties of …' was thrown"
+        },
+        {
+          "name": "passes axe",
+          "pass": false,
+          "why": "TypeError: Cannot read properties of undefined (reading 'map')"
+        },
+        {
+          "name": "applies nothing up front",
+          "pass": false,
+          "why": "TypeError: Cannot read properties of undefined (reading 'map')"
+        },
+        {
+          "name": "accepting one change applies only that one",
+          "pass": false,
+          "why": "TypeError: Cannot read properties of undefined (reading 'map')"
+        },
+        {
+          "name": "rejecting never applies",
+          "pass": false,
+          "why": "TypeError: Cannot read properties of undefined (reading 'map')"
+        },
+        {
+          "name": "every change says what it does",
+          "pass": false,
+          "why": "TypeError: Cannot read properties of undefined (reading 'map')"
+        }
+      ]
+    },
+    {
+      "id": "07-clarifying-question",
+      "components": [
+        "clarifying-question"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/clarifying-question' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "offers both seats to tap",
+          "pass": true
+        },
+        {
+          "name": "returns the choice as a string",
+          "pass": true
+        },
+        {
+          "name": "offers to skip, saying what the agent will do",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "08-takeover",
+      "components": [
+        "takeover-banner"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": false,
+          "why": "TS2322: Type 'Driver' is not assignable to type 'TakeoverState'."
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/takeover-banner' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "says it's the user's turn, and why",
+          "pass": false,
+          "why": "AssertionError: expected 'Booking your flightYour agent reached…' to match /your turn/i"
+        },
+        {
+          "name": "Take over calls onTakeOver",
+          "pass": false,
+          "why": "TypeError: Cannot read properties of undefined (reading 'dot')"
+        },
+        {
+          "name": "is announced to screen readers",
+          "pass": true
+        }
+      ]
+    },
+    {
+      "id": "09-cited-answer",
+      "components": [
+        "reasoning-trace",
+        "citation-chip"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": false,
+          "why": "TS2322: Type '{ title: string; url: string; quote: string; unreachable?: undefined; } | { title: string; url: string; unreachable: boolean; quote?: undefined; }' is not assignable to type 'Source'. | TS2322: Type '{ title: string; url: stri"
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": true
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows the finished reasoning, folded",
+          "pass": true
+        },
+        {
+          "name": "cites each claim",
+          "pass": true
+        },
+        {
+          "name": "flags the source it couldn't load",
+          "pass": true
+        },
+        {
+          "name": "opening a source shows the passage",
+          "pass": false,
+          "why": "Error: Unable to find role=\"complementary\" and name `/sources/i`"
+        }
+      ]
+    },
+    {
+      "id": "10-memory",
+      "components": [
+        "memory-panel"
+      ],
+      "pass": false,
+      "checks": [
+        {
+          "name": "compiles against the real types",
+          "pass": true
+        },
+        {
+          "name": "uses the component the request calls for",
+          "pass": true
+        },
+        {
+          "name": "imports it from the documented install path",
+          "pass": false,
+          "why": "AssertionError: expected '@/components/ui/memory-panel' to match /^@\\/components\\/[a-z-]+$/components\\"
+        },
+        {
+          "name": "renders",
+          "pass": true
+        },
+        {
+          "name": "passes axe",
+          "pass": true
+        },
+        {
+          "name": "shows all three memories",
+          "pass": true
+        },
+        {
+          "name": "deletes only after the undo window",
+          "pass": true
+        },
+        {
+          "name": "Undo means nothing is deleted",
+          "pass": true
+        }
+      ]
+    }
+  ]
+}

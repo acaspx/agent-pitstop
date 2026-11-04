@@ -12,8 +12,18 @@ All notable changes to Agent Pit Stop. The format follows [Keep a Changelog](htt
 - Live interactive showcase on `/components` (six tiles on the landing) with a theme and accent switcher
 - A Stageshow demo at the top of each of the five principle chapters
 
+### Added (evals)
+
+- `evals/contract-use`: ten prompts, a brief, checks that compile and drive agent-written screens against the real components, and every run saved verbatim; `npm run eval -- <run>` scores a run. Pages at `/evals` and `/evals/contract-use`
+- Baseline (contract v1): 0/10 screens fully correct, 61/84 checks. After tightening the contract (v2): 10/10, 84/84
+
 ### Changed
 
+- Contract: each component now carries its import line (`i`), every exported type (`t`) and the other components in its file (`x`); `importFrom` and a `legend` at the top. Registry items pin `target: components/<name>.tsx`
+- Accessibility block in every component header (keyboard, screen reader, motion, host), published to `contract.json` (`a`), registry `meta.accessibility`, and each doc page; the build fails without it
+- Two new contract guarantees: focus is never dropped; continuous motion stops under `prefers-reduced-motion`
+- CI: axe-core over every component state, and token contrast (both themes) against WCAG AA
+- Fixes: status words for screen readers in Agent Task List and Reasoning Trace; focus and announcement after Approve and Stop; Checkpoint confirm focus and Escape; named Accept, Reject, Edit and Drop buttons; Clarifying Question no longer claims radio semantics; Source Drawer closes on Escape; looping pulses hide under reduced motion
 - Checkpoint accepts a controlled `confirming`; Plan Review accepts a controlled `dropped`
 - Guarantee tests extended to the new components (18 total)
 

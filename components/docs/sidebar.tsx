@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { componentCategories, componentsIn, principles } from "@/lib/nav";
+
+/** Kept here rather than read from lib/evals (which reads the filesystem, server-only). */
+const EVAL_LINKS = [{ href: "/evals/contract-use", label: "Contract use" }];
 import { PitFlag } from "./pit-flag";
 
 function NavLink({ href, label, muted, badge }: { href: string | null; label: string; muted?: boolean; badge?: string }) {
@@ -58,6 +61,16 @@ export function Sidebar() {
           <NavLink href="/how-it-works" label="How it works" />
           <NavLink href="/full-lap" label="The Full Lap" />
           <NavLink href="/changelog" label="Changelog" badge="New" />
+        </div>
+
+        <div>
+          <div className="px-2.5 pb-1.5 text-[11px] font-medium uppercase tracking-wide text-ash">
+            Evals
+          </div>
+          <NavLink href="/evals" label="Overview" muted />
+          {EVAL_LINKS.map((e) => (
+            <NavLink key={e.href} href={e.href} label={e.label} />
+          ))}
         </div>
 
         <div>

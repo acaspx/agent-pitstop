@@ -13,6 +13,12 @@
  * - Delegation contracts: remembering is something you allow, and pausing
  *   it is one switch
  * - Graceful failure: forgetting is undoable for a moment, then final
+ *
+ * Accessibility:
+ * - Keyboard: Forget, Undo and the remembering switch are buttons.
+ * - Screen reader: the switch reports on or off; forgetting is announced with its Undo.
+ * - Motion: rows collapse as they are forgotten.
+ * - Host: forget for real only in onForget, which fires after the undo window.
  */
 
 import { useEffect, useRef, useState } from "react";

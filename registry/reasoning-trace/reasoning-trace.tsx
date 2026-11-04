@@ -13,6 +13,12 @@
  *   can judge the answer by what it rests on
  * - Interruptibility: the open trace is where a user notices drift early;
  *   folding is a choice the user can undo at any time
+ *
+ * Accessibility:
+ * - Keyboard: the summary line is a button; Enter or Space opens and folds the steps.
+ * - Screen reader: aria-expanded reports open or folded; each step starts with Now, Next or Done.
+ * - Motion: the active pulse stops under prefers-reduced-motion.
+ * - Host: write steps as actions ("Checking carry-on rules"), not raw model tokens; set `streaming` false when the answer lands, so it folds.
  */
 
 import { useEffect, useState } from "react";
@@ -43,6 +49,7 @@ export interface ReasoningTraceProps {
 }
 
 const EASE = [0.32, 0.72, 0, 1] as const;
+const STEP_WORD: Record<ReasoningStepStatus, string> = { pending: "Next", active: "Now", done: "Done" };
 
 function StepMark({ status }: { status: ReasoningStepStatus }) {
   if (status === "done") {
@@ -52,7 +59,7 @@ function StepMark({ status }: { status: ReasoningStepStatus }) {
     return (
       <span className="relative mt-[5px] inline-flex h-2.5 w-2.5 shrink-0 items-center justify-center" aria-hidden>
         <motion.span
-          className="absolute inline-flex h-full w-full rounded-full bg-pit"
+          className="motion-reduce:hidden absolute inline-flex h-full w-full rounded-full bg-pit"
           animate={{ scale: [1, 1.9], opacity: [0.5, 0] }}
           transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
         />
@@ -137,6 +144,7 @@ export function ReasoningTrace({ steps, streaming = false, seconds, defaultOpen 
                         step.status === "active" ? "text-chalk" : step.status === "done" ? "text-smoke" : "text-ash"
                       }`}
                     >
+                      <span className="sr-only">{STEP_WORD[step.status]}: </span>
                       {step.label}
                     </div>
                     <AnimatePresence initial={false}>

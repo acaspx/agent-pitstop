@@ -12,6 +12,12 @@
  * - Legible thinking: each hunk carries a one-line why, so review is
  *   judging intent, not reading tea leaves
  * - Interruptibility: rejecting one hunk never throws away the others
+ *
+ * Accessibility:
+ * - Keyboard: Accept and Reject per hunk, and Accept all, are buttons in tab order.
+ * - Screen reader: each button names its hunk ("Accept: Retry once on timeout"); removed and added lines are announced as such.
+ * - Motion: opacity and height only.
+ * - Host: give every hunk a `summary`; apply a hunk only from onDecide.
  */
 
 import { useState } from "react";
@@ -66,8 +72,9 @@ export function DiffReviewCard({ file, hunks, decisions: controlled, onDecide, c
         )}
       </div>
       <ul>
-        {hunks.map((h) => {
+        {hunks.map((h, hi) => {
           const d = decisions[h.id] ?? "pending";
+          const what = h.summary ?? `change ${hi + 1} in ${file}`;
           return (
             <li key={h.id} className="border-b border-line last:border-b-0">
               {h.summary && (
@@ -88,12 +95,14 @@ export function DiffReviewCard({ file, hunks, decisions: controlled, onDecide, c
                 {h.removed.map((l, i) => (
                   <div key={`r${i}`} className="bg-flag/10 px-3 text-flag">
                     <span aria-hidden className="mr-2 select-none opacity-70">−</span>
+                    <span className="sr-only">Removed: </span>
                     <span className={d === "accepted" ? "line-through decoration-flag/50" : ""}>{l}</span>
                   </div>
                 ))}
                 {h.added.map((l, i) => (
                   <div key={`a${i}`} className="bg-signal/10 px-3 text-signal">
                     <span aria-hidden className="mr-2 select-none opacity-70">+</span>
+                    <span className="sr-only">Added: </span>
                     <span className={d === "rejected" ? "line-through decoration-signal/50" : ""}>{l}</span>
                   </div>
                 ))}
@@ -110,6 +119,7 @@ export function DiffReviewCard({ file, hunks, decisions: controlled, onDecide, c
                       <button
                         type="button"
                         onClick={() => decide(h.id, "accepted")}
+                        aria-label={`Accept: ${what}`}
                         className="min-h-8 rounded-lg bg-chalk px-3 py-1 text-[12px] font-medium text-track transition-opacity hover:opacity-85 pointer-coarse:min-h-11"
                       >
                         Accept
@@ -117,6 +127,7 @@ export function DiffReviewCard({ file, hunks, decisions: controlled, onDecide, c
                       <button
                         type="button"
                         onClick={() => decide(h.id, "rejected")}
+                        aria-label={`Reject: ${what}`}
                         className="min-h-8 rounded-lg border border-line px-3 py-1 text-[12px] font-medium text-smoke transition-colors hover:border-flag/50 hover:text-flag pointer-coarse:min-h-11"
                       >
                         Reject

@@ -15,19 +15,20 @@ Copy `registry/_template/component-name.tsx` — it encodes every convention bel
 
 ## Definition of done (components)
 
-Every component PR ships all five, or it isn't done:
+Every component PR ships all six, or it isn't done:
 
 1. **Registry component** — one self-contained file in `registry/<name>/<name>.tsx`. Dependencies: React, Tailwind, Motion. Nothing else.
 2. **Demo** — `app/components/<name>/demo.tsx`, interactive, showing every state.
 3. **Doc page** — `app/components/<name>/page.tsx` using `ComponentDoc`: intro, when to use, behavior, usage snippet.
 4. **Registrations** — entry in `lib/nav.ts` (category + supported formats) and `scripts/build-registry.mjs` (title + description).
 5. **Principles applied** — a header comment citing which principles the component applies, and honest adherence to them: state never by color alone, failures keep their inputs, interruptions acknowledged.
+6. **Accessibility block** — four header lines (Keyboard, Screen reader, Motion, Host). They become the Accessibility section on the doc page and the `a` field agents read in `contract.json`; the registry build fails if one is missing. Add the component to the axe test in `tests/a11y.test.tsx`.
 
 ## Code standards
 
 - TypeScript strict; exported props interfaces with doc comments on every prop.
 - Design tokens only (`bg-asphalt`, `text-smoke`, `var(--color-pit)`); no hardcoded colors or spacing.
-- Accessible by default: keyboard operable, `aria-*` where state changes, honest labels.
+- Accessible by default: keyboard operable, `aria-*` where state changes, honest labels, focus never dropped, looping motion stops under reduced motion. See [docs/accessibility.md](./docs/accessibility.md).
 - Motion is choreography, not decoration: durations ≤ 400ms, respect the existing easing vocabulary.
 - Components must work in every format they declare (`web`, `mobile`, `chat`, `cli`).
 

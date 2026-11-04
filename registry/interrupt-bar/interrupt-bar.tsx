@@ -13,9 +13,15 @@
  *   because a brake you're afraid to use is not a brake
  * - Legible thinking: the bar shows what the agent is doing right now,
  *   so the user knows what they'd be interrupting
+ *
+ * Accessibility:
+ * - Keyboard: Stop is a button; the steer field sends on Enter.
+ * - Screen reader: the steer acknowledgment and the stopped receipt are announced; after Stop, focus moves to the receipt.
+ * - Motion: the running pulse stops under prefers-reduced-motion.
+ * - Host: keep the bar on screen for the whole run, and set `acknowledgment` after onSteer so the person hears the steer was taken.
  */
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 export type InterruptBarState = "running" | "stopped";
@@ -51,7 +57,14 @@ export function InterruptBar({
   const [draft, setDraft] = useState("");
   const state = controlled ?? internal;
 
+  // Stop removes the button that had focus: hand focus to the receipt as it appears.
+  const stopped = useRef(false);
+  const focusReceipt = (el: HTMLDivElement | null) => {
+    if (el && stopped.current) el.focus();
+  };
+
   const stop = () => {
+    stopped.current = true;
     if (controlled === undefined) setInternal("stopped");
     onStop?.();
   };
@@ -71,7 +84,7 @@ export function InterruptBar({
             <div className="flex items-center gap-3 px-4 py-3">
               <span className="relative flex h-2 w-2 shrink-0">
                 <motion.span
-                  className="absolute inline-flex h-full w-full rounded-full bg-pit"
+                  className="motion-reduce:hidden absolute inline-flex h-full w-full rounded-full bg-pit"
                   animate={{ scale: [1, 2.2], opacity: [0.6, 0] }}
                   transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
                 />
@@ -98,7 +111,7 @@ export function InterruptBar({
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
                 >
-                  <div className="flex items-center gap-2 border-t border-line px-4 py-2">
+                  <div className="flex items-center gap-2 border-t border-line px-4 py-2" role="status">
                     <span className="inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-signal" aria-hidden />
                     <span className="truncate text-[12px] text-smoke">{acknowledgment}</span>
                   </div>
@@ -128,6 +141,9 @@ export function InterruptBar({
         ) : (
           <motion.div
             key="stopped"
+            ref={focusReceipt}
+            tabIndex={-1}
+            role="status"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}

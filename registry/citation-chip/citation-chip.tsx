@@ -14,6 +14,12 @@
  *   only where it went
  * - Graceful failure: a source that couldn't be reached says so on the
  *   chip instead of silently disappearing
+ *
+ * Accessibility:
+ * - Keyboard: chips are buttons; Escape inside the drawer closes it.
+ * - Screen reader: a chip reads "Source 1: <title>", and says when the source could not be reached; the drawer is a region named Sources.
+ * - Motion: the drawer fades and rises 8px.
+ * - Host: one chip right after the sentence it supports; keep `index` matching the drawer's order.
  */
 
 import { AnimatePresence, motion } from "motion/react";
@@ -83,6 +89,7 @@ export function SourceDrawer({ sources, activeIndex, onSelect, onClose, classNam
           exit={{ opacity: 0, y: 8 }}
           transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }}
           aria-label="Sources"
+          onKeyDown={(e) => e.key === "Escape" && onClose?.()}
           className={`w-full overflow-hidden rounded-xl border border-line bg-asphalt ${className ?? ""}`}
         >
           <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">

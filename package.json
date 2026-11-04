@@ -4,13 +4,16 @@
   "private": true,
   "description": "An open design system for agentic interfaces. Principles and components for the moments where agents and humans sync.",
   "scripts": {
+    "predev": "node scripts/build-registry.mjs",
     "dev": "next dev",
     "registry": "node scripts/build-registry.mjs",
     "prebuild": "node scripts/build-registry.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "contrast": "node scripts/check-contrast.mjs",
+    "eval": "node scripts/eval.mjs"
   },
   "dependencies": {
     "geist": "^1.4.0",
@@ -26,6 +29,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
     "@testing-library/react": "^16.1.0",
+    "axe-core": "^4.10.0",
     "jsdom": "^25.0.0",
     "vitest": "^2.1.0",
     "@types/mdx": "^2.0.13",

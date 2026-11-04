@@ -12,6 +12,12 @@
  * - Interruptibility: asking is a planned pause; skipping lets the agent go
  *   on with its stated default
  * - Legible thinking: the folded answer stays in the thread as a record
+ *
+ * Accessibility:
+ * - Keyboard: each option is a button; keys 1 to 9 pick an option while it is open (not while typing); in multi mode options are checkboxes toggled with Space.
+ * - Screen reader: the options are a list named by the question; once answered it reads "You chose …".
+ * - Motion: opacity only.
+ * - Host: ask one question at a time; set `fallback` whenever the agent has a sensible default.
  */
 
 import { useEffect, useState } from "react";
@@ -108,15 +114,15 @@ export function ClarifyingQuestion({
               <div className="text-[14px] font-medium leading-snug text-chalk">{question}</div>
               {why && <div className="mt-1 text-[12px] leading-snug text-ash">{why}</div>}
             </div>
-            <ul className="px-2 pb-2" role={multi ? "group" : "radiogroup"} aria-label={question}>
+            <ul className="px-2 pb-2" aria-label={question}>
               {options.map((o, i) => {
                 const on = picked.includes(o.label);
                 return (
                   <li key={o.label}>
                     <button
                       type="button"
-                      role={multi ? "checkbox" : "radio"}
-                      aria-checked={on}
+                      role={multi ? "checkbox" : undefined}
+                      aria-checked={multi ? on : undefined}
                       onClick={() => toggle(o.label)}
                       className={`flex min-h-11 w-full items-start gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-carbon ${
                         on ? "bg-carbon" : ""
