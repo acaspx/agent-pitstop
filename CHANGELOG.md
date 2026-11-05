@@ -12,6 +12,13 @@ All notable changes to Agent Pit Stop. The format follows [Keep a Changelog](htt
 - Live interactive showcase on `/components` (six tiles on the landing) with a theme and accent switcher
 - A Stageshow demo at the top of each of the five principle chapters
 
+### Added (components and docs)
+
+- Tool Call Card: `awaiting`, `denied` and `stopped` states, with an approval (`approval`, `onAllow`, `onDeny`) inside the card; failures and questions open it automatically
+- Thinking Indicator and Question Flow (18 components)
+- States grid on every component page; ⌘K / `/` search; radius, density and Copy CSS in Make them yours
+- Tests for the new states and components (53 in total)
+
 ### Added (evals)
 
 - `evals/contract-use`: ten prompts, a brief, checks that compile and drive agent-written screens against the real components, and every run saved verbatim; `npm run eval -- <run>` scores a run. Pages at `/evals` and `/evals/contract-use`

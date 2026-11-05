@@ -32,7 +32,23 @@ export default function Page() {
         },
         {
           heading: "Behavior",
-          body: "Four states: queued, running (with elapsed time), done, failed. The card expands to show arguments and result. On failure the arguments stay attached to the error, because the wrong assumption usually lives in the inputs, not the stack trace.",
+          body: "Seven states: queued, running (with elapsed time), needs you, done, failed, denied and stopped. The card expands to show arguments and result, and opens on its own when a call fails or needs permission. On failure the arguments stay attached to the error, because the wrong assumption usually lives in the inputs, not the stack trace.",
+        },
+        {
+          heading: "Approval inside the call",
+          body: "When a call needs permission, set state to \"awaiting\" and pass `approval`: the question, and a sentence on what allowing does. Deny and Allow appear inside the card, Deny first and quiet, because saying no loses nothing. When the person refuses, move the card to \"denied\", not \"error\": a refusal is their choice, not a failure, so it reads grey, never red. Use this for permission on one call; for a decision about a whole action with itemized scope, use Approval Gate.",
+          code: `<ToolCallCard
+  name="charge_card"
+  intent="Booking TAP 202 for $612"
+  state={state}            // "awaiting" → "running" or "denied"
+  args={JSON.stringify(params, null, 2)}
+  approval={{
+    question: "Charge $612 to the Visa ending 4242?",
+    consequence: "Nonrefundable. The fare is booked at once.",
+  }}
+  onAllow={() => setState("running")}
+  onDeny={() => setState("denied")}
+/>`,
         },
         {
           heading: "Usage",

@@ -102,7 +102,8 @@ describe("guarantee: failures keep their inputs visible", () => {
         detail="FareExpiredError"
       />,
     );
-    fireEvent.click(screen.getByRole("button", { expanded: false }));
+    // A failure opens on its own: the inputs are on screen without a click.
+    expect(screen.getByRole("button", { expanded: true })).toBeTruthy();
     expect(screen.getByText(/B6-616/)).toBeTruthy();
     expect(screen.getByText(/FareExpiredError/)).toBeTruthy();
   });
@@ -283,5 +284,71 @@ describe("guarantee: continuous motion stops under prefers-reduced-motion", () =
       });
     }
     expect(offenders).toEqual([]);
+  });
+});
+
+/* ---- approval inside a tool call, thinking indicator, question flow ---- */
+import { ThinkingIndicator } from "@/registry/thinking-indicator/thinking-indicator";
+import { QuestionFlow } from "@/registry/question-flow/question-flow";
+
+describe("guarantee: nothing irreversible without explicit consent (tool calls)", () => {
+  const call = (props: Partial<Parameters<typeof ToolCallCard>[0]> = {}) => (
+    <ToolCallCard name="charge_card" intent="Booking TAP 202" state="awaiting"
+      approval={{ question: "Charge $612?", consequence: "Nonrefundable." }} {...props} />
+  );
+
+  it("a waiting call asks inside the card, says what allowing does, and Deny comes first", () => {
+    const onAllow = vi.fn();
+    render(call({ onAllow }));
+    const group = screen.getByRole("group", { name: "Charge $612?" });
+    expect(within(group).getByText("Nonrefundable.")).toBeTruthy();
+    const [first, second] = within(group).getAllByRole("button");
+    expect(first!.textContent).toBe("Deny");
+    expect(second!.textContent).toBe("Allow");
+    expect(onAllow).not.toHaveBeenCalled();
+    fireEvent.click(second!);
+    expect(onAllow).toHaveBeenCalledOnce();
+  });
+
+  it("a refusal reads as denied, not as a failure", () => {
+    render(call({ state: "denied", detail: "Wait for Friday" }));
+    expect(screen.getByText("Denied")).toBeTruthy();
+    expect(screen.queryByText("Failed")).toBeNull();
+  });
+
+  it("after a decision, focus goes back to the call's header", async () => {
+    const { rerender } = render(call({ onAllow: () => {} }));
+    fireEvent.click(screen.getByRole("button", { name: "Allow" }));
+    rerender(call({ state: "running" }));
+    await waitFor(() => expect(document.activeElement?.textContent).toMatch(/charge_card/));
+  });
+});
+
+describe("guarantee: state is never communicated by color alone (thinking)", () => {
+  it("says what the agent is doing, then how long it took", () => {
+    const { rerender } = render(<ThinkingIndicator detail="Checking carry-on rules" elapsed={3} />);
+    expect(screen.getByRole("status").textContent).toMatch(/Thinking.*Checking carry-on rules/);
+    rerender(<ThinkingIndicator state="done" elapsed={6} />);
+    expect(screen.getByRole("status").textContent).toMatch(/Thought for 6s/);
+  });
+});
+
+describe("guarantee: nothing irreversible without explicit consent (question flow)", () => {
+  it("answers are only sent from the review, together, with skips as null", async () => {
+    const onComplete = vi.fn();
+    render(
+      <QuestionFlow
+        onComplete={onComplete}
+        questions={[
+          { id: "seat", question: "Which seat?", options: [{ label: "Aisle" }, { label: "Window" }] },
+          { id: "card", question: "Which card?", options: [{ label: "Visa" }], fallback: "your default card" },
+        ]}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: /Window/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /Skip, your default card/ }));
+    expect(onComplete).not.toHaveBeenCalled();
+    fireEvent.click(await screen.findByRole("button", { name: "Send answers" }));
+    expect(onComplete).toHaveBeenCalledWith({ seat: "Window", card: null });
   });
 });

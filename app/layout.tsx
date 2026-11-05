@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
+import { Search } from "@/components/docs/search";
 
 export const metadata: Metadata = {
   title: "Agent Pit Stop — a design system for agentic interfaces",
@@ -18,7 +19,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
-      <body className="min-h-dvh bg-track font-sans text-chalk">{children}</body>
+      <body className="min-h-dvh bg-track font-sans text-chalk">
+        {children}
+        <Search />
+      </body>
     </html>
   );
 }

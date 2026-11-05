@@ -27,6 +27,8 @@ import { DiffReviewCard } from "@/registry/diff-review-card/diff-review-card";
 import { TakeoverBanner } from "@/registry/takeover-banner/takeover-banner";
 import { Checkpoint } from "@/registry/checkpoint/checkpoint";
 import { MemoryPanel } from "@/registry/memory-panel/memory-panel";
+import { ThinkingIndicator } from "@/registry/thinking-indicator/thinking-indicator";
+import { QuestionFlow } from "@/registry/question-flow/question-flow";
 
 async function violations(ui: ReactElement, act?: () => void) {
   const { container } = render(<main>{ui}</main>);
@@ -74,6 +76,12 @@ const cases: [string, () => ReactElement, (() => void)?][] = [
   ["Takeover Banner, you drive", () => <TakeoverBanner state="you" />],
   ["Checkpoint, confirm open", () => <Checkpoint checkpoints={[{ id: "b", label: "Now", time: "now" }, { id: "a", label: "Earlier", time: "4m", undoes: "2 edits" }]} />,
     () => fireEvent.click(screen.getByRole("button", { name: "Restore to Earlier" }))],
+  ["Tool Call Card, needs permission", () => <ToolCallCard name="charge_card" intent="Booking" state="awaiting" args="{}" approval={{ question: "Charge $612?", consequence: "Nonrefundable." }} onAllow={() => {}} onDeny={() => {}} />],
+  ["Tool Call Card, denied", () => <ToolCallCard name="charge_card" intent="Booking" state="denied" detail="Not now" />],
+  ["Thinking Indicator", () => <ThinkingIndicator detail="Reading filings" elapsed={3} />],
+  ["Question Flow, first question", () => <QuestionFlow questions={[{ id: "a", question: "Which seat?", why: "Decides the fare", options: [{ label: "Aisle" }, { label: "Window" }], fallback: "earlier flight" }, { id: "b", question: "Bag?", options: [{ label: "No" }] }]} />],
+  ["Question Flow, review", () => <QuestionFlow questions={[{ id: "a", question: "Which seat?", options: [{ label: "Aisle" }] }]} />,
+    () => fireEvent.click(screen.getByRole("button", { name: /Aisle/ }))],
   ["Memory Panel", () => <MemoryPanel memories={[{ id: "1", text: "Likes aisle seats", source: "Trip", learnedAt: "Oct 12" }]} />],
 ];
 

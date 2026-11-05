@@ -22,6 +22,46 @@ const ACCENTS = [
   { name: "Rose", dark: "#fb7185", light: "#be123c" },
 ];
 
+/**
+ * Radius and density reach every component through the theme variables Tailwind's
+ * utilities read (rounded-xl is var(--radius-xl), p-4 is calc(var(--spacing) * 4)), so
+ * nothing in the components changes. The tile frames use 2xl and 3xl, which stay put.
+ */
+const RADII = {
+  sharp: { label: "Sharp", vars: { "--radius-sm": "2px", "--radius-md": "3px", "--radius-lg": "4px", "--radius-xl": "6px" } },
+  default: { label: "Default", vars: {} },
+  round: { label: "Round", vars: { "--radius-sm": "6px", "--radius-md": "8px", "--radius-lg": "12px", "--radius-xl": "18px" } },
+} as const;
+const DENSITIES = {
+  compact: { label: "Compact", spacing: "0.22rem" },
+  default: { label: "Default", spacing: "" },
+  comfortable: { label: "Comfortable", spacing: "0.29rem" },
+} as const;
+type Radius = keyof typeof RADII;
+type Density = keyof typeof DENSITIES;
+
+/** A small segmented control for the customizer bar. */
+function Choice<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: [T, string][]; onChange: (v: T) => void }) {
+  return (
+    <div role="group" aria-label={label} className="flex items-center gap-2">
+      <span className="text-[12px] text-ash">{label}</span>
+      <div className="inline-flex overflow-hidden rounded-lg border border-line">
+        {options.map(([id, text]) => (
+          <button
+            key={id}
+            type="button"
+            aria-pressed={value === id}
+            onClick={() => onChange(id)}
+            className={`min-h-8 px-2.5 text-[12px] transition-colors pointer-coarse:min-h-11 ${value === id ? "bg-asphalt text-chalk" : "text-ash hover:text-smoke"}`}
+          >
+            {text}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Tile({ slug, hint, render }: (typeof tiles)[number]) {
   const [key, setKey] = useState(0);
   const entry = components.find((c) => c.slug === slug);
@@ -52,8 +92,28 @@ function Tile({ slug, hint, render }: (typeof tiles)[number]) {
 export function Showcase({ limit, className }: { limit?: number; className?: string }) {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [accent, setAccent] = useState(0);
+  const [radius, setRadius] = useState<Radius>("default");
+  const [density, setDensity] = useState<Density>("default");
+  const [copied, setCopied] = useState(false);
   const a = ACCENTS[accent];
-  const style = { "--color-pit": theme === "light" ? a.light : a.dark } as CSSProperties;
+  const accentHex = theme === "light" ? a.light : a.dark;
+  const vars: Record<string, string> = {
+    "--color-pit": accentHex,
+    ...RADII[radius].vars,
+    ...(DENSITIES[density].spacing ? { "--spacing": DENSITIES[density].spacing } : {}),
+  };
+  const style = vars as CSSProperties;
+  // The same overrides, as CSS to paste into your own globals.
+  const css = `:root {\n${Object.entries(vars).map(([k, v]) => `  ${k}: ${v};`).join("\n")}\n}`;
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(css);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // clipboard unavailable: nothing to do
+    }
+  };
   const shown = typeof limit === "number" ? tiles.slice(0, limit) : tiles;
 
   return (
@@ -92,13 +152,24 @@ export function Showcase({ limit, className }: { limit?: number; className?: str
           ))}
           <span className="text-[12px] text-ash">{a.name}</span>
         </div>
-        <span className="text-[12px] text-ash sm:ml-auto">Every tile is live. Click around.</span>
+        <Choice label="Radius" value={radius} onChange={setRadius} options={Object.entries(RADII).map(([k, v]) => [k as Radius, v.label])} />
+        <Choice label="Density" value={density} onChange={setDensity} options={Object.entries(DENSITIES).map(([k, v]) => [k as Density, v.label])} />
+        <div className="flex basis-full items-center gap-3">
+          <span className="text-[12px] text-ash">Every tile is live. Click around.</span>
+          <button
+            type="button"
+            onClick={copy}
+            className="ml-auto min-h-8 rounded-lg border border-line px-2.5 text-[12px] text-smoke transition-colors hover:text-chalk pointer-coarse:min-h-11"
+          >
+            <span aria-live="polite">{copied ? "Copied" : "Copy CSS"}</span>
+          </button>
+        </div>
       </div>
 
       <div
         data-theme={theme === "light" ? "light" : undefined}
         style={style}
-        className="columns-1 gap-4 rounded-3xl md:columns-2"
+        className={`columns-1 gap-4 rounded-3xl md:columns-2 ${density === "compact" ? "density-compact" : ""}`}
       >
         {shown.map((t) => (
           <Tile key={t.slug} {...t} />

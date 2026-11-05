@@ -51,6 +51,26 @@ export const changelog: ChangeMonth[] = [
       "The system doubles to 16 components, drawn from how Vercel, Cursor, OpenAI, Grok and Meta now ship agents. Every component is live on the showcase, and every principle opens on a short demo of it at work. Nothing needs a migration.",
     added: [
       {
+        title: "Approval inside a tool call",
+        href: "/components/tool-call-card",
+        body: "Tool Call Card gains three states: `awaiting` (Needs you), `denied` and `stopped`. A waiting call asks inside its own card, with what allowing does, Deny first and quiet. A refusal reads as Denied, grey, never as a failure. Failures and questions now open the card on their own.",
+      },
+      {
+        title: "Thinking Indicator",
+        href: "/components/thinking-indicator",
+        body: "One line that says what the agent is doing right now and for how long, folding to \"Thought for Ns\". For short waits where a Reasoning Trace is too much.",
+      },
+      {
+        title: "Question Flow",
+        href: "/components/question-flow",
+        body: "Two to four questions before a run, one at a time, each skippable when the agent has a default, then a review of every answer, sent together.",
+      },
+      {
+        title: "States grid, ⌘K search, radius and density",
+        href: "/components",
+        body: "Every component page now shows all its states side by side. ⌘K (or /) searches components, principles, evals and pages. Make them yours adds radius and density, and Copy CSS gives you the overrides. Compact density never shrinks touch targets on a touch screen.",
+      },
+      {
         title: "Reasoning Trace",
         href: "/components/reasoning-trace",
         body: "The agent's thinking as steps you can follow: open while it works, folded to \"Thought for Ns\" when it's done, with the sources each step used.",

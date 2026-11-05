@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sidebar } from "./sidebar";
 import { PitFlag } from "./pit-flag";
+import { SearchButton } from "./search";
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
   return (
@@ -29,6 +30,8 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
       </nav>
+
+      <SearchButton className="mb-8 w-full lg:hidden" />
 
       <div className="flex gap-10">
         <Sidebar />

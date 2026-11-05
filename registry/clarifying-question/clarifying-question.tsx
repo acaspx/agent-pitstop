@@ -20,7 +20,7 @@
  * - Host: ask one question at a time; set `fallback` whenever the agent has a sensible default.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 export interface ClarifyingOption {
@@ -60,6 +60,7 @@ export function ClarifyingQuestion({
   onSkip,
   className,
 }: ClarifyingQuestionProps) {
+  const root = useRef<HTMLDivElement>(null);
   const [picked, setPicked] = useState<string[]>([]);
   const [other, setOther] = useState("");
   const [internal, setInternal] = useState<string[] | null>(null);
@@ -81,6 +82,8 @@ export function ClarifyingQuestion({
   useEffect(() => {
     if (answer || skipped) return;
     const onKey = (e: KeyboardEvent) => {
+      // A copy shown for reference (inside an inert region, like a states grid) ignores keys.
+      if (root.current?.closest("[inert]")) return;
       const t = e.target as HTMLElement | null;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
       const n = Number(e.key);
@@ -94,7 +97,7 @@ export function ClarifyingQuestion({
   const closed = Boolean(answer) || skipped;
 
   return (
-    <div className={`w-full overflow-hidden rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
+    <div ref={root} className={`w-full overflow-hidden rounded-xl border border-line bg-asphalt ${className ?? ""}`}>
       <AnimatePresence initial={false} mode="wait">
         {closed ? (
           <motion.div

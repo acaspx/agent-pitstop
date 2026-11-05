@@ -8,6 +8,7 @@ import { componentCategories, componentsIn, principles } from "@/lib/nav";
 /** Kept here rather than read from lib/evals (which reads the filesystem, server-only). */
 const EVAL_LINKS = [{ href: "/evals/contract-use", label: "Contract use" }];
 import { PitFlag } from "./pit-flag";
+import { SearchButton } from "./search";
 
 function NavLink({ href, label, muted, badge }: { href: string | null; label: string; muted?: boolean; badge?: string }) {
   const pathname = usePathname();
@@ -56,6 +57,8 @@ export function Sidebar() {
           <PitFlag size={20} className="shrink-0 text-chalk" />
           AGENT PIT STOP
         </Link>
+
+        <SearchButton className="w-full" />
 
         <div>
           <NavLink href="/how-it-works" label="How it works" />
