@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { adjacentComponents, components, type Format } from "@/lib/nav";
 import { PreviewPane } from "./preview-pane";
 import { CodeBlock } from "./code-block";
+import { StatesGrid } from "@/app/components/states";
 
 export interface DocSection {
   heading?: string;
@@ -135,6 +136,8 @@ export function ComponentDoc({ slug, intro, sections, preview, variants, chatPro
           </PreviewPane>
         </div>
       </div>
+
+      <StatesGrid slug={slug} />
     </main>
   );
 }

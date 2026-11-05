@@ -87,6 +87,13 @@ export const components: ComponentEntry[] = [
     formats: ["web", "mobile", "chat"],
   },
   {
+    slug: "thinking-indicator",
+    title: "Thinking Indicator",
+    description: "One line that says what the agent is doing right now, and for how long.",
+    category: "Legibility",
+    formats: ["web", "mobile", "chat"],
+  },
+  {
     slug: "citation-chip",
     title: "Citation Chip",
     description: "Inline sources on every claim, with the passage one tap away.",
@@ -106,6 +113,13 @@ export const components: ComponentEntry[] = [
     description: "The agent asks instead of guessing, with answers ready to tap.",
     category: "Control",
     formats: ["web", "mobile", "chat", "cli", "ide"],
+  },
+  {
+    slug: "question-flow",
+    title: "Question Flow",
+    description: "A few questions before the run, one at a time, reviewed and sent together.",
+    category: "Control",
+    formats: ["web", "mobile", "chat"],
   },
   {
     slug: "diff-review-card",

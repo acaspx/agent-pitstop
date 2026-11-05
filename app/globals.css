@@ -74,3 +74,11 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Compact density never shrinks touch targets: on a coarse pointer it falls back to the
+   default spacing, so pointer-coarse:min-h-11 stays 44px. */
+@media (pointer: coarse) {
+  .density-compact {
+    --spacing: 0.25rem !important;
+  }
+}

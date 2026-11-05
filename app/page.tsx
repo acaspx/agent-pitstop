@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PitFlag } from "@/components/docs/pit-flag";
+import { SearchButton } from "@/components/docs/search";
 import { TrackLoop } from "@/components/docs/track-loop";
 import { Reveal } from "@/components/docs/reveal";
 import { Showcase } from "@/components/showcase/Showcase";
@@ -114,12 +115,15 @@ export default function Home() {
             <PitFlag size={18} className="shrink-0 text-chalk" />
             <span className="font-mono text-[13px] tracking-[0.3em] text-pit">AGENT PIT STOP</span>
           </div>
+          <div className="flex items-center gap-3">
+          <SearchButton className="max-sm:hidden" />
           <a
             href="https://github.com/acaspx/agent-pitstop"
             className="bg-pit px-2.5 py-1 font-mono text-[11px] font-medium tracking-wide text-track transition-opacity hover:opacity-85"
           >
             STAR ON GITHUB
           </a>
+          </div>
         </div>
       </Reveal>
 

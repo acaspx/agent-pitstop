@@ -24,6 +24,8 @@ import { DiffReviewCard } from "@/registry/diff-review-card/diff-review-card";
 import { TakeoverBanner, type TakeoverState } from "@/registry/takeover-banner/takeover-banner";
 import { Checkpoint } from "@/registry/checkpoint/checkpoint";
 import { MemoryPanel } from "@/registry/memory-panel/memory-panel";
+import { ThinkingIndicator } from "@/registry/thinking-indicator/thinking-indicator";
+import { QuestionFlow } from "@/registry/question-flow/question-flow";
 
 /** Advance an index every `ms` while `on`, looping back to 0 after `max`. */
 function useTicker(max: number, ms: number, on = true) {
@@ -37,16 +39,46 @@ function useTicker(max: number, ms: number, on = true) {
 }
 
 function ToolCallTile() {
-  const seq: ToolCallState[] = ["pending", "running", "running", "success"];
-  const i = useTicker(seq.length - 1, 1400);
+  // Queued, running, then it stops to ask; Allow lets it finish, Deny records a refusal.
+  const [state, setState] = useState<ToolCallState>("pending");
+  useEffect(() => {
+    const next: Partial<Record<ToolCallState, [ToolCallState, number]>> = { pending: ["running", 1200], running: ["awaiting", 1600] };
+    const n = next[state];
+    if (!n) return;
+    const t = setTimeout(() => setState(n[0]), n[1]);
+    return () => clearTimeout(t);
+  }, [state]);
   return (
     <ToolCallCard
       name="search_flights"
       intent="Searching SFO → JFK, Aug 12, nonstop"
-      state={seq[i]}
-      elapsed={i}
-      args={'{ "from": "SFO", "to": "JFK", "nonstop": true }'}
-      detail={seq[i] === "success" ? "14 flights. Cheapest nonstop: $278." : undefined}
+      state={state}
+      elapsed={2}
+      args={'{ "from": "SFO", "to": "JFK", "provider": "premium" }'}
+      detail={state === "success" ? "14 flights. Cheapest nonstop: $278." : state === "denied" ? "You kept the free provider." : undefined}
+      approval={{ question: "Use the paid fare provider?", consequence: "$0.40 per search; finds more nonstop fares." }}
+      onAllow={() => {
+        setState("running");
+        setTimeout(() => setState("success"), 1200);
+      }}
+      onDeny={() => setState("denied")}
+    />
+  );
+}
+
+function ThinkingTile() {
+  const steps = ["Reading your question", "Searching fare tables", "Checking carry-on rules", "Comparing totals"];
+  const i = useTicker(7, 900);
+  return <ThinkingIndicator detail={steps[Math.min(3, Math.floor(i / 1.5))]} elapsed={i} state={i >= 6 ? "done" : "thinking"} />;
+}
+
+function QuestionFlowTile() {
+  return (
+    <QuestionFlow
+      questions={[
+        { id: "seat", question: "Which seat should I hold?", options: [{ label: "Aisle", detail: "United 1532" }, { label: "Window", detail: "JetBlue 616" }], fallback: "the earlier flight" },
+        { id: "bag", question: "Are you checking a bag?", options: [{ label: "Carry-on only" }, { label: "One checked bag" }] },
+      ]}
     />
   );
 }
@@ -311,7 +343,8 @@ export const tiles: { slug: string; hint: string; render: () => ReactNode }[] = 
   { slug: "interrupt-bar", hint: "Stop or steer", render: () => <InterruptTile /> },
   { slug: "plan-review", hint: "Drop or edit a step", render: () => <PlanTile /> },
   { slug: "citation-chip", hint: "Tap a source", render: () => <CitationTile /> },
-  { slug: "tool-call-card", hint: "Expand the call", render: () => <ToolCallTile /> },
+  { slug: "tool-call-card", hint: "Allow or deny the call", render: () => <ToolCallTile /> },
+  { slug: "question-flow", hint: "Answer, then review", render: () => <QuestionFlowTile /> },
   { slug: "diff-review-card", hint: "Accept a hunk", render: () => <DiffTile /> },
   { slug: "confidence-meter", hint: "Check the claim", render: () => <ConfidenceTile /> },
   { slug: "takeover-banner", hint: "Take the wheel", render: () => <TakeoverTile /> },
@@ -322,4 +355,5 @@ export const tiles: { slug: string; hint: string; render: () => ReactNode }[] = 
   { slug: "agent-roster", hint: "Watch the crew", render: () => <RosterTile /> },
   { slug: "context-budget", hint: "Raise a cap", render: () => <BudgetTile /> },
   { slug: "agent-inbox", hint: "Open a review", render: () => <InboxTile /> },
+  { slug: "thinking-indicator", hint: "Watch it think", render: () => <ThinkingTile /> },
 ];
