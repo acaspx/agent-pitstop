@@ -128,9 +128,15 @@ export default function Home() {
         <div className="mt-10 grid gap-3 lg:grid-cols-[1.55fr_1fr]">
           {/* large card: headline / flag / paragraph */}
           <div className="flex flex-col gap-7 rounded-3xl border border-line bg-carbon bg-dots p-7 md:p-9">
-            <h1 className="max-w-md text-balance text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
-              An open source design system to keep agents on&nbsp;track.
-            </h1>
+            {/* the waving mark from the header, sized to the headline's three lines; the
+                negative margin cancels the flag's built-in padding so its checks line up
+                with the paragraph's left edge */}
+            <div className="flex items-start gap-4 md:gap-6">
+              <PitFlag size={112} className="-ml-2.5 h-auto w-16 shrink-0 text-chalk md:-ml-5 md:-mt-1 md:w-28" />
+              <h1 className="max-w-md text-balance text-[27px] font-semibold leading-tight tracking-tight text-chalk md:text-[33px]">
+                An open source design system to keep agents on&nbsp;track.
+              </h1>
+            </div>
             <TrackLoop variant="full" className="mx-auto w-full" />
             <p className="max-w-md text-[14.5px] leading-relaxed text-smoke">
               Agents run laps on their own; the moments that matter are the pit stops.
